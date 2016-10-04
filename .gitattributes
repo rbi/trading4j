@@ -1,0 +1,6 @@
+* text=auto
+
+*.mq4 text eol=crlf
+*.mqh text eol=crlf
+
+*.patch -text
