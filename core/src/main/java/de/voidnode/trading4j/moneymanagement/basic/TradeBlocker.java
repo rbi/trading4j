@@ -1,6 +1,5 @@
 package de.voidnode.trading4j.moneymanagement.basic;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.ForexSymbol;
 
 /**
@@ -24,19 +23,19 @@ interface TradeBlocker {
      * 
      * @param symbol
      *            The symbol thats currencies should be blocked.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalArgumentException
      *             When one or both currencies of the passed symbol are already blocked.
      */
-    void blockCurrencies(ForexSymbol symbol) throws UnrecoverableProgrammingError;
+    void blockCurrencies(ForexSymbol symbol);
 
     /**
      * Unblocks the currencies of a symbol for further trading.
      * 
      * @param symbol
      *            The symbol thats currencies should be unblocked.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalArgumentException
      *             When one or both currencies of the passed symbol where not blocked.
      */
-    void unblockCurrencies(ForexSymbol symbol) throws UnrecoverableProgrammingError;
+    void unblockCurrencies(ForexSymbol symbol);
 
 }

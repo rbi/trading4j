@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
@@ -283,7 +282,7 @@ public class NMovingAveragesExpertAdvisorTest {
     /**
      * The cut fails when no fast moving averages are passed in the constructor.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void failsWhenNoFastMovingAveragesArePassed() {
         new NMovingAveragesExpertAdvisor<FullMarketData<M1>>(slow);
     }

@@ -2,8 +2,6 @@ package de.voidnode.trading4j.domain.monetary;
 
 import java.util.Currency;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
-
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,7 +36,7 @@ public class MoneyTest {
     /**
      * Constructing a money instance with a minor value greater 99 will fail.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void constructingWithAMinorValueGreater99WillFail() {
         new Money(54, 123, EUR);
     }
@@ -46,7 +44,7 @@ public class MoneyTest {
     /**
      * Constructing a money instance with a minor value less than 0 will fail.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void constructingWithAMinorValueLessThan0WillFail() {
         new Money(42, -4, USD);
     }

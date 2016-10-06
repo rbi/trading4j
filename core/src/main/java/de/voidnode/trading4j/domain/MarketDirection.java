@@ -2,7 +2,6 @@ package de.voidnode.trading4j.domain;
 
 import java.util.Optional;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 /**
@@ -42,7 +41,7 @@ public enum MarketDirection {
             case DOWN:
                 return MarketDirection.UP;
             default:
-                throw new UnrecoverableProgrammingError("A trend that is neither UP nor DOWN can not be converted.");
+                throw new IllegalStateException("A trend that is neither UP nor DOWN can not be converted.");
         }
     }
 }

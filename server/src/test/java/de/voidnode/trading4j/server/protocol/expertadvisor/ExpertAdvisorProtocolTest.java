@@ -5,7 +5,6 @@ import java.util.Optional;
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.MoneyManagement;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
 import de.voidnode.trading4j.moneymanagement.SharedMoneyManagement.ReleasableMoneyManagement;
 import de.voidnode.trading4j.server.protocol.CommunicationException;
@@ -218,7 +217,7 @@ public class ExpertAdvisorProtocolTest {
         when(client.readMessage())
                 .thenThrow(new LoopThroughCommunicationException(new ExemplaryFatalCommunicationException()))
                 .thenThrow(
-                        new LoopThroughProgrammingErrorException(new UnrecoverableProgrammingError("test exception")))
+                        new LoopThroughIllegalStateException(new IllegalStateException("test exception")))
                 .thenThrow(new RuntimeException("some exception"));
 
         startCutSwallowExpectedExceptions();

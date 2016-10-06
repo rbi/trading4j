@@ -1,6 +1,5 @@
 package de.voidnode.trading4j.moneymanagement.basic;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.Ratio;
 import de.voidnode.trading4j.domain.monetary.Money;
 
@@ -18,13 +17,13 @@ class RiskMoneyProvider {
      * 
      * @param balanceToRiskRatio
      *            The ratio of the available balance that should be risk per trade.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalArgumentException
      *             When <code>balanceToRiskRatio</code> is less than 0 or greater than 1.
      */
-    RiskMoneyProvider(final Ratio balanceToRiskRatio) throws UnrecoverableProgrammingError {
+    RiskMoneyProvider(final Ratio balanceToRiskRatio) {
         if (balanceToRiskRatio.asBasic() < 0 || balanceToRiskRatio.asBasic() > 1) {
-            throw new UnrecoverableProgrammingError(new IllegalArgumentException(
-                    "The ratio of balance to risk must between 0% and 100% but was: " + balanceToRiskRatio + "."));
+            throw new IllegalArgumentException(
+                    "The ratio of balance to risk must between 0% and 100% but was: " + balanceToRiskRatio + ".");
         }
         this.balanceToRiskRatio = balanceToRiskRatio;
     }

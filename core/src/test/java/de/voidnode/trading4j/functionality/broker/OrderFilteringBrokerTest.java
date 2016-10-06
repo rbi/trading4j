@@ -10,7 +10,6 @@ import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderFilter;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
@@ -120,7 +119,7 @@ public class OrderFilteringBrokerTest {
      * When the cut receives a {@link BasicPendingOrder} before any {@link MarketData} was passed to it, an exception is
      * thrown.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalStateException.class)
     public void failsWhenTradeWasReceivedBeforeFirstMarketData() {
         when(indicator1.filterOrder(any())).thenReturn(empty());
         when(indicator2.filterOrder(any())).thenReturn(empty());

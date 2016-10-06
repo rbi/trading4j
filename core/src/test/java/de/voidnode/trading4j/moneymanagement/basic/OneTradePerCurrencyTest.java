@@ -1,6 +1,5 @@
 package de.voidnode.trading4j.moneymanagement.basic;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.ForexSymbol;
 
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class OneTradePerCurrencyTest {
     /**
      * When blocking an already blocked currency a second time, the cut throws an exception.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void failsWhenBlockingAnAlreadyBlockedCurrency() {
         cut.blockCurrencies(new ForexSymbol("EURUSD"));
         cut.blockCurrencies(new ForexSymbol("EURCHF"));
@@ -58,7 +57,7 @@ public class OneTradePerCurrencyTest {
     /**
      * When a currency is unblocked that wasn't blocked, the cut trows an exception.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void failsWhenUnblockingAnUnblockedCurrency() {
         cut.unblockCurrencies(new ForexSymbol("EURCHF"));
     }

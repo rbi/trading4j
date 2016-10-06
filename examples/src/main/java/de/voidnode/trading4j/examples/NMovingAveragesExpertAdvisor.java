@@ -7,7 +7,6 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
@@ -29,7 +28,7 @@ class NMovingAveragesExpertAdvisor<C extends FullMarketData<M1>> implements Trad
 
     private static final Optional<Price> NO_TAKE_PROFIT = Optional.of(new Price(0));
     private static final Price ENTRY_PRICE_DISTANCE = new Price(5, PriceUnit.PIPETTE);
-    
+
     private final Indicator<Price, C> slow;
     private final List<Indicator<Price, C>> fastMovingAverages;
 
@@ -50,11 +49,10 @@ class NMovingAveragesExpertAdvisor<C extends FullMarketData<M1>> implements Trad
      *            fastest. At least one fast moving average must be passed.
      */
     @SafeVarargs
-    NMovingAveragesExpertAdvisor(final Indicator<Price, C> slow,
-            final Indicator<Price, C>... fastMovingAverages) {
+    NMovingAveragesExpertAdvisor(final Indicator<Price, C> slow, final Indicator<Price, C>... fastMovingAverages) {
         if (fastMovingAverages.length == 0) {
-            throw new UnrecoverableProgrammingError(new IllegalArgumentException(
-                    "No fast moving average was passed in the constructor. At least on is requiered."));
+            throw new IllegalArgumentException(
+                    "No fast moving average was passed in the constructor. At least on is requiered.");
         }
         this.fastMovingAverages = asList(fastMovingAverages);
         this.slow = slow;
@@ -116,8 +114,8 @@ class NMovingAveragesExpertAdvisor<C extends FullMarketData<M1>> implements Trad
 
     @Override
     public Optional<Price> getEntryPrice() {
-        return signal.flatMap(sig -> entry.map(price -> sig == MarketDirection.UP ? price.plus(spread).plus(ENTRY_PRICE_DISTANCE)
-                : price.minus(ENTRY_PRICE_DISTANCE)));
+        return signal.flatMap(sig -> entry.map(price -> sig == MarketDirection.UP
+                ? price.plus(spread).plus(ENTRY_PRICE_DISTANCE) : price.minus(ENTRY_PRICE_DISTANCE)));
     }
 
     @Override

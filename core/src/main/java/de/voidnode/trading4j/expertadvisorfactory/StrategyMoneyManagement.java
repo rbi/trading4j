@@ -11,7 +11,6 @@ import de.voidnode.trading4j.api.MarketDataListener;
 import de.voidnode.trading4j.api.MoneyManagement;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.api.UsedVolumeManagement;
 import de.voidnode.trading4j.domain.ForexSymbol;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
@@ -74,9 +73,9 @@ class StrategyMoneyManagement<C extends MarketData<M1>>
     @Override
     public Either<Failed, OrderManagement> sendOrder(final BasicPendingOrder order,
             final OrderEventListener eventListener) {
-        final Price lastPrice = lastMarketData.orElseThrow(() -> new UnrecoverableProgrammingError(
+        final Price lastPrice = lastMarketData.orElseThrow(() -> new IllegalStateException(
                 "An order was send before the current value of the traded symbol was passed to this instance."));
-        final Price lastExchangeRate = accountCurrencyExchangeRate.orElseThrow(() -> new UnrecoverableProgrammingError(
+        final Price lastExchangeRate = accountCurrencyExchangeRate.orElseThrow(() -> new IllegalStateException(
                 "An order was send before the current value of the symbol exchanging account currency "
                         + " to the quote currency of the traded symbol" + " was passed to this class."));
         final Price difference = new Price(

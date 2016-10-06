@@ -1,6 +1,5 @@
 package de.voidnode.trading4j.domain.orders;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
 import de.voidnode.trading4j.domain.monetary.Price;
@@ -196,10 +195,10 @@ public class MutablePendingOrder {
      * </p>
      * 
      * @return The build {@link PendingOrder}.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalStateException
      *             When not all required values where set.
      */
-    public PendingOrder toImmutablePendingOrder() throws UnrecoverableProgrammingError {
+    public PendingOrder toImmutablePendingOrder() {
         if (volume == null) {
             failWithMissing("volume");
         }
@@ -247,7 +246,7 @@ public class MutablePendingOrder {
     }
 
     private void failWithMissing(final String missingField) {
-        throw new UnrecoverableProgrammingError("Failed to create a pending order as the required field " + missingField
+        throw new IllegalStateException("Failed to create a pending order as the required field " + missingField
                 + " was not passed to this builder.");
     }
 }

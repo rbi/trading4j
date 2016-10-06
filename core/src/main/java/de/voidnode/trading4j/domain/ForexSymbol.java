@@ -2,8 +2,6 @@ package de.voidnode.trading4j.domain;
 
 import java.util.Currency;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
-
 /**
  * An identifier for a tradeable forex pair.
  * 
@@ -19,14 +17,13 @@ public final class ForexSymbol {
      * 
      * @param name
      *            The name of the symbol.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalArgumentException
      *             When the <code>name</code> passed in the constructor has not exactly 6 letters.
      */
     public ForexSymbol(final String name) {
         if (name.length() != 6) {
-            throw new UnrecoverableProgrammingError(
-                    new IllegalArgumentException("A forex symbol must have exactly 6 letters but the passed symbol \""
-                            + name + "\" has " + name.length() + " letters."));
+            throw new IllegalArgumentException("A forex symbol must have exactly 6 letters but the passed symbol \""
+                    + name + "\" has " + name.length() + " letters.");
         }
         baseCurrency = Currency.getInstance(name.substring(0, 3));
         quoteCurrency = Currency.getInstance(name.substring(3));

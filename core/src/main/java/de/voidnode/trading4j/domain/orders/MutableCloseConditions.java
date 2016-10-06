@@ -3,7 +3,6 @@ package de.voidnode.trading4j.domain.orders;
 import java.time.Instant;
 import java.util.Optional;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 /**
@@ -109,10 +108,10 @@ public class MutableCloseConditions {
      * </p>
      * 
      * @return The build {@link CloseConditions}.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalStateException
      *             When not all required values where set.
      */
-    public CloseConditions toImmutable() throws UnrecoverableProgrammingError {
+    public CloseConditions toImmutable() {
         if (takeProfit == null) {
             failWithMissing("takeProfit");
         }
@@ -127,7 +126,7 @@ public class MutableCloseConditions {
     }
 
     private void failWithMissing(final String missingField) {
-        throw new UnrecoverableProgrammingError("Failed to create a close conditions instance as the required field "
+        throw new IllegalStateException("Failed to create a close conditions instance as the required field "
                 + missingField + " was not passed to this builder.");
     }
 }

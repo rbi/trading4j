@@ -1,6 +1,5 @@
 package de.voidnode.trading4j.moneymanagement.basic;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.ForexSymbol;
 
 /**
@@ -29,12 +28,12 @@ class FixedTradeCountAtATime implements TradeBlocker {
     }
 
     @Override
-    public void blockCurrencies(final ForexSymbol symbol) throws UnrecoverableProgrammingError {
+    public void blockCurrencies(final ForexSymbol symbol) {
         activeTrades++;
     }
 
     @Override
-    public void unblockCurrencies(final ForexSymbol symbol) throws UnrecoverableProgrammingError {
+    public void unblockCurrencies(final ForexSymbol symbol) {
         activeTrades--;
     }
 

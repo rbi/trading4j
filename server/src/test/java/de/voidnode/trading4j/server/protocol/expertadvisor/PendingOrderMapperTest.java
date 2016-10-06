@@ -1,7 +1,6 @@
 package de.voidnode.trading4j.server.protocol.expertadvisor;
 
 import de.voidnode.trading4j.api.OrderEventListener;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class PendingOrderMapperTest {
     /**
      * When the cut is queried for the {@link OrderEventListener} of an unknown order id, an exception is thrown.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void queriingForUnknownPendingOrderIdsShouldResultInAnException() {
         // otherPendingOrder is not put to the map this time
 
@@ -81,7 +80,7 @@ public class PendingOrderMapperTest {
     /**
      * When an {@link OrderEventListener} with an unknown id is removed from the cut, an exception should be thrown.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void removingAnUnknownIdShouldResultInAnException() {
         cut.remove(OTHER_PENDING_ORDER_ID);
     }

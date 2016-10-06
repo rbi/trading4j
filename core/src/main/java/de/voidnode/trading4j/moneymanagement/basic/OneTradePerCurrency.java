@@ -4,7 +4,6 @@ import java.util.Currency;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.ForexSymbol;
 
 /**
@@ -23,9 +22,9 @@ class OneTradePerCurrency implements TradeBlocker {
     }
 
     @Override
-    public void blockCurrencies(final ForexSymbol symbol) throws UnrecoverableProgrammingError {
+    public void blockCurrencies(final ForexSymbol symbol) {
         if (!isTradingAllowed(symbol)) {
-            throw new UnrecoverableProgrammingError("Should block the currencies of symbol " + symbol
+            throw new IllegalArgumentException("Should block the currencies of symbol " + symbol
                     + " from trading but one or both currencies are already blocked.");
         }
 
@@ -34,9 +33,9 @@ class OneTradePerCurrency implements TradeBlocker {
     }
 
     @Override
-    public void unblockCurrencies(final ForexSymbol symbol) throws UnrecoverableProgrammingError {
+    public void unblockCurrencies(final ForexSymbol symbol) {
         if (isTradingAllowed(symbol)) {
-            throw new UnrecoverableProgrammingError("Should unblock te currencies of symbol " + symbol
+            throw new IllegalArgumentException("Should unblock te currencies of symbol " + symbol
                     + " for trading but one or both currencies are not blocked.");
         }
 

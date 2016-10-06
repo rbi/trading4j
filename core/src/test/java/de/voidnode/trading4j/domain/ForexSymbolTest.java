@@ -2,8 +2,6 @@ package de.voidnode.trading4j.domain;
 
 import java.util.Currency;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
-
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +38,7 @@ public class ForexSymbolTest {
     /**
      * When the symbol name has less than 6 letters construction fails.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void failsConstructionWhenSymbolHasLessThan6Letters() {
         new ForexSymbol("EURUS");
     }
@@ -48,7 +46,7 @@ public class ForexSymbolTest {
     /**
      * When the symbol name has more than 6 letters construction fails.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void failsConstructionWhenSymbolHasMoreThan6Letters() {
         new ForexSymbol("EURUSDD");
     }

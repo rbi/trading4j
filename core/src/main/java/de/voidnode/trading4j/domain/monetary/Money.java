@@ -2,8 +2,6 @@ package de.voidnode.trading4j.domain.monetary;
 
 import java.util.Currency;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
-
 /**
  * An amount of a currency that can be used for trading.
  * 
@@ -50,14 +48,13 @@ public final class Money {
      *            see #getMinor(). This value must be &gt;= 0 and &lt;100 or an exception will be thrown.
      * @param currency
      *            see {@link #getCurrency()}
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalArgumentException
      *             When <code>minor</code> is &lt;0 or &gt;= 100.
      */
-    public Money(final long major, final int minor, final Currency currency) throws UnrecoverableProgrammingError {
+    public Money(final long major, final int minor, final Currency currency) {
         if (minor < 0 || minor > 99) {
-            throw new UnrecoverableProgrammingError(
-                    new IllegalArgumentException("A money instance with a minor value of \"" + minor
-                            + "\" should be created but the minor value must be >= 0 and <=99."));
+            throw new IllegalArgumentException("A money instance with a minor value of \"" + minor
+                    + "\" should be created but the minor value must be >= 0 and <=99.");
         }
 
         final long absolute = Math.abs(major) * 100 + minor;
@@ -74,13 +71,11 @@ public final class Money {
      *            see #getMinor(). This value must be &gt;= 0 and &lt;100 or an exception will be thrown.
      * @param currencyCode
      *            The {@link Currency} as {@link String}, see {@link Currency#getInstance(String)}
-     * @throws UnrecoverableProgrammingError
-     *             When <code>minor</code> is &lt;0 or &gt;= 100.
      * @throws IllegalArgumentException
-     *             When the currency code is not supported, see {@link Currency#getInstance(String)}
+     *             When <code>minor</code> is &lt;0 or &gt;= 100 or when the currency code is not supported, see
+     *             {@link Currency#getInstance(String)}
      */
-    public Money(final long major, final int minor, final String currencyCode)
-            throws UnrecoverableProgrammingError, IllegalArgumentException {
+    public Money(final long major, final int minor, final String currencyCode) {
         this(major, minor, Currency.getInstance(currencyCode));
     }
 

@@ -1,6 +1,5 @@
 package de.voidnode.trading4j.domain.orders;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.monetary.Price;
 
@@ -71,31 +70,31 @@ public class MutablePendingOrderTest {
         try {
             new MutablePendingOrder().setType(SELL).setExecutionCondition(LIMIT).setEntryPrice(dummyPrice)
                     .setCloseConditions(closeConditions).toImmutablePendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutablePendingOrder().setVolume(dummyLot).setExecutionCondition(LIMIT).setEntryPrice(dummyPrice)
                     .setCloseConditions(closeConditions).toImmutablePendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutablePendingOrder().setVolume(dummyLot).setType(SELL).setEntryPrice(dummyPrice)
                     .setCloseConditions(closeConditions).toImmutablePendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutablePendingOrder().setVolume(dummyLot).setType(SELL).setExecutionCondition(LIMIT)
                     .setCloseConditions(closeConditions).toImmutablePendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutablePendingOrder().setVolume(dummyLot).setType(SELL).setExecutionCondition(LIMIT)
                     .setEntryPrice(dummyPrice).toImmutablePendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
 
@@ -149,25 +148,25 @@ public class MutablePendingOrderTest {
         try {
             new MutablePendingOrder().setExecutionCondition(LIMIT).setEntryPrice(dummyPrice)
                     .setCloseConditions(closeConditions).toImmutableBasicPendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutablePendingOrder().setType(SELL).setEntryPrice(dummyPrice).setCloseConditions(closeConditions)
                     .toImmutableBasicPendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutablePendingOrder().setType(SELL).setExecutionCondition(LIMIT).setCloseConditions(closeConditions)
                     .toImmutableBasicPendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutablePendingOrder().setType(SELL).setExecutionCondition(LIMIT).setEntryPrice(dummyPrice)
                     .toImmutableBasicPendingOrder();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
 

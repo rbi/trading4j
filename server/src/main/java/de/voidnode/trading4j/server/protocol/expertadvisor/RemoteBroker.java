@@ -7,7 +7,6 @@ import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
 import de.voidnode.trading4j.server.protocol.CommunicationException;
@@ -71,7 +70,7 @@ public class RemoteBroker implements Broker<PendingOrder> {
         @Override
         public void closeOrCancelOrder() {
             if (!orderMapper.has(orderId)) {
-                throw new LoopThroughProgrammingErrorException(new UnrecoverableProgrammingError(
+                throw new LoopThroughIllegalStateException(new IllegalStateException(
                         "The expert advisor tried to close or cancel an order that was already closed or canceld."));
             }
             try {
@@ -85,8 +84,8 @@ public class RemoteBroker implements Broker<PendingOrder> {
         @Override
         public Optional<Failed> changeCloseConditionsOfOrder(final CloseConditions conditions) {
             if (!orderMapper.has(orderId)) {
-                throw new LoopThroughProgrammingErrorException(
-                        new UnrecoverableProgrammingError(
+                throw new LoopThroughIllegalStateException(
+                        new IllegalStateException(
                                 "The expert advisor tried to change the close conditions of an order that was already closed or canceled."));
             }
             try {

@@ -76,7 +76,7 @@ public class ExpertAdvisorProtocol {
             } catch (LoopThroughCommunicationException e) {
                 moneyManagement.realeaseAllAquieredVolume();
                 throw e.getWrappedException();
-            } catch (final LoopThroughProgrammingErrorException e) {
+            } catch (final LoopThroughIllegalStateException e) {
                 moneyManagement.realeaseAllAquieredVolume();
                 throw e.getWrappedException();
             } catch (final Exception e) {

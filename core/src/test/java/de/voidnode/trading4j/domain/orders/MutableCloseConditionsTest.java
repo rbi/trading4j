@@ -4,7 +4,6 @@ import java.time.Instant;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
@@ -52,12 +51,12 @@ public class MutableCloseConditionsTest {
         int exceptionsCaught = 0;
         try {
             new MutableCloseConditions().setTakeProfit(new Price(1.0)).toImmutable();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableCloseConditions().setStopLoose(new Price(1.0)).toImmutable();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
 

@@ -3,7 +3,6 @@ package de.voidnode.trading4j.domain.marketdata;
 import java.time.Instant;
 import java.util.Optional;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
@@ -309,12 +308,12 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * </p>
      * 
      * @return The build candle Stick.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalStateException
      *             When not all required values where set.
      */
-    public CandleStick<T> toImmutableCandleStick() throws UnrecoverableProgrammingError {
+    public CandleStick<T> toImmutableCandleStick() {
         if (open == null || high == null || low == null || close == null) {
-            throw new UnrecoverableProgrammingError(
+            throw new IllegalStateException(
                     "Failed to create a CandleStick as not all required values (open, high, low, close) "
                             + "where passed to this builder.");
         }
@@ -330,12 +329,12 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * </p>
      * 
      * @return The build candle Stick.
-     * @throws UnrecoverableProgrammingError
+     * @throws IllegalStateException
      *             When not all required values where set.
      */
-    public DatedCandleStick<T> toImmutableDatedCandleStick() throws UnrecoverableProgrammingError {
+    public DatedCandleStick<T> toImmutableDatedCandleStick() {
         if (anyIsNull(time, open, high, low, close)) {
-            throw new UnrecoverableProgrammingError(
+            throw new IllegalStateException(
                     "Failed to create a DatedCandleStick as not all required values (time, open, high, low, close) "
                             + "where passed to this builder.");
         }
@@ -354,9 +353,9 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @throws UnrecoverableProgrammingError
      *             When not all required values where set.
      */
-    public FullMarketData<T> toImmutableFullMarketData() throws UnrecoverableProgrammingError {
+    public FullMarketData<T> toImmutableFullMarketData() {
         if (anyIsNull(time, open, high, low, close, spread, volume, tickCount)) {
-            throw new UnrecoverableProgrammingError(
+            throw new IllegalStateException(
                     "Failed to create a FatCandleStick as not all required values (time, open, high, low, close,"
                             + " spread, volume, tickCount) where passed to this builder.");
         }

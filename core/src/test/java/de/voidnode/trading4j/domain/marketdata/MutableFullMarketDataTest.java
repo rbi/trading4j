@@ -2,7 +2,6 @@ package de.voidnode.trading4j.domain.marketdata;
 
 import java.time.Instant;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
@@ -55,25 +54,25 @@ public class MutableFullMarketDataTest {
         try {
             new MutableFullMarketData<>().setHigh(DUMMY_VALUE).setLow(DUMMY_VALUE).setClose(DUMMY_VALUE)
                     .toImmutableCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableFullMarketData<>().setOpen(DUMMY_VALUE).setLow(DUMMY_VALUE).setClose(DUMMY_VALUE)
                     .toImmutableCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableFullMarketData<>().setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE).setClose(DUMMY_VALUE)
                     .toImmutableCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableFullMarketData<>().setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE).setLow(DUMMY_VALUE)
                     .toImmutableCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
 
@@ -112,31 +111,31 @@ public class MutableFullMarketDataTest {
         try {
             new MutableFullMarketData<>().setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE).setLow(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).toImmutableDatedCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableFullMarketData<>().setTime(SOME_TIME).setHigh(DUMMY_VALUE).setLow(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).toImmutableDatedCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setLow(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).toImmutableDatedCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).toImmutableDatedCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
         try {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE)
                     .setLow(DUMMY_VALUE).toImmutableDatedCandleStick();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             exceptionsCaught++;
         }
 
@@ -166,42 +165,42 @@ public class MutableFullMarketDataTest {
      */
     @Test
     public void shouldFailWhenNotAllRequiredValuesForFatCandleSticksArePassed() {
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE).setLow(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).setSpread(DUMMY_VALUE).setVolume(50, MINI_LOT).setTickCount(5)
                     .toImmutableFullMarketData();
         });
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setTime(SOME_TIME).setHigh(DUMMY_VALUE).setLow(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).setSpread(DUMMY_VALUE).setVolume(50, MINI_LOT).setTickCount(5)
                     .toImmutableFullMarketData();
         });
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setLow(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).setSpread(DUMMY_VALUE).setVolume(50, MINI_LOT).setTickCount(5)
                     .toImmutableFullMarketData();
         });
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE)
                     .setClose(DUMMY_VALUE).setSpread(DUMMY_VALUE).setVolume(50, MINI_LOT).setTickCount(5)
                     .toImmutableFullMarketData();
         });
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE)
                     .setLow(DUMMY_VALUE).setSpread(DUMMY_VALUE).setVolume(50, MINI_LOT).setTickCount(5)
                     .toImmutableFullMarketData();
         });
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE)
                     .setLow(DUMMY_VALUE).setClose(DUMMY_VALUE).setVolume(50, MINI_LOT).setTickCount(5)
                     .toImmutableFullMarketData();
         });
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE)
                     .setLow(DUMMY_VALUE).setClose(DUMMY_VALUE).setSpread(DUMMY_VALUE).setTickCount(5)
                     .toImmutableFullMarketData();
         });
-        expectUnrecoverableProgrammingError(() -> {
+        expectIllegalStateException(() -> {
             new MutableFullMarketData<>().setTime(SOME_TIME).setOpen(DUMMY_VALUE).setHigh(DUMMY_VALUE)
                     .setLow(DUMMY_VALUE).setClose(DUMMY_VALUE).setSpread(DUMMY_VALUE).setVolume(50, MINI_LOT)
                     .toImmutableFullMarketData();
@@ -232,17 +231,17 @@ public class MutableFullMarketDataTest {
         assertThat(cut.getTickCount()).contains(62L);
     }
 
-    private void expectUnrecoverableProgrammingError(final Runnable runnable) {
+    private void expectIllegalStateException(final Runnable runnable) {
         try {
             runnable.run();
-        } catch (final UnrecoverableProgrammingError e) {
+        } catch (final IllegalStateException e) {
             consume(e);
             return;
         }
         throw new AssertionError("Expected the immutable conversion to fail but it succeed.");
     }
 
-    private void consume(final UnrecoverableProgrammingError e) {
+    private void consume(final IllegalStateException e) {
         // fake handling exception which are expected in tests
     }
 }

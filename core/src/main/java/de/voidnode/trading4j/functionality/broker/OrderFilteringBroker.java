@@ -13,7 +13,6 @@ import de.voidnode.trading4j.api.MarketDataListener;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderFilter;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 
@@ -57,7 +56,7 @@ public class OrderFilteringBroker<C extends MarketData<?>> implements Broker<Bas
     public Either<Failed, OrderManagement> sendOrder(final BasicPendingOrder order,
             final OrderEventListener eventListener) {
         if (!receivedData) {
-            throw new UnrecoverableProgrammingError(
+            throw new IllegalStateException(
                     "To decide if an order is blocked, the market data stream needs to be recieved but no market data was received yet.");
         }
 

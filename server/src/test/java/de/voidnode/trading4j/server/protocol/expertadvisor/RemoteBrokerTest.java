@@ -8,7 +8,6 @@ import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.VolumeUnit;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
@@ -192,12 +191,12 @@ public class RemoteBrokerTest {
 
     /**
      * When the {@link ExpertAdvisor} tries to close or cancel an already closed or canceled order, an
-     * {@link UnrecoverableProgrammingError} should be thrown.
+     * {@link LoopThroughIllegalStateException} should be thrown.
      * 
      * @throws CommunicationException
      *             not expected to leave the test.
      */
-    @Test(expected = LoopThroughProgrammingErrorException.class)
+    @Test(expected = LoopThroughIllegalStateException.class)
     public void closeOrCancelAnAlreadyClosedOrCanceledOrderShouldFail() throws CommunicationException {
         when(pendingOrderMapper.has(EXAMPLE_PENDING_ORDER_ID)).thenReturn(false);
 
@@ -258,12 +257,12 @@ public class RemoteBrokerTest {
 
     /**
      * When the {@link ExpertAdvisor} tries to change the {@link CloseConditions} of an order that was already closed or
-     * canceled placed, an {@link UnrecoverableProgrammingError} should be thrown.
+     * canceled placed, an {@link LoopThroughIllegalStateException} should be thrown.
      * 
      * @throws CommunicationException
      *             not expected to leave the test.
      */
-    @Test(expected = LoopThroughProgrammingErrorException.class)
+    @Test(expected = LoopThroughIllegalStateException.class)
     public void changeCloseConditionsOfAnUnknownPendingOrderShouldFail() throws CommunicationException {
         when(pendingOrderMapper.has(EXAMPLE_PENDING_ORDER_ID)).thenReturn(false);
 

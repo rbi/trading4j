@@ -2,7 +2,6 @@ package de.voidnode.trading4j.moneymanagement.basic;
 
 import java.util.Currency;
 
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.Ratio;
 import de.voidnode.trading4j.domain.monetary.Money;
 
@@ -36,7 +35,7 @@ public class RiskMoneyProviderTest {
     /**
      * When a ratio less than 0 is passed in the constructor, the cut fails.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void failsWhenCutIsConstructedWithARatioLessThan0() {
         new RiskMoneyProvider(new Ratio(-10, PERCENT));
     }
@@ -44,7 +43,7 @@ public class RiskMoneyProviderTest {
     /**
      * When a ratio greater than 1 is passed in the constructor, the cut fails.
      */
-    @Test(expected = UnrecoverableProgrammingError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void failWhenCutIsConstructedWithRatioGreaterThan1() {
         new RiskMoneyProvider(new Ratio(101, PERCENT));
     }

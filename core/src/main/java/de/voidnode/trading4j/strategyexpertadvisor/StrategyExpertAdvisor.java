@@ -6,7 +6,6 @@ import java.util.Optional;
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.OrderEventListener;
-import de.voidnode.trading4j.api.UnrecoverableProgrammingError;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
@@ -87,7 +86,7 @@ public class StrategyExpertAdvisor<C extends CandleStick<?>> implements ExpertAd
                 }
                 break;
             default:
-                throw new UnrecoverableProgrammingError("Unhandled state " + currentState);
+                throw new IllegalStateException("Unhandled state " + currentState);
         }
     }
 
