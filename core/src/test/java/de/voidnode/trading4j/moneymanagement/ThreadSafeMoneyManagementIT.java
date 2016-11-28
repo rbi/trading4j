@@ -57,8 +57,9 @@ public class ThreadSafeMoneyManagementIT {
                 for (int i2 = 0; i2 < SIMULATED_TRIES_PER_THREAD; i2++) {
                     try {
                         cut.updateBalance(SOME_BALANCE);
-                        final UsedVolumeManagement requestVolume = cut.requestVolume(SOME_SYMBOL, SOME_PRICE,
-                                SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE).get();
+                        cut.updateExchangeRate(SOME_SYMBOL, SOME_PRICE);
+                        final UsedVolumeManagement requestVolume = cut
+                                .requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE).get();
                         requestVolume.getVolume();
                         requestVolume.releaseVolume();
                     } catch (final Exception e) {
@@ -102,16 +103,20 @@ public class ThreadSafeMoneyManagementIT {
         }
 
         @Override
-        public Optional<UsedVolumeManagement> requestVolume(final ForexSymbol symbol, final Price currentPrice,
-                final ForexSymbol accountCurrencyExchangeSymbol, final Price accountCurrencyExchangeRate,
-                final Price pipLostOnStopLoose, final Volume allowedStepSize) {
+        public void updateBalance(final Money balance) {
             simulateThreadSafetyRequiereingAction();
-            return Optional.of(this);
         }
 
         @Override
-        public void updateBalance(final Money balance) {
+        public void updateExchangeRate(final ForexSymbol currencyExchange, final Price exchangeRate) {
             simulateThreadSafetyRequiereingAction();
+        }
+
+        @Override
+        public Optional<UsedVolumeManagement> requestVolume(final ForexSymbol symbol, final Price currentPrice,
+                final Price pipLostOnStopLoose, final Volume allowedStepSize) {
+            simulateThreadSafetyRequiereingAction();
+            return Optional.of(this);
         }
     }
 }

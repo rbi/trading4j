@@ -3,16 +3,13 @@ package de.voidnode.trading4j.server;
 import java.time.Instant;
 import java.util.Optional;
 
-import de.voidnode.trading4j.api.AccountingExpertAdvisor;
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.ExpertAdvisorFactory;
-import de.voidnode.trading4j.api.MoneyManagement;
+import de.voidnode.trading4j.api.VolumeLender;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
-import de.voidnode.trading4j.domain.monetary.Money;
-import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
 import de.voidnode.trading4j.domain.trades.CompletedTrade;
 import de.voidnode.trading4j.server.reporting.CombinedNotifier;
@@ -48,8 +45,8 @@ class TradeTrackingExpertAdvisorFactory implements ExpertAdvisorFactory {
     }
 
     @Override
-    public Optional<AccountingExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
-            final Broker<PendingOrder> broker, final MoneyManagement moneyManagement,
+    public Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
+            final Broker<PendingOrder> broker, final VolumeLender volumeLender,
             final TradingEnvironmentInformation environment) {
 
         final FullCompletedTradeTracker<FullMarketData<M1>> tradeTracker = new FullCompletedTradeTracker<FullMarketData<M1>>(
@@ -60,29 +57,15 @@ class TradeTrackingExpertAdvisorFactory implements ExpertAdvisorFactory {
                         : productiveNotifier::tradeCompleted;
         tradeTracker.setEventListener(tradeEventListener);
 
-        final Optional<AccountingExpertAdvisor<FullMarketData<M1>>> expertAdvisor = factory
-                .newExpertAdvisor(expertAdvisorNumber, tradeTracker, moneyManagement, environment);
+        final Optional<ExpertAdvisor<FullMarketData<M1>>> expertAdvisor = factory.newExpertAdvisor(expertAdvisorNumber,
+                tradeTracker, volumeLender, environment);
 
-        return expertAdvisor.<AccountingExpertAdvisor<FullMarketData<M1>>>map(
-                advisor -> new AccountingExpertAdvisor<FullMarketData<M1>>() {
+        return expertAdvisor.<ExpertAdvisor<FullMarketData<M1>>>map(advisor -> new ExpertAdvisor<FullMarketData<M1>>() {
                     @Override
                     public void newData(final FullMarketData<M1> marketData) {
                         tradeTracker.newData(marketData);
                         advisor.newData(marketData);
-
-                    }
-
-                    @Override
-                    public void balanceChanged(final Money money) {
-                        advisor.balanceChanged(money);
-                    }
-
-                    @Override
-                    public void accountCurrencyPriceChanged(final Price newPrice) {
-                        advisor.accountCurrencyPriceChanged(newPrice);
                     }
                 });
-
     }
-
 }

@@ -208,7 +208,7 @@ public class NMovingAveragesExpertAdvisorTest {
     }
 
     /**
-     * When an up signal is generated, the entry price is the last known close {@link Price} plus the spread plus 5
+     * When an up signal is generated, the entry price is the last known close {@link Price} plus the spread plus 15
      * {@link PriceUnit#PIPETTE}.
      */
     @Test
@@ -221,11 +221,11 @@ public class NMovingAveragesExpertAdvisorTest {
         cut.update(SOME_CANDLE_STICK);
         assertThat(cut.getEntryPrice()).isEmpty();
         cut.update(SOME_CANDLE_STICK);
-        assertThat(cut.getEntryPrice()).contains(new Price(225));
+        assertThat(cut.getEntryPrice()).contains(new Price(235));
     }
 
     /**
-     * When a down signal is generated, the entry price is the last known close {@link Price} minus 5
+     * When a down signal is generated, the entry price is the last known close {@link Price} minus 15
      * {@link PriceUnit#PIPETTE}.
      */
     @Test
@@ -238,7 +238,7 @@ public class NMovingAveragesExpertAdvisorTest {
         cut.update(SOME_CANDLE_STICK);
         assertThat(cut.getEntryPrice()).isEmpty();
         cut.update(SOME_CANDLE_STICK);
-        assertThat(cut.getEntryPrice()).contains(new Price(195));
+        assertThat(cut.getEntryPrice()).contains(new Price(185));
     }
 
     /**

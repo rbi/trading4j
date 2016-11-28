@@ -27,7 +27,7 @@ import de.voidnode.trading4j.strategyexpertadvisor.TradingStrategy;
 class NMovingAveragesExpertAdvisor<C extends FullMarketData<M1>> implements TradingStrategy<C> {
 
     private static final Optional<Price> NO_TAKE_PROFIT = Optional.of(new Price(0));
-    private static final Price ENTRY_PRICE_DISTANCE = new Price(5, PriceUnit.PIPETTE);
+    private static final Price ENTRY_PRICE_DISTANCE = new Price(15, PriceUnit.PIPETTE);
 
     private final Indicator<Price, C> slow;
     private final List<Indicator<Price, C>> fastMovingAverages;

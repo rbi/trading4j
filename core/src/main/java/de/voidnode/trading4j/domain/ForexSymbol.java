@@ -28,6 +28,17 @@ public final class ForexSymbol {
         baseCurrency = Currency.getInstance(name.substring(0, 3));
         quoteCurrency = Currency.getInstance(name.substring(3));
     }
+   
+    /**
+     * Creates an instance based on both currencies of the Forex symbol.
+     * 
+     * @param baseCurrency see {@link #getBaseCurrency()}
+     * @param quoteCurrency see {@link #getQuoteCurrency()}
+     */
+    public ForexSymbol(final Currency baseCurrency, final Currency quoteCurrency) {
+        this.baseCurrency = baseCurrency;
+        this.quoteCurrency = quoteCurrency;
+    }
 
     /**
      * The base currency (the left side) of this symbol.

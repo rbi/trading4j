@@ -38,13 +38,17 @@ public class ThreadSafeMoneyManagement implements MoneyManagement {
     }
 
     @Override
+    public void updateExchangeRate(final ForexSymbol currencyExchange, final Price exchangeRate) {
+        synchronized (lock) {
+            orig.updateExchangeRate(currencyExchange, exchangeRate);
+        }
+    }
+
+    @Override
     public Optional<UsedVolumeManagement> requestVolume(final ForexSymbol symbol, final Price currentPrice,
-            final ForexSymbol accountCurrencyExchangeSymbol, final Price accountCurrencyExchangeRate,
             final Price pipLostOnStopLoose, final Volume allowedStepSize) {
         synchronized (lock) {
-            return orig
-                    .requestVolume(symbol, currentPrice, accountCurrencyExchangeSymbol, accountCurrencyExchangeRate,
-                            pipLostOnStopLoose, allowedStepSize)
+            return orig.requestVolume(symbol, currentPrice, pipLostOnStopLoose, allowedStepSize)
                     .map(orig -> new ThreadSafeUsedVolumeManagement(lock, orig));
         }
     }

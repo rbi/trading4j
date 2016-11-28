@@ -43,14 +43,19 @@ public class NonMoneyManagement implements MoneyManagement {
     }
 
     @Override
-    public Optional<UsedVolumeManagement> requestVolume(final ForexSymbol symbol, final Price currentPrice,
-            final ForexSymbol accountCurrencyExchangeSymbol, final Price accountCurrencyExchangeRate,
-            final Price pipLostOnStopLoose, final Volume allowedStepSize) {
-        return volumeManagement;
+    public void updateExchangeRate(final ForexSymbol currencyExchange, final Price exchangeRate) {
+        // nothing to do here
+
     }
 
     @Override
     public void updateBalance(final Money balance) {
-        // not needed
+        // nothing to do here
+    }
+
+    @Override
+    public Optional<UsedVolumeManagement> requestVolume(final ForexSymbol symbol, final Price currentPrice,
+            final Price pipLostOnStopLoose, final Volume allowedStepSize) {
+        return volumeManagement;
     }
 }

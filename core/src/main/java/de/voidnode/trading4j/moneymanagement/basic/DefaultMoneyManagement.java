@@ -23,15 +23,20 @@ public class DefaultMoneyManagement implements MoneyManagement {
     private final RiskMoneyProvider moneyProvider;
     private final PipetteValueCalculator pipetteValueCalculator;
     private final VolumeCalculator volumeCalculator;
+    private final VolumeStepSizeRounder volumeRounder;
+    private final ExchangeRateStore exchangeRateStore;
     private Money balance;
-    private VolumeStepSizeRounder volumeRounder;
 
     /**
      * Creates an instance using the default implementations for its dependencies.
      */
     public DefaultMoneyManagement() {
-        this(new OneTradePerCurrency(), new RiskMoneyProvider(new Ratio(1, PERCENT)), new PipetteValueCalculator(),
-                new VolumeCalculator(), new VolumeStepSizeRounder());
+        this.currencyBlocker = new OneTradePerCurrency();
+        this.moneyProvider = new RiskMoneyProvider(new Ratio(1, PERCENT));
+        this.exchangeRateStore = new ExchangeRateStore();
+        this.pipetteValueCalculator = new PipetteValueCalculator(exchangeRateStore);
+        this.volumeCalculator = new VolumeCalculator();
+        this.volumeRounder = new VolumeStepSizeRounder();
     }
 
     /**
@@ -47,15 +52,18 @@ public class DefaultMoneyManagement implements MoneyManagement {
      *            Used to calculate the {@link Volume} that can be spend for a trade.
      * @param volumeRounder
      *            Used to round volume to multiples of the allowed step size.
+     * @param exchangeRateStore
+     *            Used to manage currency exchange rates.
      */
     DefaultMoneyManagement(final TradeBlocker currencyBlocker, final RiskMoneyProvider moneyProvider,
             final PipetteValueCalculator pipetteValueCalculator, final VolumeCalculator volumeCalculator,
-            final VolumeStepSizeRounder volumeRounder) {
+            final VolumeStepSizeRounder volumeRounder, final ExchangeRateStore exchangeRateStore) {
         this.currencyBlocker = currencyBlocker;
         this.moneyProvider = moneyProvider;
         this.pipetteValueCalculator = pipetteValueCalculator;
         this.volumeCalculator = volumeCalculator;
         this.volumeRounder = volumeRounder;
+        this.exchangeRateStore = exchangeRateStore;
 
         // Does not matter if it is initially wrong as there is no balance initially available anyway.
         this.balance = new Money(0, "EUR");
@@ -63,7 +71,6 @@ public class DefaultMoneyManagement implements MoneyManagement {
 
     @Override
     public Optional<UsedVolumeManagement> requestVolume(final ForexSymbol symbol, final Price currentPrice,
-            final ForexSymbol accountCurrencyExchangeSymbol, final Price accountCurrencyExchangeRate,
             final Price pipLostOnStopLoose, final Volume allowedStepSize) {
         if (!currencyBlocker.isTradingAllowed(symbol)) {
             return Optional.empty();
@@ -71,10 +78,9 @@ public class DefaultMoneyManagement implements MoneyManagement {
         currencyBlocker.blockCurrencies(symbol);
 
         final Volume volume = volumeRounder.round(volumeCalculator.calculateVolumeForTrade(
-                pipetteValueCalculator.calculatePipetteValue(balance.getCurrency(), symbol, currentPrice,
-                        accountCurrencyExchangeSymbol, accountCurrencyExchangeRate),
+                pipetteValueCalculator.calculatePipetteValue(balance.getCurrency(), symbol, currentPrice),
                 pipLostOnStopLoose, moneyProvider.calculateMoneyToRisk(balance)), allowedStepSize);
-
+        
         return Optional.of(new UsedVolumeManagement() {
             @Override
             public void releaseVolume() {
@@ -91,5 +97,10 @@ public class DefaultMoneyManagement implements MoneyManagement {
     @Override
     public void updateBalance(final Money money) {
         this.balance = money;
+    }
+
+    @Override
+    public void updateExchangeRate(final ForexSymbol currencyExchange, final Price exchangeRate) {
+        exchangeRateStore.updateExchangeRate(currencyExchange, exchangeRate);
     }
 }

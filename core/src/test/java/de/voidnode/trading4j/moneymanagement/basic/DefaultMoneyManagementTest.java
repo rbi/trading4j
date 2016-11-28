@@ -30,7 +30,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultMoneyManagementTest {
 
-    private static final ForexSymbol SOME_CURRENCY = new ForexSymbol("EURUSD");
+    private static final Currency EUR = Currency.getInstance("EUR");
+    private static final Currency USD = Currency.getInstance("USD");
+    private static final ForexSymbol SYMBOL_EURUSD = new ForexSymbol(EUR, USD);
+
     private static final Price SOME_PRICE = new Price(1.0);
     private static final Volume SOME_STEP_SIZE = new Volume(1, VolumeUnit.BASE);
 
@@ -48,6 +51,9 @@ public class DefaultMoneyManagementTest {
 
     @Mock
     private VolumeStepSizeRounder volumeStepSizeRounder;
+
+    @Mock
+    private ExchangeRateStore exchangeRateStore;
 
     @InjectMocks
     private DefaultMoneyManagement cut;
@@ -68,8 +74,7 @@ public class DefaultMoneyManagementTest {
     public void providesVolumeWhenTradingIsntBlocked() {
         when(currencyBlocker.isTradingAllowed(new ForexSymbol("EURUSD"))).thenReturn(true);
 
-        assertThat(cut.requestVolume(SOME_CURRENCY, SOME_PRICE, SOME_CURRENCY, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE))
-                .isPresent();
+        assertThat(cut.requestVolume(SYMBOL_EURUSD, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE)).isPresent();
 
         verify(currencyBlocker).isTradingAllowed(new ForexSymbol("EURUSD"));
         verify(currencyBlocker).blockCurrencies(new ForexSymbol("EURUSD"));
@@ -83,8 +88,7 @@ public class DefaultMoneyManagementTest {
     public void notProvidingVolumeWhenTradingIsBlocked() {
         when(currencyBlocker.isTradingAllowed(new ForexSymbol("EURUSD"))).thenReturn(false);
 
-        assertThat(cut.requestVolume(SOME_CURRENCY, SOME_PRICE, SOME_CURRENCY, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE))
-                .isEmpty();
+        assertThat(cut.requestVolume(SYMBOL_EURUSD, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE)).isEmpty();
 
         verify(currencyBlocker).isTradingAllowed(new ForexSymbol("EURUSD"));
         verifyNoMoreInteractions(currencyBlocker);
@@ -95,10 +99,9 @@ public class DefaultMoneyManagementTest {
      */
     @Test
     public void unblocksCurrenciesWhenVolumeIsReturned() {
-        cut.requestVolume(SOME_CURRENCY, SOME_PRICE, SOME_CURRENCY, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE).get()
-                .releaseVolume();
+        cut.requestVolume(SYMBOL_EURUSD, SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE).get().releaseVolume();
 
-        verify(currencyBlocker).unblockCurrencies(new ForexSymbol("EURUSD"));
+        verify(currencyBlocker).unblockCurrencies(SYMBOL_EURUSD);
     }
 
     /**
@@ -108,8 +111,8 @@ public class DefaultMoneyManagementTest {
     public void passesCorrectValuesToCalculationClases() {
         // return correct output values only when correct input values are supplied.
         when(moneyProvider.calculateMoneyToRisk(new Money(1234, 0, "JPY"))).thenReturn(new Money(123, 4, "EUR"));
-        when(pipetteValueCalculator.calculatePipetteValue(currency("JPY"), new ForexSymbol("CHFJPY"), new Price(123),
-                new ForexSymbol("EURCHF"), new Price(3921))).thenReturn(new AccuratePrice(42.0));
+        when(pipetteValueCalculator.calculatePipetteValue(currency("JPY"), new ForexSymbol("CHFJPY"), new Price(123)))
+                .thenReturn(new AccuratePrice(42.0));
         when(volumeCalculator.calculateVolumeForTrade(new AccuratePrice(42.0), new Price(4231),
                 new Money(123, 4, "EUR"))).thenReturn(new Volume(5318, VolumeUnit.MICRO_LOT));
         when(volumeStepSizeRounder.round(new Volume(5318, VolumeUnit.MICRO_LOT), new Volume(128, VolumeUnit.MICRO_LOT)))
@@ -117,9 +120,19 @@ public class DefaultMoneyManagementTest {
 
         cut.updateBalance(new Money(1234, 0, currency("JPY")));
 
-        assertThat(cut.requestVolume(new ForexSymbol("CHFJPY"), new Price(123), new ForexSymbol("EURCHF"),
-                new Price(3921), new Price(4231), new Volume(128, VolumeUnit.MICRO_LOT)).get().getVolume())
+        assertThat(cut.requestVolume(new ForexSymbol("CHFJPY"), new Price(123), new Price(4231),
+                new Volume(128, VolumeUnit.MICRO_LOT)).get().getVolume())
                         .isEqualTo(new Volume(5085, VolumeUnit.MICRO_LOT));
+    }
+
+    /**
+     * The cut passes exchange rates to the exchange rate store.
+     */
+    @Test
+    public void passesExchangeRateToStore() {
+        cut.updateExchangeRate(SYMBOL_EURUSD, SOME_PRICE);
+
+        verify(exchangeRateStore).updateExchangeRate(SYMBOL_EURUSD, SOME_PRICE);
     }
 
     private Currency currency(final String currency) {

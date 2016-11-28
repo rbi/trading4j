@@ -9,7 +9,7 @@ import de.voidnode.trading4j.domain.orders.PendingOrder;
 import de.voidnode.trading4j.expertadvisorfactory.DefaultExpertAdvisorFactory;
 
 /**
- * Creates {@link AccountingExpertAdvisor}s identified by numbers.
+ * Creates {@link ExpertAdvisor}s identified by numbers.
  * 
  * <p>
  * If you need to implement this interface consider using {@link DefaultExpertAdvisorFactory} and implement the simpler
@@ -17,8 +17,8 @@ import de.voidnode.trading4j.expertadvisorfactory.DefaultExpertAdvisorFactory;
  * </p>
  * 
  * <p>
- * Initial data that is passed to the {@link AccountingExpertAdvisor} is usually historic data. This is done so that
- * {@link AccountingExpertAdvisor}s can initialize themselves before live data is received.
+ * Initial data that is passed to the {@link ExpertAdvisor} is usually historic data. This is done so that
+ * {@link ExpertAdvisor}s can initialize themselves before live data is received.
  * {@link TradingEnvironmentInformation#getNonHistoricTime()} can used to determine when received data should be
  * considered live data.
  * </p>
@@ -40,14 +40,14 @@ public interface ExpertAdvisorFactory {
      *            The number of the {@link ExpertAdvisor} that should be created.
      * @param broker
      *            The broker where the {@link ExpertAdvisor} should send its orders to.
-     * @param moneyManagement
+     * @param volumeLender
      *            Used to manage the amount of money that is invested in each trade.
      * @param environment
      *            Information about the trading environment.
-     * @return The {@link AccountingExpertAdvisor} if an {@link AccountingExpertAdvisor} is known for this number or an
+     * @return The {@link ExpertAdvisor} if an {@link ExpertAdvisor} is known for this number or an
      *         <code>empty</code> {@link Optional} if not.
      */
-    Optional<AccountingExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
-            final Broker<PendingOrder> broker, final MoneyManagement moneyManagement,
+    Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
+            final Broker<PendingOrder> broker, final VolumeLender volumeLender,
             final TradingEnvironmentInformation environment);
 }

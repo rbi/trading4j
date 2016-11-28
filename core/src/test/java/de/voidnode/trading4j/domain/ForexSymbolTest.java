@@ -14,10 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ForexSymbolTest {
 
     /**
-     * A {@link ForexSymbol} can be constructed from two known currencies.
+     * A {@link ForexSymbol} can be constructed from its string representation.
      */
     @Test
-    public void constructableForTwoKnownCurrencies() {
+    public void constructableForSymbolInFormOfString() {
         final ForexSymbol currency1 = new ForexSymbol("EURUSD");
         assertThat(currency1.getBaseCurrency()).isEqualTo(Currency.getInstance("EUR"));
         assertThat(currency1.getQuoteCurrency()).isEqualTo(Currency.getInstance("USD"));
@@ -25,6 +25,19 @@ public class ForexSymbolTest {
         final ForexSymbol currency2 = new ForexSymbol("AUDCAD");
         assertThat(currency2.getBaseCurrency()).isEqualTo(Currency.getInstance("AUD"));
         assertThat(currency2.getQuoteCurrency()).isEqualTo(Currency.getInstance("CAD"));
+    }
+
+    /**
+     * A {@link ForexSymbol} can be constructed from two {@link Currency}s.
+     */
+    @Test
+    public void constructableForTwoCurrencies() {
+        final Currency aud = Currency.getInstance("AUD");
+        final Currency cad = Currency.getInstance("CAD");
+
+        final ForexSymbol currency2 = new ForexSymbol(aud, cad);
+        assertThat(currency2.getBaseCurrency()).isEqualTo(aud);
+        assertThat(currency2.getQuoteCurrency()).isEqualTo(cad);
     }
 
     /**
@@ -57,6 +70,8 @@ public class ForexSymbolTest {
     @Test
     public void equalsOnlyOtherForexSymbols() {
         assertThat(new ForexSymbol("EURUSD")).isEqualTo(new ForexSymbol("EURUSD"));
+        assertThat(new ForexSymbol("AUDCAD"))
+                .isEqualTo(new ForexSymbol(Currency.getInstance("AUD"), Currency.getInstance("CAD")));
 
         assertThat(new ForexSymbol("EURUSD")).isNotEqualTo(new ForexSymbol("AUDCAD"));
         assertThat(new ForexSymbol("EURUSD")).isNotEqualTo(new ForexSymbol("USDEUR"));

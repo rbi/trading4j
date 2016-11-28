@@ -49,7 +49,6 @@ import static org.mockito.Mockito.when;
 public class StrategyMoneyManagementTest {
 
     private static final ForexSymbol SOME_FOREX_SYMBOL = new ForexSymbol("EURUSD");
-    private static final ForexSymbol OTHER_FOREX_SYMBOL = new ForexSymbol("GBPJPY");
     private static final Volume SOME_VOLUME = new Volume(42, LOT);
     private static final Price SOME_PRICE = new Price(53);
     private static final Volume SOME_STEP_SIZE = new Volume(82, LOT);
@@ -88,14 +87,12 @@ public class StrategyMoneyManagementTest {
     @Before
     public void setUpCutAndMock() {
         when(someUsedVolumeManagement.getVolume()).thenReturn(SOME_VOLUME);
-        when(moneyManagement.requestVolume(any(), any(), any(), any(), any(), any()))
+        when(moneyManagement.requestVolume(any(), any(), any(), any()))
                 .thenReturn(Optional.of(someUsedVolumeManagement));
         when(broker.sendOrder(any(), any())).thenReturn(Either.withRight(someOrderManagement));
 
-        cut = new StrategyMoneyManagement<>(broker, moneyManagement, SOME_FOREX_SYMBOL, OTHER_FOREX_SYMBOL,
-                SOME_STEP_SIZE);
+        cut = new StrategyMoneyManagement<>(broker, moneyManagement, SOME_FOREX_SYMBOL, SOME_STEP_SIZE);
         cut.newData(new MarketData<>(SOME_PRICE));
-        cut.updateAccountCurrencyExchangeRateChanged(SOME_PRICE);
     }
 
     /**
@@ -103,13 +100,11 @@ public class StrategyMoneyManagementTest {
      */
     @Test
     public void sendAllNecessaryDataWhenRequestingMoney() {
-        cut.updateAccountCurrencyExchangeRateChanged(new Price(83));
         cut.sendOrder(someOrder, someEventListener);
 
         final Price expectedLooseOnStopLoose = new Price(5); // absolute value of (entry price - stop loose)
 
-        verify(moneyManagement).requestVolume(SOME_FOREX_SYMBOL, SOME_PRICE, OTHER_FOREX_SYMBOL, new Price(83),
-                expectedLooseOnStopLoose, SOME_STEP_SIZE);
+        verify(moneyManagement).requestVolume(SOME_FOREX_SYMBOL, SOME_PRICE, expectedLooseOnStopLoose, SOME_STEP_SIZE);
     }
 
     /**
@@ -130,7 +125,7 @@ public class StrategyMoneyManagementTest {
      */
     @Test
     public void returnsFailedWhenVolumeRequstFailed() {
-        when(moneyManagement.requestVolume(any(), any(), any(), any(), any(), any())).thenReturn(Optional.empty());
+        when(moneyManagement.requestVolume(any(), any(), any(), any())).thenReturn(Optional.empty());
 
         final Either<Failed, OrderManagement> sentOrder = cut.sendOrder(someOrder, someEventListener);
 

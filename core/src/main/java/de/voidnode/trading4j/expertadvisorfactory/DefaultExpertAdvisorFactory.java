@@ -2,12 +2,12 @@ package de.voidnode.trading4j.expertadvisorfactory;
 
 import java.util.Optional;
 
-import de.voidnode.trading4j.api.AccountingExpertAdvisor;
 import de.voidnode.trading4j.api.BasicExpertAdvisorFactory;
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.ExpertAdvisorFactory;
 import de.voidnode.trading4j.api.MoneyManagement;
+import de.voidnode.trading4j.api.VolumeLender;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
@@ -52,12 +52,12 @@ public class DefaultExpertAdvisorFactory implements ExpertAdvisorFactory {
     }
 
     @Override
-    public Optional<AccountingExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
-            final Broker<PendingOrder> broker, final MoneyManagement moneyManagement,
+    public Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
+            final Broker<PendingOrder> broker, final VolumeLender volumeLender,
             final TradingEnvironmentInformation environment) {
 
         final StrategyMoneyManagement<FullMarketData<M1>> strategyMoneyManagement = new StrategyMoneyManagement<>(
-                broker, moneyManagement, environment.getTradeSymbol(), environment.getAccountSymbol(),
+                broker, volumeLender, environment.getTradeSymbol(),
                 environment.getVolumeConstraints().getAllowedStepSize());
         final OrderFilteringBroker<FullMarketData<M1>> blockedOnHistoricData = new OrderFilteringBroker<FullMarketData<M1>>(
                 strategyMoneyManagement, new HistoricDataOrderFilter<>(environment.getNonHistoricTime()));
@@ -66,7 +66,7 @@ public class DefaultExpertAdvisorFactory implements ExpertAdvisorFactory {
             final ExpertAdvisor<FullMarketData<M1>> dataDistributor = new MarketDataDistributor<FullMarketData<M1>>(
                     strategyMoneyManagement, blockedOnHistoricData, advisor);
 
-            return new ExpertAdvisorSplitter(dataDistributor, strategyMoneyManagement, moneyManagement);
+            return dataDistributor;
         });
     }
 }

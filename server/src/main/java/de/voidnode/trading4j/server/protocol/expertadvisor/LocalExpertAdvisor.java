@@ -2,10 +2,11 @@ package de.voidnode.trading4j.server.protocol.expertadvisor;
 
 import java.util.Currency;
 
-import de.voidnode.trading4j.api.AccountingExpertAdvisor;
+import de.voidnode.trading4j.api.AccountBalanceManager;
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.OrderEventListener;
+import de.voidnode.trading4j.domain.ForexSymbol;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.monetary.Money;
@@ -25,25 +26,34 @@ import de.voidnode.trading4j.server.protocol.messages.PendingOrderConditionalyEx
  */
 public class LocalExpertAdvisor {
 
-    private final AccountingExpertAdvisor<FullMarketData<M1>> expertAdvisor;
+    private final ExpertAdvisor<FullMarketData<M1>> expertAdvisor;
     private final PendingOrderMapper orderMapper;
     private final Currency balanceCurrency;
+    private final ForexSymbol accountCurrencyExchangeSymbol;
+    private final AccountBalanceManager accountBalanceManager;
 
     /**
      * Initializes the message to method call converter with all its dependencies.
      * 
      * @param expertAdvisor
-     *            The expert advisor to send incoming messages to.
+     *            The expert advisor to send incoming market data messages to.
+     * @param accountBalanceManager
+     *            Used to send incoming balance managing messages to.
      * @param orderMapper
      *            Used to translate between {@link PendingOrder} objects and their ids.
      * @param balanceCurrency
      *            The currency that the balance of the trading account is kept in.
+     * @param accountCurrencyExchangeSymbol
+     *            The symbol for the exchange rate of the account currency to the currency of the traded asset.
      */
-    public LocalExpertAdvisor(final AccountingExpertAdvisor<FullMarketData<M1>> expertAdvisor,
-            final PendingOrderMapper orderMapper, final Currency balanceCurrency) {
+    public LocalExpertAdvisor(final ExpertAdvisor<FullMarketData<M1>> expertAdvisor,
+            final AccountBalanceManager accountBalanceManager, final PendingOrderMapper orderMapper,
+            final Currency balanceCurrency, final ForexSymbol accountCurrencyExchangeSymbol) {
         this.expertAdvisor = expertAdvisor;
+        this.accountBalanceManager = accountBalanceManager;
         this.orderMapper = orderMapper;
         this.balanceCurrency = balanceCurrency;
+        this.accountCurrencyExchangeSymbol = accountCurrencyExchangeSymbol;
     }
 
     /**
@@ -76,11 +86,11 @@ public class LocalExpertAdvisor {
     }
 
     private void handle(final BalanceChangedMessage message) {
-        expertAdvisor.balanceChanged(new Money(message.getNewBalance(), balanceCurrency));
+        accountBalanceManager.updateBalance(new Money(message.getNewBalance(), balanceCurrency));
     }
 
     private void handle(final AccountCurrencyExchangeRateChangedMessage message) {
-        expertAdvisor.accountCurrencyPriceChanged(message.getNewRate());
+        accountBalanceManager.updateExchangeRate(accountCurrencyExchangeSymbol, message.getNewRate());
     }
 
     private void handle(final PendingOrderConditionalyExecutedMessage message) throws ProtocolException {

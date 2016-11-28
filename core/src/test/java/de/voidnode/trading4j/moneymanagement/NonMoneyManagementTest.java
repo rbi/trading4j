@@ -30,15 +30,16 @@ public class NonMoneyManagementTest {
         final MoneyManagement cut1 = new NonMoneyManagement(new Volume(42, LOT));
         final MoneyManagement cut2 = new NonMoneyManagement(new Volume(58, MINI_LOT));
 
-        assertThat(cut1.requestVolume(new ForexSymbol("EURUSD"), SOME_PRICE, new ForexSymbol("AUDCAD"), SOME_PRICE, SOME_PRICE,
-                SOME_STEP_SIZE).get().getVolume()).isEqualTo(new Volume(42, LOT));
+        assertThat(
+                cut1.requestVolume(new ForexSymbol("EURUSD"), SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE).get().getVolume())
+                        .isEqualTo(new Volume(42, LOT));
 
-        assertThat(cut2.requestVolume(new ForexSymbol("CHFJPY"), SOME_PRICE, new ForexSymbol("AUDUSD"), SOME_PRICE, SOME_PRICE,
-                SOME_STEP_SIZE).get().getVolume()).isEqualTo(new Volume(58, MINI_LOT));
+        assertThat(
+                cut2.requestVolume(new ForexSymbol("CHFJPY"), SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE).get().getVolume())
+                        .isEqualTo(new Volume(58, MINI_LOT));
 
         // releasing volume does nothing including not crashing
-        cut1.requestVolume(new ForexSymbol("USDCHF"), SOME_PRICE, new ForexSymbol("AUDCAD"), SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE)
-                .get().releaseVolume();
+        cut1.requestVolume(new ForexSymbol("USDCHF"), SOME_PRICE, SOME_PRICE, SOME_STEP_SIZE).get().releaseVolume();
     }
 
 }

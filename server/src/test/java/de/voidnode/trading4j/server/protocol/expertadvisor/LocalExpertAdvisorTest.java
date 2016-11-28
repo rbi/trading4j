@@ -5,9 +5,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Currency;
 
-import de.voidnode.trading4j.api.AccountingExpertAdvisor;
+import de.voidnode.trading4j.api.AccountBalanceManager;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.OrderEventListener;
+import de.voidnode.trading4j.domain.ForexSymbol;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.monetary.Money;
@@ -43,9 +44,13 @@ public class LocalExpertAdvisorTest {
     private static final int EXAMPLE_PENDING_ORDER_ID = 42;
 
     private static final Currency TEST_CURRENCY = Currency.getInstance("AUD");
+    private static final ForexSymbol TEST_SYMBOL = new ForexSymbol(TEST_CURRENCY, Currency.getInstance("CAD"));
 
     @Mock
-    private AccountingExpertAdvisor<FullMarketData<M1>> expertAdvisor;
+    private ExpertAdvisor<FullMarketData<M1>> expertAdvisor;
+
+    @Mock
+    private AccountBalanceManager balanceManager;
 
     @Mock
     private PendingOrderMapper pendingOrderMapper;
@@ -79,7 +84,7 @@ public class LocalExpertAdvisorTest {
         when(pendingOrderMapper.get(EXAMPLE_PENDING_ORDER_ID)).thenReturn(orderEventListener);
         when(exampleNewMarketDataMessage.getCandleStick()).thenReturn(exampleFatCandleStick);
 
-        cut = new LocalExpertAdvisor(expertAdvisor, pendingOrderMapper, TEST_CURRENCY);
+        cut = new LocalExpertAdvisor(expertAdvisor, balanceManager, pendingOrderMapper, TEST_CURRENCY, TEST_SYMBOL);
     }
 
     /**
@@ -123,13 +128,13 @@ public class LocalExpertAdvisorTest {
      *             not expected to leave the test.
      */
     @Test
-    public void shouldInformExpertAdvisorOnChangedBalance() throws CommunicationException {
+    public void shouldInformBalanceManagerOnChangedBalance() throws CommunicationException {
         when(exampleBalanceChangedMessage.getNewBalance()).thenReturn(42L);
 
         cut.handleMessage(exampleBalanceChangedMessage);
 
         // The currency to use is passed in the constructor.
-        verify(expertAdvisor).balanceChanged(new Money(0, 42, TEST_CURRENCY));
+        verify(balanceManager).updateBalance(new Money(0, 42, TEST_CURRENCY));
     }
 
     /**
@@ -139,12 +144,12 @@ public class LocalExpertAdvisorTest {
      *             not expected to leave the test.
      */
     @Test
-    public void shouldInformExpertAdvisorOnAccountCurrencyExchangeRateChanged() throws CommunicationException {
+    public void shouldInformTheBalanceManagerOnAccountCurrencyExchangeRateChanged() throws CommunicationException {
         when(exampleAccountCurrencyExchangeRatChangedMessage.getNewRate()).thenReturn(new Price(1234));
 
         cut.handleMessage(exampleAccountCurrencyExchangeRatChangedMessage);
 
-        verify(expertAdvisor).accountCurrencyPriceChanged(new Price(1234));
+        verify(balanceManager).updateExchangeRate(TEST_SYMBOL, new Price(1234));
     }
 
     /**

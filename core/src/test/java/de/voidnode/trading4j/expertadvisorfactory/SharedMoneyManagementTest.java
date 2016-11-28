@@ -10,6 +10,7 @@ import de.voidnode.trading4j.api.UsedVolumeManagement;
 import de.voidnode.trading4j.domain.ForexSymbol;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
+import de.voidnode.trading4j.domain.monetary.Money;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.moneymanagement.SharedMoneyManagement;
 import de.voidnode.trading4j.moneymanagement.SharedMoneyManagement.ReleasableMoneyManagement;
@@ -36,8 +37,11 @@ import static org.mockito.Mockito.when;
 public class SharedMoneyManagementTest {
 
     private static final ForexSymbol SOME_SYMBOL = new ForexSymbol("EURUSD");
+    private static final ForexSymbol OTHER_SYMBOL = new ForexSymbol("AUDCAD");
     private static final Volume SOME_VOLUME = new Volume(5, VolumeUnit.LOT);
     private static final Price SOME_PRICE = new Price(10);
+    private static final Price OTHER_PRICE = new Price(2532);
+    private static final Money SOME_MONEY = new Money(281, "EUR");
 
     @Mock
     private MoneyManagement moneyManagement;
@@ -59,7 +63,7 @@ public class SharedMoneyManagementTest {
      */
     @Before
     public void wiresUpMocks() {
-        when(moneyManagement.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME))
+        when(moneyManagement.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME))
                 .thenReturn(opt(someVolumeManagement)).thenReturn(opt(otherVolumeManagement));
     }
 
@@ -70,8 +74,8 @@ public class SharedMoneyManagementTest {
     public void returnsLentVolumeWhenRequested() {
         final ReleasableMoneyManagement connection1 = cut.newConnection();
         final ReleasableMoneyManagement connection2 = cut.newConnection();
-        connection1.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
-        connection2.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
+        connection1.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
+        connection2.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
 
         connection1.realeaseAllAquieredVolume();
 
@@ -85,8 +89,8 @@ public class SharedMoneyManagementTest {
     @Test
     public void returnsMultipleVolumeWhenNecessary() {
         final ReleasableMoneyManagement connection = cut.newConnection();
-        connection.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
-        connection.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
+        connection.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
+        connection.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
 
         connection.realeaseAllAquieredVolume();
 
@@ -100,7 +104,7 @@ public class SharedMoneyManagementTest {
     @Test
     public void logsUnexpectedEventWhenVolumeIsReturned() {
         final ReleasableMoneyManagement connection = cut.newConnection();
-        connection.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
+        connection.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
 
         connection.realeaseAllAquieredVolume();
 
@@ -112,18 +116,17 @@ public class SharedMoneyManagementTest {
      */
     @Test
     public void nothingIsLoggedWhenNoVolumeIsReturned() {
-        when(moneyManagement.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME))
+        when(moneyManagement.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME))
                 .thenReturn(opt(someVolumeManagement)).thenReturn(empty()).thenReturn(opt(otherVolumeManagement));
 
         final ReleasableMoneyManagement connection1 = cut.newConnection();
         final ReleasableMoneyManagement connection2 = cut.newConnection();
         // volume was lent but the expert advisor returned it
-        connection1.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME).get()
-                .releaseVolume();
+        connection1.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME).get().releaseVolume();
         // no volume provided by the original instance
-        connection1.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
+        connection1.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
         // volume was lent by another expert advisor
-        connection2.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
+        connection2.requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME);
 
         connection1.realeaseAllAquieredVolume();
         verifyNoMoreInteractions(trader);
@@ -139,11 +142,17 @@ public class SharedMoneyManagementTest {
         final ReleasableMoneyManagement connection = cut.newConnection();
 
         final UsedVolumeManagement usedVolumeManagement = connection
-                .requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME).get();
+                .requestVolume(SOME_SYMBOL, SOME_PRICE, SOME_PRICE, SOME_VOLUME).get();
         assertThat(usedVolumeManagement.getVolume()).isEqualTo(SOME_VOLUME);
 
         usedVolumeManagement.releaseVolume();
         verify(someVolumeManagement).releaseVolume();
+       
+        connection.updateBalance(SOME_MONEY);
+        verify(moneyManagement).updateBalance(SOME_MONEY);
+        
+        connection.updateExchangeRate(OTHER_SYMBOL, OTHER_PRICE);
+        verify(moneyManagement).updateExchangeRate(OTHER_SYMBOL, OTHER_PRICE);
     }
 
     private Optional<UsedVolumeManagement> opt(final UsedVolumeManagement volumeManagement) {

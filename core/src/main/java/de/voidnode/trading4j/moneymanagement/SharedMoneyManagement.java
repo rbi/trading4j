@@ -75,10 +75,10 @@ public class SharedMoneyManagement {
 
         @Override
         public Optional<UsedVolumeManagement> requestVolume(final ForexSymbol symbol, final Price currentPrice,
-                final ForexSymbol accountCurrencyExchangeSymbol, final Price accountCurrencyExchangeRate,
+
                 final Price pipLostOnStopLoose, final Volume allowedStepSize) {
             final Optional<UsedVolumeManagement> requestedVolume = moneyManagement.requestVolume(symbol, currentPrice,
-                    accountCurrencyExchangeSymbol, accountCurrencyExchangeRate, pipLostOnStopLoose, allowedStepSize);
+                    pipLostOnStopLoose, allowedStepSize);
             if (!requestedVolume.isPresent()) {
                 return requestedVolume;
             }
@@ -91,6 +91,11 @@ public class SharedMoneyManagement {
         @Override
         public void updateBalance(final Money balance) {
             moneyManagement.updateBalance(balance);
+        }
+
+        @Override
+        public void updateExchangeRate(final ForexSymbol currencyExchange, final Price exchangeRate) {
+            moneyManagement.updateExchangeRate(currencyExchange, exchangeRate);
         }
 
         /**
@@ -118,8 +123,8 @@ public class SharedMoneyManagement {
             public void enforceReleaseVolume() {
                 usedVolumeManagement.releaseVolume();
                 notifier.unexpectedEvent("A volume of " + getVolume()
-                + " lent by an expert advisor was forcefully returned to the money management "
-                + "because the expert advisor was shut down.");
+                        + " lent by an expert advisor was forcefully returned to the money management "
+                        + "because the expert advisor was shut down.");
             }
         }
     }

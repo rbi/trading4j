@@ -13,7 +13,7 @@ class RiskMoneyProvider {
     private final Ratio balanceToRiskRatio;
 
     /**
-     * Initializes an instance with all requiered configuration.
+     * Initializes an instance with all required configuration.
      * 
      * @param balanceToRiskRatio
      *            The ratio of the available balance that should be risk per trade.
