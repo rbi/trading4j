@@ -1,4 +1,4 @@
-package de.voidnode.trading4j.moneymanagement.basic;
+package de.voidnode.trading4j.moneymanagement.standard;
 
 import java.util.Currency;
 

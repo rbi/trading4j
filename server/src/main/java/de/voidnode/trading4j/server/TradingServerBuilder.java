@@ -17,7 +17,7 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.expertadvisorfactory.DefaultExpertAdvisorFactory;
 import de.voidnode.trading4j.moneymanagement.SharedMoneyManagement;
 import de.voidnode.trading4j.moneymanagement.ThreadSafeMoneyManagement;
-import de.voidnode.trading4j.moneymanagement.basic.DefaultMoneyManagement;
+import de.voidnode.trading4j.moneymanagement.standard.DefaultMoneyManagement;
 import de.voidnode.trading4j.server.oio.OioServer;
 import de.voidnode.trading4j.server.protocol.ClientCommunicator;
 import de.voidnode.trading4j.server.protocol.ProtocolFactory;
