@@ -10,6 +10,11 @@
   <artifactId>client-metatrader</artifactId>
   <packaging>pom</packaging>
 
+  <properties>
+    <!-- Override this in your profile with the actual path to meta editor. -->
+    <metaeditor.executable>metaeditor.exe</metaeditor.executable>
+  </properties>
+
   <name>Trading4j - client for MetaTrader</name>
   <description>Contains a client for MetaTrader that allows accessing trading algorithms written using Trading4j over the network.</description>
 
@@ -50,6 +55,25 @@
               <linkerEndOptions>
                 <option>-lws2_32</option>
               </linkerEndOptions>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>compile-mql4</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>${project.basedir}/src/main/build/compile-mql4.sh</executable>
+              <arguments>
+                <argument>${metaeditor.executable}</argument>
+              </arguments>
             </configuration>
           </execution>
         </executions>

@@ -21,7 +21,6 @@
     <module>core</module>
     <module>server</module>
     <module>examples</module>
-    <module>client-metatrader</module>
   </modules>
 
   <properties>
@@ -198,6 +197,11 @@
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>1.9</version>
         </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.5.0</version>
+      </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -229,4 +233,12 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>client-metatrader</id>
+      <modules>
+        <module>client-metatrader</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

@@ -20,7 +20,7 @@
   </dependencySets>
   <fileSets>
     <fileSet>
-      <directory>${project.basedir}/src/main/mq4</directory>
+      <directory>${project.build.directory}/mq4</directory>
       <outputDirectory>MQL4/</outputDirectory>
     </fileSet>
   </fileSets>
