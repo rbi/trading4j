@@ -7,6 +7,7 @@ import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.ExpertAdvisorFactory;
 import de.voidnode.trading4j.api.Indicator;
+import de.voidnode.trading4j.api.MoneyManagement;
 import de.voidnode.trading4j.api.TrendIndicatorFactory;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
@@ -32,10 +33,11 @@ import de.voidnode.trading4j.server.reporting.implementations.NotifierFactory;
 public class TradingServerBuilder {
 
     private NotifierFactory notifierFactory = new NotifierFactory();
-    
+
     private BasicExpertAdvisorFactory expertAdvisors;
     private TrendIndicatorFactory trendIndicators;
     private CombinedNotifier emailNotifier;
+    private MoneyManagement moneyManagement;
 
     /**
      * The expert advisors that should be served by the server.
@@ -63,6 +65,28 @@ public class TradingServerBuilder {
      */
     public TradingServerBuilder trendIndicators(final TrendIndicatorFactory trendIndicators) {
         this.trendIndicators = trendIndicators;
+        return this;
+    }
+
+    /**
+     * The money management that should be used for managing the money {@link ExpertAdvisor}s are allowed to trade.
+     * 
+     * <p>
+     * The same {@link MoneyManagement} instance will be used for all {@link ExpertAdvisor}s that are created by
+     * {@link #expertAdvisors(BasicExpertAdvisorFactory) expert advisor factory}. It is guaranteed that only one thread
+     * will access the {@link MoneyManagement} at the same time.
+     * </p>
+     * 
+     * <p>
+     * If a money management is not explicitly configured, the {@link DefaultMoneyManagement} will be used.
+     * </p>
+     * 
+     * @param moneyManagement
+     *            The money management that should be used.
+     * @return This builder for a fluent API.
+     */
+    public TradingServerBuilder moneyManagement(final MoneyManagement moneyManagement) {
+        this.moneyManagement = moneyManagement;
         return this;
     }
 
@@ -98,21 +122,30 @@ public class TradingServerBuilder {
         final CombinedNotifier fullNotifier = emailNotifier != null ? emailNotifier : consoleOnlyNotifier;
 
         final SharedMoneyManagement moneyManagement = new SharedMoneyManagement(
-                new ThreadSafeMoneyManagement(new DefaultMoneyManagement()), consoleOnlyNotifier);
+                new ThreadSafeMoneyManagement(getOrCreateMoneyManagement()), consoleOnlyNotifier);
 
-        final TrendIndicatorFactory indicatorFactory = this.trendIndicators != null ? this.trendIndicators
-                : new NoExpertAdvisorsFactory();
-        final BasicExpertAdvisorFactory basicExpertAdvisorFactory = this.expertAdvisors != null ? this.expertAdvisors
-                : new NoExpertAdvisorsFactory();
-        final ExpertAdvisorFactory expertAdvisorFactory = new DefaultExpertAdvisorFactory(basicExpertAdvisorFactory);
+        final ExpertAdvisorFactory expertAdvisorFactory = new DefaultExpertAdvisorFactory(
+                getOrCreateBasicExpertAdvisorFactory());
         final ExpertAdvisorFactory loggingExpertAdvisorFactory = new TradeTrackingExpertAdvisorFactory(
                 expertAdvisorFactory, fullNotifier, consoleOnlyNotifier);
 
-        final ProtocolFactory protocolFactory = new ProtocolFactory(indicatorFactory, loggingExpertAdvisorFactory,
-                moneyManagement, fullNotifier);
+        final ProtocolFactory protocolFactory = new ProtocolFactory(getOrCreateIndicatorFactory(),
+                loggingExpertAdvisorFactory, moneyManagement, fullNotifier);
         final ClientCommunicator clientCommunicator = new ClientCommunicator(protocolFactory);
 
         return new OioServer(clientCommunicator, fullNotifier);
+    }
+
+    private BasicExpertAdvisorFactory getOrCreateBasicExpertAdvisorFactory() {
+        return this.expertAdvisors != null ? this.expertAdvisors : new NoExpertAdvisorsFactory();
+    }
+
+    private TrendIndicatorFactory getOrCreateIndicatorFactory() {
+        return this.trendIndicators != null ? this.trendIndicators : new NoExpertAdvisorsFactory();
+    }
+
+    private MoneyManagement getOrCreateMoneyManagement() {
+        return this.moneyManagement != null ? this.moneyManagement : new DefaultMoneyManagement();
     }
 
     /**

@@ -15,6 +15,12 @@ import static de.voidnode.trading4j.domain.RatioUnit.PERCENT;
 /**
  * An implementation that takes the trading account balance and currencies traded into account.
  * 
+ * <p>
+ * This implementation will risk a defined fraction of the current account balance in each trade. The default is 1%. It
+ * is ensured, that for each currency only one trade is active at a time. For example when both pairs EURUSD and EURGPB
+ * are traded, only one active trade is allowed for both of them.
+ * </p>
+ * 
  * @author Raik Bieniek
  */
 public class DefaultMoneyManagement implements MoneyManagement {
@@ -28,11 +34,21 @@ public class DefaultMoneyManagement implements MoneyManagement {
     private Money balance;
 
     /**
-     * Creates an instance using the default implementations for its dependencies.
+     * Creates an instance using that risks around 1% of the current account balance per trade.
      */
     public DefaultMoneyManagement() {
+        this(new Ratio(1, PERCENT));
+    }
+
+    /**
+     * Creates a new instance.
+     * 
+     * @param moneyPerTrade
+     *            The percentage of the current account balance that should be risked per trade.
+     */
+    public DefaultMoneyManagement(final Ratio moneyPerTrade) {
         this.currencyBlocker = new OneTradePerCurrency();
-        this.moneyProvider = new RiskMoneyProvider(new Ratio(1, PERCENT));
+        this.moneyProvider = new RiskMoneyProvider(moneyPerTrade);
         this.exchangeRateStore = new ExchangeRateStore();
         this.pipetteValueCalculator = new PipetteValueCalculator(exchangeRateStore);
         this.volumeCalculator = new VolumeCalculator();
