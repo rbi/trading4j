@@ -3,12 +3,7 @@ package de.voidnode.trading4j.examples;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.BasicExpertAdvisorFactory;
-import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.ExpertAdvisor;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
-import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.server.TradingServerBuilder;
 
 /**
@@ -26,18 +21,31 @@ public final class ExpertAdvisorServer {
      * Starts the server.
      * 
      * @param args
-     *            No command line args are supported.
+     *            No command line args are evaluated.
      */
     public static void main(final String[] args) {
 
-        final BasicExpertAdvisorFactory expertAdvisors = new BasicExpertAdvisorFactory() {
-            @Override
-            public Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
-                    final Broker<BasicPendingOrder> broker, final TradingEnvironmentInformation environment) {
-                return Optional.of(NMovingAveragesExpertAdvisorFactory.createNew(broker));
-            }
+        final BasicExpertAdvisorFactory expertAdvisors = (expertAdvisorNumber, broker, environment) -> {
+
+            // Just in case ...
+            failIfRealMoney(environment);
+
+            // This will create a new instance of an exemplary expert advisor.
+            return Optional.of(NMovingAveragesExpertAdvisorFactory.createNew(broker));
+
+            // If multiple expert advisors should be served you can evaluate the expertAdvisorNumber to select the
+            // correct advisor. This number can be configured in the expert advisor options in meta trader.
         };
+
+        // Configure and start the server for the expert advisors.
         new TradingServerBuilder().expertAdvisors(expertAdvisors).build().start();
     }
 
+    private static void failIfRealMoney(final TradingEnvironmentInformation environment) {
+        if (!"Backtest".equals(environment.getAccountInformation().getBrokerName())) {
+            throw new IllegalStateException(
+                    "Trading with real money is not supported with the exemplary expert advisor."
+                            + " It is intended to be used for back testing only.");
+        }
+    }
 }
