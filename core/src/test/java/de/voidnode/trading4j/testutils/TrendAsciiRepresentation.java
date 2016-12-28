@@ -88,7 +88,7 @@ package de.voidnode.trading4j.testutils;
  *     v
  * </pre>
  * 
- * <h1 id="trends">Trands</h1>
+ * <h1 id="trends">Trends</h1>
  * <p>
  * Trends are visualized by a <code>+</code> symbol when they are up, a <code>-</code> symbol when they are down and a
  * <code>?</code> symbol when they are unknown. Each trend can optionally have an id that is explained in a legend below
