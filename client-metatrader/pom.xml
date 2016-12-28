@@ -5,7 +5,7 @@
   <parent>
     <groupId>de.voidnode.trading4j</groupId>
     <artifactId>parent</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
   </parent>
   <artifactId>client-metatrader</artifactId>
   <packaging>pom</packaging>
