@@ -5,7 +5,7 @@
   <parent>
     <groupId>de.voidnode.trading4j</groupId>
     <artifactId>parent</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>core</artifactId>
 
