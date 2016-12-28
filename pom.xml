@@ -7,21 +7,45 @@
   <version>0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Trading4j - aggregator</name>
+  <name>Trading4j</name>
   <description>Contains build settings common to all Trading4j projects.</description>
-  
-  <licenses>
-    <license>
-      <name>GNU General Public License version 3</name>
-      <url>https://www.gnu.org/licenses/gpl.txt</url>
-    </license>
-  </licenses>
+  <url>https://github.com/rbi/trading4j</url>
 
   <modules>
     <module>core</module>
     <module>server</module>
     <module>examples</module>
   </modules>
+
+  <licenses>
+    <license>
+      <name>GNU General Public License version 3</name>
+      <url>https://www.gnu.org/licenses/gpl.txt</url>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://github.com/rbi/trading4j</url>
+    <developerConnection>scm:git:git@github.com:rbi/trading4j.git</developerConnection>
+    <connection>scm:git:https://github.com/rbi/trading4j.git</connection>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/rbi/trading4j/issues</url>
+  </issueManagement>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <name>Sonatype Nexus Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <name>Nexus Release Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -47,7 +71,7 @@
         <artifactId>server</artifactId>
         <version>${project.version}</version>
       </dependency>
-      
+
       <!-- other dependencies -->
       <dependency>
         <groupId>com.sun.mail</groupId>
@@ -175,11 +199,29 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
-          <version>2.4</version>
+          <version>2.5.3</version>
           <configuration>
             <autoVersionSubmodules>true</autoVersionSubmodules>
             <tagNameFormat>v@{project.version}</tagNameFormat>
             <pushChanges>false</pushChanges>
+            <releaseProfiles>sign, client-metatrader</releaseProfiles>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.6</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <useAgent>true</useAgent>
           </configuration>
         </plugin>
         <plugin>
@@ -197,11 +239,11 @@
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>1.9</version>
         </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.5.0</version>
-      </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.5.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -239,6 +281,17 @@
       <modules>
         <module>client-metatrader</module>
       </modules>
+    </profile>
+    <profile>
+      <id>sign</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
