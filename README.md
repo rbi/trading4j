@@ -14,6 +14,7 @@ To connect MetaTrader to the server a Trading4j client must be installed.
 It can be downloaded from the releases tab.
 Unzip the client into the MetaTrader directory.
 The client should now be available as an expert advisor in MetaTrader terminal, e.g. for backtesting or live trading.
+The Import of DLLs option must be enabled in MetaTrader for Trading4j to function properly.
 
 On the Java side, Trading4j is available as Maven artifact with the following Maven coordinates.
 
