@@ -1,7 +1,6 @@
 package de.voidnode.trading4j.functionality.broker;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
@@ -15,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,7 @@ public class DeactivateableBrokerTest {
      */
     @Before
     public void setUpMocks() {
-        when(broker.sendOrder(someOrder, someEventListener)).thenReturn(Either.withRight(someOrderManagement));
+        when(broker.sendOrder(someOrder, someEventListener)).thenReturn(someOrderManagement);
     }
 
     /**
@@ -55,7 +56,9 @@ public class DeactivateableBrokerTest {
      */
     @Test
     public void atStartTradingIsDeactivated() {
-        assertThat(cut.sendOrder(someOrder, someEventListener)).hasLeft();
+        cut.sendOrder(someOrder, someEventListener);
+
+        verify(someEventListener).orderRejected(any());
         verifyNoMoreInteractions(broker);
     }
 
@@ -65,9 +68,9 @@ public class DeactivateableBrokerTest {
     @Test
     public void passesThroughOrdersWhenTradingIsActivated() {
         cut.activate();
+        cut.sendOrder(someOrder, someEventListener);
 
-        assertThat(cut.sendOrder(someOrder, someEventListener)).hasRightEqualTo(someOrderManagement);
-
+        verify(someEventListener, never()).orderRejected(any());
         verify(broker).sendOrder(someOrder, someEventListener);
     }
 
@@ -75,11 +78,12 @@ public class DeactivateableBrokerTest {
      * When trading is deactivated again all new orders will fail.
      */
     @Test
-    public void failesAllOrdersWhenTradingIsDeactivated() {
+    public void failsAllOrdersWhenTradingIsDeactivated() {
         cut.activate();
         cut.deactivate();
-        assertThat(cut.sendOrder(someOrder, someEventListener)).hasLeft();
+        cut.sendOrder(someOrder, someEventListener);
 
+        verify(someEventListener).orderRejected(any());
         verifyNoMoreInteractions(broker);
     }
 }

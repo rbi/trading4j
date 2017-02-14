@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
@@ -23,8 +22,10 @@ import de.voidnode.trading4j.domain.orders.CloseConditions;
  */
 public class SingleTradeBroker implements Broker<BasicPendingOrder> {
 
-    private static final Either<Failed, OrderManagement> FAILED = Either
-            .withLeft(new Failed("There is another active pending order or trade and only one is allowed at a time."));
+    private static final OrderManagement NO_OP_ORDER_MANAGEMENT = new NoOpOrderManagement();
+    private static final Failed FAILED =
+            new Failed("There is another active pending order or trade and only one is allowed at a time.");
+
     private final Broker<BasicPendingOrder> broker;
     private TradeUnblocker tradeUnblocker;
 
@@ -39,22 +40,23 @@ public class SingleTradeBroker implements Broker<BasicPendingOrder> {
     }
 
     @Override
-    public Either<Failed, OrderManagement> sendOrder(final BasicPendingOrder order,
+    public OrderManagement sendOrder(final BasicPendingOrder order,
             final OrderEventListener eventListener) {
         if (tradeUnblocker != null) {
-            return FAILED;
+            eventListener.orderRejected(FAILED);
+            return NO_OP_ORDER_MANAGEMENT;
         }
 
         this.tradeUnblocker = new TradeUnblocker(eventListener);
-        final Either<Failed, OrderManagement> returnVal = broker.sendOrder(order, tradeUnblocker)
-                .mapRight(orderManagement -> {
-                    tradeUnblocker.setOrderManagement(orderManagement);
-                    return tradeUnblocker;
-                });
-        if (returnVal.hasLeft()) {
-            this.tradeUnblocker = null;
+        final OrderManagement originalOrderManagement = broker.sendOrder(order, tradeUnblocker);
+
+        if (tradeUnblocker == null) {
+            // The original broker has already rejected the trade.
+            return NO_OP_ORDER_MANAGEMENT;
+        } else {
+            tradeUnblocker.setOrderManagement(originalOrderManagement);
+            return tradeUnblocker;
         }
-        return returnVal;
     }
 
     /**
@@ -72,6 +74,12 @@ public class SingleTradeBroker implements Broker<BasicPendingOrder> {
 
         public void setOrderManagement(final OrderManagement orderManagement) {
             this.orderManagement = orderManagement;
+        }
+
+        @Override
+        public void orderRejected(final Failed failure) {
+            tradeUnblocker = null;
+            listener.orderRejected(failure);
         }
 
         @Override
@@ -94,6 +102,25 @@ public class SingleTradeBroker implements Broker<BasicPendingOrder> {
         @Override
         public Optional<Failed> changeCloseConditionsOfOrder(final CloseConditions conditions) {
             return orderManagement.changeCloseConditionsOfOrder(conditions);
+        }
+    }
+
+    /**
+     * An {@link OrderManagement} that does nothing on requests.
+     */
+    private static final class DummyOrderManagement implements OrderManagement {
+
+        private static final Optional<Failed> CHANGE_CLOSE_CONDITIONS_NOT_SUPPORTED = Optional.of(new Failed("Changeing close"
+                + " conditions failed because the order was never passed to a real broker."));
+
+        @Override
+        public void closeOrCancelOrder() {
+
+        }
+
+        @Override
+        public Optional<Failed> changeCloseConditionsOfOrder(final CloseConditions conditions) {
+            return CHANGE_CLOSE_CONDITIONS_NOT_SUPPORTED;
         }
     }
 }

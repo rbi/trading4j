@@ -3,7 +3,6 @@ package de.voidnode.trading4j.server.protocol.expertadvisor;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
@@ -36,7 +35,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -104,7 +102,7 @@ public class RemoteBrokerTest {
      */
     @Test
     public void shouldSendPendingOrdersCorrectly() throws CommunicationException {
-        final Either<Failed, OrderManagement> result = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
+        final OrderManagement result = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
 
         // sent message
         verify(client).sendMessage(sentMessage.capture());
@@ -112,7 +110,7 @@ public class RemoteBrokerTest {
         final PlacePendingOrderMessage sentMessage = (PlacePendingOrderMessage) this.sentMessage.getValue();
         assertThat(sentMessage.getPendingOrder()).isEqualTo(EXAMPLE_PENDING_ORDER);
 
-        assertThat(result).hasRight();
+        assertThat(result).isNotNull();
     }
 
     /**
@@ -143,9 +141,9 @@ public class RemoteBrokerTest {
         when(client.readMessage(ResponsePlacePendingOrderMessage.class)).thenReturn(
                 new ResponsePlacePendingOrderMessage(false, 50));
 
-        final Either<Failed, OrderManagement> result = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
+        cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
 
-        assertThat(result).hasLeftEqualTo(new MetaTraderFailure(50));
+        verify(exampleOrderEventListener).orderRejected(new MetaTraderFailure(50));
     }
 
     // ///////////////////////////////////
@@ -161,8 +159,7 @@ public class RemoteBrokerTest {
      */
     @Test
     public void shouldCloseOrCancelPendingOrdersCorrectly() throws CommunicationException {
-        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener)
-                .getRight();
+        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
         orderManagement.closeOrCancelOrder();
 
         // Called for the send message and the close message.
@@ -182,8 +179,7 @@ public class RemoteBrokerTest {
      */
     @Test
     public void aClosedOrCanceledPendingOrderShouldBeRemovedFromTheMapping() throws CommunicationException {
-        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener)
-                .getRight();
+        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
         orderManagement.closeOrCancelOrder();
 
         verify(pendingOrderMapper).remove(EXAMPLE_PENDING_ORDER_ID);
@@ -200,8 +196,7 @@ public class RemoteBrokerTest {
     public void closeOrCancelAnAlreadyClosedOrCanceledOrderShouldFail() throws CommunicationException {
         when(pendingOrderMapper.has(EXAMPLE_PENDING_ORDER_ID)).thenReturn(false);
 
-        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener)
-                .getRight();
+        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
         orderManagement.closeOrCancelOrder();
     }
 
@@ -221,8 +216,7 @@ public class RemoteBrokerTest {
         when(client.readMessage(ResponseChangeCloseConditionsMessage.class)).thenReturn(
                 new ResponseChangeCloseConditionsMessage());
 
-        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener)
-                .getRight();
+        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
         final Optional<Failed> result = orderManagement.changeCloseConditionsOfOrder(EXAMPLE_NEW_CLOSE_CONDITIONS);
 
         // Called for the send message and the close message.
@@ -248,8 +242,7 @@ public class RemoteBrokerTest {
         when(client.readMessage(ResponseChangeCloseConditionsMessage.class)).thenReturn(
                 new ResponseChangeCloseConditionsMessage(50));
 
-        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener)
-                .getRight();
+        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
         final Optional<Failed> result = orderManagement.changeCloseConditionsOfOrder(EXAMPLE_NEW_CLOSE_CONDITIONS);
 
         assertThat(result).isPresent().contains(new MetaTraderFailure(50));
@@ -266,8 +259,7 @@ public class RemoteBrokerTest {
     public void changeCloseConditionsOfAnUnknownPendingOrderShouldFail() throws CommunicationException {
         when(pendingOrderMapper.has(EXAMPLE_PENDING_ORDER_ID)).thenReturn(false);
 
-        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener)
-                .getRight();
+        final OrderManagement orderManagement = cut.sendOrder(EXAMPLE_PENDING_ORDER, exampleOrderEventListener);
 
         orderManagement.changeCloseConditionsOfOrder(EXAMPLE_NEW_CLOSE_CONDITIONS);
     }

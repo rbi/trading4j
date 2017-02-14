@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.MoneyManagement;
@@ -89,7 +88,7 @@ public class StrategyMoneyManagementTest {
         when(someUsedVolumeManagement.getVolume()).thenReturn(SOME_VOLUME);
         when(moneyManagement.requestVolume(any(), any(), any(), any()))
                 .thenReturn(Optional.of(someUsedVolumeManagement));
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withRight(someOrderManagement));
+        when(broker.sendOrder(any(), any())).thenReturn(someOrderManagement);
 
         cut = new StrategyMoneyManagement<>(broker, moneyManagement, SOME_FOREX_SYMBOL, SOME_STEP_SIZE);
         cut.newData(new MarketData<>(SOME_PRICE));
@@ -112,12 +111,12 @@ public class StrategyMoneyManagementTest {
      */
     @Test
     public void placesPendingOrderAtBrokerWhenVolumeRequestSucceed() {
-        final Either<Failed, OrderManagement> sentOrder = cut.sendOrder(someOrder, someEventListener);
+        cut.sendOrder(someOrder, someEventListener);
 
-        assertThat(sentOrder).hasRight();
         verify(broker).sendOrder(
                 eq(new MutablePendingOrder(someOrder).setVolume(SOME_VOLUME).toImmutablePendingOrder()),
                 any(OrderEventListener.class));
+        verifyNoMoreInteractions(someEventListener);
     }
 
     /**
@@ -127,9 +126,9 @@ public class StrategyMoneyManagementTest {
     public void returnsFailedWhenVolumeRequstFailed() {
         when(moneyManagement.requestVolume(any(), any(), any(), any())).thenReturn(Optional.empty());
 
-        final Either<Failed, OrderManagement> sentOrder = cut.sendOrder(someOrder, someEventListener);
+        cut.sendOrder(someOrder, someEventListener);
 
-        assertThat(sentOrder).hasLeft();
+        verify(someEventListener).orderRejected(any());
         verifyNoMoreInteractions(broker);
     }
 
@@ -138,10 +137,16 @@ public class StrategyMoneyManagementTest {
      */
     @Test
     public void returnsVolumeWhenSendingOrderHasFailed() {
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withLeft(someFailed));
+        when(broker.sendOrder(any(), any())).thenAnswer(invocation -> {
+            final OrderEventListener orderEventListener = (OrderEventListener) invocation.getArguments()[1];
+            orderEventListener.orderRejected(new Failed("simulated error"));
+            return someOrderManagement;
+        });
 
         cut.sendOrder(someOrder, someEventListener);
 
+        verify(broker).sendOrder(any(), any());
+        verify(someEventListener).orderRejected(any());
         verify(someUsedVolumeManagement).releaseVolume();
     }
 
@@ -150,7 +155,7 @@ public class StrategyMoneyManagementTest {
      */
     @Test
     public void returnsVolumeWhenOrderIsClosed() {
-        final OrderManagement orderManagement = cut.sendOrder(someOrder, someEventListener).getRight();
+        final OrderManagement orderManagement = cut.sendOrder(someOrder, someEventListener);
 
         orderManagement.closeOrCancelOrder();
 

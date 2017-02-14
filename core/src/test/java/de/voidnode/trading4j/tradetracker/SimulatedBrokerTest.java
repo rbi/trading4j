@@ -2,8 +2,6 @@ package de.voidnode.trading4j.tradetracker;
 
 import java.time.Instant;
 
-import de.voidnode.trading4j.api.Either;
-import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
@@ -19,7 +17,6 @@ import static de.voidnode.trading4j.domain.VolumeUnit.LOT;
 import static de.voidnode.trading4j.domain.orders.ExecutionCondition.STOP;
 import static de.voidnode.trading4j.domain.orders.OrderType.BUY;
 import static de.voidnode.trading4j.domain.orders.OrderType.SELL;
-import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -141,9 +138,8 @@ public class SimulatedBrokerTest {
         testOrder.setEntryPrice(new Price(10));
         testCandleStick.setOpen(new Price(9)).setClose(new Price(11));
 
-        final Either<Failed, OrderManagement> orderResult = cut.sendOrder(testOrder.toImmutablePendingOrder(), orderEventListener);
-        assertThat(orderResult).hasRight();
-        orderResult.getRight().closeOrCancelOrder();
+        final OrderManagement orderResult = cut.sendOrder(testOrder.toImmutablePendingOrder(), orderEventListener);
+        orderResult.closeOrCancelOrder();
         cut.newData(testCandleStick.toImmutableFullMarketData());
 
         verifyNoMoreInteractions(orderEventListener);
@@ -289,11 +285,11 @@ public class SimulatedBrokerTest {
         testOrder.setEntryPrice(new Price(10));
         testCandleStick.setOpen(new Price(9)).setClose(new Price(11));
 
-        final Either<Failed, OrderManagement> orderResult = cut.sendOrder(testOrder.toImmutablePendingOrder(), orderEventListener);
+        final OrderManagement orderResult = cut.sendOrder(testOrder.toImmutablePendingOrder(), orderEventListener);
         cut.newData(testCandleStick.toImmutableFullMarketData());
         // just to make verifyNoMoreInteractions work
         verify(orderEventListener).orderOpened(testTime, new Price(10));
 
-        return orderResult.getRight();
+        return orderResult;
     }
 }

@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import static java.util.Arrays.asList;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
@@ -30,7 +29,6 @@ import static de.voidnode.trading4j.domain.trades.TradeEventType.PENDING_ORDER_C
 import static de.voidnode.trading4j.domain.trades.TradeEventType.PENDING_ORDER_OPENED;
 import static de.voidnode.trading4j.domain.trades.TradeEventType.PENDING_ORDER_PLACED;
 import static de.voidnode.trading4j.domain.trades.TradeEventType.TRADE_CLOSED;
-import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
@@ -109,7 +107,7 @@ public class BasicCompletedTradeTrackerTest {
         cut.setEventListener(backtestEventLlistener);
 
         when(currentTime.get()).thenReturn(LOCAL_TIME);
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withRight(someOrderManagement));
+        when(broker.sendOrder(any(), any())).thenReturn(someOrderManagement);
     }
 
     /**
@@ -131,19 +129,6 @@ public class BasicCompletedTradeTrackerTest {
 
         orderEventListenerCaptor.getValue().orderClosed(BROKER_TIME, new Price(42));
         verify(someOrderEventListener).orderClosed(BROKER_TIME, new Price(42));
-    }
-
-    /**
-     * Failed orders are passed through.
-     */
-    @Test
-    public void failedOrdersArePassedThrough() {
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withLeft(someFailure));
-
-        final Either<Failed, OrderManagement> passedThrough = cut.sendOrder(someOrder.toImmutableBasicPendingOrder(),
-                someOrderEventListener);
-
-        assertThat(passedThrough).hasLeftEqualTo(someFailure);
     }
 
     /**
@@ -175,7 +160,7 @@ public class BasicCompletedTradeTrackerTest {
         someOrder.setType(SELL);
         final BasicPendingOrder order = someOrder.toImmutableBasicPendingOrder();
 
-        final OrderManagement orderManagement = cut.sendOrder(order, someOrderEventListener).getRight();
+        final OrderManagement orderManagement = cut.sendOrder(order, someOrderEventListener);
         verify(broker).sendOrder(eq(order), orderEventListenerCaptor.capture());
 
         orderEventListenerCaptor.getValue().orderOpened(BROKER_TIME, new Price(60));
@@ -200,7 +185,7 @@ public class BasicCompletedTradeTrackerTest {
         final BasicPendingOrder order = someOrder.toImmutableBasicPendingOrder();
 
         cut.newData(new CandleStick<>(new Price(200), new Price(300), new Price(400), new Price(500)));
-        final OrderManagement orderManagement = cut.sendOrder(order, someOrderEventListener).getRight();
+        final OrderManagement orderManagement = cut.sendOrder(order, someOrderEventListener);
         orderManagement.closeOrCancelOrder();
 
         verify(backtestEventLlistener).tradeCompleted(basicCompleteTradeMatcher(new BasicCompletedTrade(SELL, LIMIT,
@@ -214,9 +199,10 @@ public class BasicCompletedTradeTrackerTest {
      */
     @Test
     public void completedTradesAreSendToListenerWhenPendingOrdersCouldNotBePlaced() {
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withLeft(someFailure));
-
         cut.sendOrder(someOrder.toImmutableBasicPendingOrder(), someOrderEventListener);
+
+        verify(broker).sendOrder(any(), orderEventListenerCaptor.capture());
+        orderEventListenerCaptor.getValue().orderRejected(someFailure);
 
         verify(backtestEventLlistener).tradeCompleted(basicCompleteTradeMatcher(new BasicCompletedTrade(BUY, LIMIT,
                 asList(new TradeEvent(PENDING_ORDER_PLACED, LOCAL_TIME, REASON_NOT_COMPARED, new Price(10),
@@ -233,7 +219,7 @@ public class BasicCompletedTradeTrackerTest {
         when(someOrderManagement.changeCloseConditionsOfOrder(any()))
                 .thenReturn(Optional.of(new Failed("some reason")));
 
-        final OrderManagement orderManagement = cut.sendOrder(order, someOrderEventListener).getRight();
+        final OrderManagement orderManagement = cut.sendOrder(order, someOrderEventListener);
         verify(broker).sendOrder(eq(order), orderEventListenerCaptor.capture());
 
         orderEventListenerCaptor.getValue().orderOpened(BROKER_TIME, new Price(40));

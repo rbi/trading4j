@@ -5,7 +5,6 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderFilter;
@@ -14,15 +13,15 @@ import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 
-import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -69,8 +68,8 @@ public class OrderFilteringBrokerTest {
         when(indicator1.filterOrder(any())).thenReturn(failure());
         when(indicator2.filterOrder(any())).thenReturn(failure());
 
-        when(broker.sendOrder(someOrder, someEventListener)).thenReturn(Either.withRight(someOrderManagement));
-        cut = new OrderFilteringBroker<MarketData<M1>>(broker, indicator1, indicator2);
+        when(broker.sendOrder(someOrder, someEventListener)).thenReturn(someOrderManagement);
+        cut = new OrderFilteringBroker<>(broker, indicator1, indicator2);
     }
 
     /**
@@ -82,8 +81,10 @@ public class OrderFilteringBrokerTest {
         when(indicator2.filterOrder(someOrder)).thenReturn(empty());
 
         cut.newData(someMarketPrice);
-        assertThat(cut.sendOrder(someOrder, someEventListener)).hasRight();
+
+        assertThat(cut.sendOrder(someOrder, someEventListener)).isNotNull();
         verify(broker).sendOrder(someOrder, someEventListener);
+        verifyNoMoreInteractions(someEventListener);
     }
 
     /**
@@ -95,9 +96,10 @@ public class OrderFilteringBrokerTest {
         when(indicator2.filterOrder(someOrder)).thenReturn(failure()).thenReturn(empty());
 
         cut.newData(someMarketPrice);
-        assertThat(cut.sendOrder(someOrder, someEventListener)).hasLeft();
-        assertThat(cut.sendOrder(someOrder, someEventListener)).hasLeft();
+        cut.sendOrder(someOrder, someEventListener);
+        cut.sendOrder(someOrder, someEventListener);
 
+        verify(someEventListener, times(2)).orderRejected(any());
         verifyNoMoreInteractions(broker);
     }
 

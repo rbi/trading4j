@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
+import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
@@ -90,7 +91,7 @@ public class StrategyExpertAdvisorTest {
      * The cut tries to create new pending orders using the {@link PendingOrderCreator}.
      */
     @Test
-    public void whenNoOrderIsActiveTriesToCreateNewPendingOrders() {
+    public void triesToCreateNewPendingOrdersWhenNoOrderIsActive() {
         cut.newData(EXEMPLARY_CANDLE_STICK);
 
         verify(creator).checkMarketEntry(cut);
@@ -101,7 +102,7 @@ public class StrategyExpertAdvisorTest {
      * managed.
      */
     @Test
-    public void whenPendingOrderWasCreatedTheResultingPendingOrderShouldBeManaged() {
+    public void resultingPendingOrderShouldBeManagedWhenPendingOrderWasCreated() {
         cut.newData(EXEMPLARY_CANDLE_STICK);
         cut.newData(EXEMPLARY_CANDLE_STICK);
         cut.newData(EXEMPLARY_CANDLE_STICK);
@@ -114,10 +115,24 @@ public class StrategyExpertAdvisorTest {
     }
 
     /**
+     * When a created pending order was rejected by the broker, the cut tries to create a new pending order.
+     */
+    @Test
+    public void triesToCreateNewPendingOrderWhenPendingOrderWasRejected() {
+        cut.newData(EXEMPLARY_CANDLE_STICK);
+        cut.orderRejected(new Failed("Simulated rejected order."));
+        cut.newData(EXEMPLARY_CANDLE_STICK);
+
+        verify(creator, times(2)).checkMarketEntry(cut);
+
+        verifyNoMoreInteractions(creator, orderManager, tradeManager);
+    }
+
+    /**
      * When an active {@link BasicPendingOrder} was canceled the cut should try to create a new one.
      */
     @Test
-    public void whenPendingOrderWasCanceledShouldTryToCreateNewPendingOrder() {
+    public void triesToCreateNewPendingOrderWhenPendingOrderWasCanceled() {
         when(orderManager.manageOrder(exemplaryOrder1, cut)).thenReturn(Optional.empty());
 
         cut.newData(EXEMPLARY_CANDLE_STICK);
@@ -137,7 +152,7 @@ public class StrategyExpertAdvisorTest {
      * should be managed.
      */
     @Test
-    public void whenPendingOrderChangedShouldManageNewPendingOrder() {
+    public void managesNewPendingOrderWhenPendingOrderChanged() {
         when(orderManager.manageOrder(exemplaryOrder1, cut)).thenReturn(Optional.of(exemplaryOrder2));
 
         cut.newData(EXEMPLARY_CANDLE_STICK);
@@ -156,7 +171,7 @@ public class StrategyExpertAdvisorTest {
      * When the {@link Broker} opened the pending order, the trade should be managed.
      */
     @Test
-    public void whenPendingOrderWasOpenedShouldManageTrade() {
+    public void managesTradeWhenPendingOrderWasOpened() {
         cut.newData(EXEMPLARY_CANDLE_STICK);
         cut.newData(EXEMPLARY_CANDLE_STICK);
         cut.orderOpened(EXEMPLARY_TIME, EXEMPLARY_PRICE);
@@ -174,7 +189,7 @@ public class StrategyExpertAdvisorTest {
      * When the {@link TradeManager} closed a trade, new {@link BasicPendingOrder}s should be created.
      */
     @Test
-    public void whenTradeWasCanceldShouldTryToCreateNewPendingOrder() {
+    public void triesToCreateNewPendingOrderWhenTradeWasCanceled() {
         when(tradeManager.manageTrade(exemplaryOrder1)).thenReturn(Optional.empty());
 
         cut.newData(EXEMPLARY_CANDLE_STICK);
@@ -194,7 +209,7 @@ public class StrategyExpertAdvisorTest {
      * When the {@link TradeManager} changed the prices of a trade, the new trade should be managed.
      */
     @Test
-    public void whenTradeWasChangedShouldManageNewTrade() {
+    public void managesNewTradeWhenTradeWasChanged() {
         when(tradeManager.manageTrade(exemplaryOrder1)).thenReturn(Optional.of(exemplaryOrder2));
 
         cut.newData(EXEMPLARY_CANDLE_STICK);
@@ -214,7 +229,7 @@ public class StrategyExpertAdvisorTest {
      * When a the {@link Broker} closed a trade, a new {@link BasicPendingOrder} should be created.
      */
     @Test
-    public void whenTradeWasClosedShouldTryToCreateNewPendingOrder() {
+    public void triesToCreateNewPendingOrderWhenTradeWasChanged() {
         cut.newData(EXEMPLARY_CANDLE_STICK);
         cut.orderOpened(EXEMPLARY_TIME, EXEMPLARY_PRICE);
         cut.newData(EXEMPLARY_CANDLE_STICK);

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.MarketDataListener;
 import de.voidnode.trading4j.api.OrderEventListener;
@@ -34,11 +33,11 @@ public class SimulatedBroker<C extends FullMarketData<M1>> implements Broker<Bas
     private List<Order> orders = new LinkedList<>();
 
     @Override
-    public Either<Failed, OrderManagement> sendOrder(final BasicPendingOrder order,
+    public OrderManagement sendOrder(final BasicPendingOrder order,
             final OrderEventListener eventListener) {
         final Order newOrder = new Order(order, eventListener);
         orders.add(newOrder);
-        return Either.withRight(newOrder);
+        return newOrder;
     }
 
     @Override

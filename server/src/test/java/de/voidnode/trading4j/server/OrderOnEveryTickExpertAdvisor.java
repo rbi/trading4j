@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
+import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
@@ -66,6 +67,11 @@ class OrderOnEveryTickExpertAdvisor<C extends CandleStick<M1>> implements Expert
      * An implementation that does nothing on order events.
      */
     private static class OrderEventNonListener implements OrderEventListener {
+
+        @Override
+        public void orderRejected(Failed failure) {
+            // do nothing
+        }
 
         @Override
         public void orderOpened(final Instant time, final Price price) {

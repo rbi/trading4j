@@ -3,15 +3,12 @@ package de.voidnode.trading4j.functionality.broker;
 import java.time.Instant;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
-
-import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +21,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -64,7 +64,7 @@ public class SingleTradeBrokerTest {
      */
     @Before
     public void setUpMocks() {
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withRight(someOrderManagement));
+        when(broker.sendOrder(any(), any())).thenReturn(someOrderManagement);
     }
 
     /**
@@ -72,15 +72,15 @@ public class SingleTradeBrokerTest {
      */
     @Test
     public void secondPlacedOrderWillFail() {
-        final Either<Failed, OrderManagement> firstOrder = cut.sendOrder(someOrder, someEventListener);
-        assertThat(firstOrder).hasRight();
+        cut.sendOrder(someOrder, someEventListener);
+        verify(someEventListener, never()).orderRejected(any());
 
-        final Either<Failed, OrderManagement> secondOrder = cut.sendOrder(someOrder, someEventListener);
-        assertThat(secondOrder).hasLeft();
+        cut.sendOrder(someOrder, someEventListener);
+        verify(someEventListener).orderRejected(any());
     }
 
     /**
-     * If a order placed first is closed, new orders can be opened.
+     * If a placed order is closed, new orders can be opened.
      */
     @Test
     public void closedFirstOrderAllowsFurtherOrders() {
@@ -88,8 +88,11 @@ public class SingleTradeBrokerTest {
         verify(broker).sendOrder(eq(someOrder), receivedOrderEventListener.capture());
         receivedOrderEventListener.getValue().orderClosed(Instant.EPOCH.plusMillis(1234), new Price(42));
 
-        final Either<Failed, OrderManagement> secondOrder = cut.sendOrder(someOrder, someEventListener);
-        assertThat(secondOrder).hasRight();
+        reset(broker, someEventListener);
+
+        cut.sendOrder(someOrder, someEventListener);
+        verify(broker).sendOrder(eq(someOrder), any());
+        verifyNoMoreInteractions(someEventListener);
     }
 
     /**
@@ -97,11 +100,11 @@ public class SingleTradeBrokerTest {
      */
     @Test
     public void canceledFirstOrderAllowsFurtherOrders() {
-        final Either<Failed, OrderManagement> firstOrder = cut.sendOrder(someOrder, someEventListener);
-        firstOrder.getRight().closeOrCancelOrder();
+        final OrderManagement firstOrder = cut.sendOrder(someOrder, someEventListener);
+        firstOrder.closeOrCancelOrder();
 
-        final Either<Failed, OrderManagement> secondOrder = cut.sendOrder(someOrder, someEventListener);
-        assertThat(secondOrder).hasRight();
+        cut.sendOrder(someOrder, someEventListener);
+        verifyNoMoreInteractions(someEventListener);
     }
 
     /**
@@ -109,14 +112,20 @@ public class SingleTradeBrokerTest {
      */
     @Test
     public void failedPendingOrdersDoNotBlockTrading() {
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withLeft(someFailed));
+        when(broker.sendOrder(any(), any())).thenAnswer(invocation -> {
+            final OrderEventListener orderEventListener = (OrderEventListener) invocation.getArguments()[1];
+            orderEventListener.orderRejected(new Failed("simulated error"));
+            return someOrderManagement;
+        });
 
-        final Either<Failed, OrderManagement> firstOrder = cut.sendOrder(someOrder, someEventListener);
-        assertThat(firstOrder).hasLeftEqualTo(someFailed);
+        cut.sendOrder(someOrder, someEventListener);
+        verify(broker).sendOrder(any(), any());
+        verify(someEventListener).orderRejected(any());
 
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withRight(someOrderManagement));
-        final Either<Failed, OrderManagement> secondOrder = cut.sendOrder(someOrder, someEventListener);
-        assertThat(secondOrder).hasRight();
+        reset(broker);
+
+        cut.sendOrder(someOrder, someEventListener);
+        verify(broker).sendOrder(any(), any());
     }
 
     /**
@@ -135,11 +144,11 @@ public class SingleTradeBrokerTest {
         verify(someEventListener).orderClosed(Instant.EPOCH.plusMillis(1234), new Price(42));
 
         // check order manager
-        final Either<Failed, OrderManagement> sendOrder = cut.sendOrder(someOrder, someEventListener);
-        sendOrder.getRight().changeCloseConditionsOfOrder(someCloseConditions);
+        final OrderManagement sendOrder = cut.sendOrder(someOrder, someEventListener);
+        sendOrder.changeCloseConditionsOfOrder(someCloseConditions);
         verify(someOrderManagement).changeCloseConditionsOfOrder(someCloseConditions);
 
-        sendOrder.getRight().closeOrCancelOrder();
+        sendOrder.closeOrCancelOrder();
         verify(someOrderManagement).closeOrCancelOrder();
     }
 }

@@ -17,10 +17,9 @@ public interface Broker<PO extends BasicPendingOrder> {
      * @param order
      *            The order to execute.
      * @param eventListener
-     *            An instance that will be informed of all events on the order. If placing the order failed, nothing
-     *            will be called on this interface.
-     * @return An instance containing the {@link OrderManagement} to manage the placed order when the order was placed
-     *         as expected. A {@link Failed} when the broker was not able or willing to place the order.
+     *            An instance that will be informed of all events on the order. Methods on this listener may be called
+     *            before this method returns or at a later time.
+     * @return An instance containing the {@link OrderManagement} to manage the placed order.
      */
-    Either<Failed, OrderManagement> sendOrder(PO order, OrderEventListener eventListener);
+    OrderManagement sendOrder(PO order, OrderEventListener eventListener);
 }

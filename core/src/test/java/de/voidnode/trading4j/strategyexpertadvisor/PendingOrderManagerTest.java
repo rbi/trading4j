@@ -3,7 +3,6 @@ package de.voidnode.trading4j.strategyexpertadvisor;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
@@ -98,7 +97,7 @@ public class PendingOrderManagerTest {
         when(strategy.getEntryPrice()).thenReturn(Optional.of(new Price(1.0)));
         when(strategy.getStopLoose()).thenReturn(Optional.of(new Price(1.0)));
         when(strategy.getTakeProfit()).thenReturn(Optional.of(new Price(1.0)));
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withRight(exemplaryOrderManagementFromBroker));
+        when(broker.sendOrder(any(), any())).thenReturn(exemplaryOrderManagementFromBroker);
     }
 
     /**
@@ -195,19 +194,6 @@ public class PendingOrderManagerTest {
         assertThat(newOrder.getEntryPrice()).isEqualTo(new Price(1.0));
         assertThat(newOrder.getCloseConditions().getStopLoose()).isEqualTo(new Price(3.0));
         assertThat(newOrder.getCloseConditions().getTakeProfit()).isEqualTo(new Price(1.0));
-    }
-
-    /**
-     * When replacing pending orders failed, an empty {@link Optional} should be returned.
-     */
-    @Test
-    public void whenReplacingPendingOrdersFailedAnEmptyOptionalShouldBeReturned() {
-        when(strategy.getEntryPrice()).thenReturn(Optional.of(new Price(3.0)));
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withLeft(exemplaryFailure));
-
-        final Optional<Order> managedOrder = cut.manageOrder(exemplaryBuyOrder, eventListener);
-
-        assertThat(managedOrder).isEmpty();
     }
 
     /**

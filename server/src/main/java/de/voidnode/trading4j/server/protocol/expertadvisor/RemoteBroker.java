@@ -3,7 +3,6 @@ package de.voidnode.trading4j.server.protocol.expertadvisor;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
@@ -24,6 +23,7 @@ import de.voidnode.trading4j.server.protocol.messages.ResponsePlacePendingOrderM
  */
 public class RemoteBroker implements Broker<PendingOrder> {
 
+    private static final OrderManagement NO_OP_ORDER_MANAGEMENT = new NoOpOrderManagement();
     private final MessageBasedClientConnection clientConnection;
     private final PendingOrderMapper orderMapper;
 
@@ -41,16 +41,18 @@ public class RemoteBroker implements Broker<PendingOrder> {
     }
 
     @Override
-    public Either<Failed, OrderManagement> sendOrder(final PendingOrder order, final OrderEventListener eventListener) {
+    public OrderManagement sendOrder(final PendingOrder order, final OrderEventListener eventListener) {
         try {
             clientConnection.sendMessage(new PlacePendingOrderMessage(order));
             final ResponsePlacePendingOrderMessage idMessage = clientConnection
                     .readMessage(ResponsePlacePendingOrderMessage.class);
             if (idMessage.isSuccess()) {
                 orderMapper.put(idMessage.getId().get(), eventListener);
-                return Either.withRight(new RemoteOrderManagement(idMessage.getId().get()));
+                return new RemoteOrderManagement(idMessage.getId().get());
+            } else {
+                eventListener.orderRejected(new MetaTraderFailure(idMessage.getErrorCode().get()));
+                return NO_OP_ORDER_MANAGEMENT;
             }
-            return Either.withLeft(new MetaTraderFailure(idMessage.getErrorCode().get()));
         } catch (final CommunicationException e) {
             throw new LoopThroughCommunicationException(e);
         }
@@ -99,6 +101,25 @@ public class RemoteBroker implements Broker<PendingOrder> {
             } catch (CommunicationException e) {
                 throw new LoopThroughCommunicationException(e);
             }
+        }
+    }
+
+
+    /**
+     * An {@link OrderManagement} that does nothing on requests.
+     */
+    private static class NoOpOrderManagement implements OrderManagement {
+
+        private static final Optional<Failed> NOT_SUPPORTED = Optional.of(new Failed("Changing close conditions"
+                + " is not supported because the order has already been canceled."));
+
+        @Override
+        public void closeOrCancelOrder() {
+        }
+
+        @Override
+        public Optional<Failed> changeCloseConditionsOfOrder(final CloseConditions conditions) {
+            return NOT_SUPPORTED;
         }
     }
 }

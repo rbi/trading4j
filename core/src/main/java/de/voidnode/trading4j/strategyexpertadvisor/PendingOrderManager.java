@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.OrderEventListener;
+import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.MutableCloseConditions;
@@ -89,7 +90,7 @@ class PendingOrderManager {
                         new MutableCloseConditions().setStopLoose(strategy.getStopLoose().get()).setTakeProfit(
                                 order.getCloseConditions().getTakeProfit())).toImmutableBasicPendingOrder();
 
-        return broker.sendOrder(newOrder, eventListener).getRightOptional()
-                .map(orderManagement -> new Order(newOrder, orderManagement));
+        final OrderManagement orderManagement = broker.sendOrder(newOrder, eventListener);
+        return Optional.of(new Order(newOrder, orderManagement));
     }
 }

@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.MarketDataListener;
@@ -81,15 +80,12 @@ public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPe
     }
 
     @Override
-    public Either<Failed, OrderManagement> sendOrder(final PO order, final OrderEventListener eventListener) {
+    public OrderManagement sendOrder(final PO order, final OrderEventListener eventListener) {
         final ObservingOrderEventListener observer = new ObservingOrderEventListener(eventListener, order);
-        return broker.sendOrder(order, observer).mapLeft(orig -> {
-            observer.placingOrderFailed(orig);
-            return orig;
-        }).mapRight(orig -> {
-            observer.setOrderManagement(orig);
-            return observer;
-        });
+
+        final OrderManagement origOrderManagement = broker.sendOrder(order, observer);
+        observer.setOrderManagement(origOrderManagement);
+        return observer;
     }
 
     /**
@@ -103,8 +99,8 @@ public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPe
      *            All events that where captured for this trade.
      * @return The concrete completed trade.
      */
-    protected abstract CT createCompletedTrade(final PO originalOrder, final C lastCandleStick,
-            final List<TradeEvent> events);
+    protected abstract CT createCompletedTrade(PO originalOrder, C lastCandleStick,
+            List<TradeEvent> events);
 
     /**
      * Observes the conversation between an {@link ExpertAdvisor} and the broker and notifies when a trade was
@@ -133,7 +129,8 @@ public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPe
             this.orderManagement = orderManagement;
         }
 
-        public void placingOrderFailed(final Failed failure) {
+        @Override
+        public void orderRejected(final Failed failure) {
             events.add(new TradeEvent(PENDING_ORDER_CANCELD, currentTime.get(),
                     "broker failed placing the pending order: " + failure));
             completeTrade();
@@ -184,7 +181,7 @@ public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPe
         }
 
         private boolean wasOpened() {
-            return events.stream().filter((ev) -> ev.getType().equals(PENDING_ORDER_OPENED)).findFirst().isPresent();
+            return events.stream().anyMatch(ev -> ev.getType().equals(PENDING_ORDER_OPENED));
         }
 
         private void completeTrade() {

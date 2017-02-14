@@ -13,6 +13,16 @@ import de.voidnode.trading4j.domain.orders.CloseConditions;
 public interface OrderEventListener {
 
     /**
+     * Called when the broker refused to accept the order.
+     *
+     * <p>This method will not be called when the user canceled the Order with {@link OrderManagement#closeOrCancelOrder()}.
+     * </p>
+     *
+     * @param failure The reason why the broker refused to take the order.
+     */
+    void orderRejected(Failed failure);
+
+    /**
      * Informs that a pending order was executed because its execution conditions have been met.
      * 
      * @param time
@@ -20,7 +30,7 @@ public interface OrderEventListener {
      * @param price
      *            The price at which the asset has be acquired.
      */
-    void orderOpened(final Instant time, final Price price);
+    void orderOpened(Instant time, Price price);
 
     /**
      * Informs that a previously opened order has been closed because its closing criteria have been met.
@@ -39,5 +49,5 @@ public interface OrderEventListener {
      * @param price
      *            The price at which the order was closed.
      */
-    void orderClosed(final Instant time, final Price price);
+    void orderClosed(Instant time, Price price);
 }

@@ -6,7 +6,6 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
@@ -78,7 +77,7 @@ public class PendingOrderCreatorTest {
         mockPrices(opt(SOME_PRICE), opt(SOME_PRICE), opt(SOME_PRICE));
 
         when(strategy.getEntryCondition()).thenReturn(LIMIT);
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withRight(exemplaryOrderManagement));
+        when(broker.sendOrder(any(), any())).thenReturn(exemplaryOrderManagement);
     }
 
     /**
@@ -217,19 +216,6 @@ public class PendingOrderCreatorTest {
         final List<BasicPendingOrder> sentPendingOrders = this.sentPendingOrder.getAllValues();
         assertThat(sentPendingOrders.get(0).getCloseConditions().getExpirationDate().isPresent()).isFalse();
         assertThat(sentPendingOrders.get(1).getCloseConditions().getExpirationDate().isPresent()).isFalse();
-    }
-
-    /**
-     * If the broker failed to place a pending order, the cut should not return any {@link OrderManagement} instance.
-     */
-    @Test
-    public void shouldNotReturnAnOrderManagerIfSendingThePendingOrderFailed() {
-        when(broker.sendOrder(any(), any())).thenReturn(Either.withLeft(exemplaryFailure));
-        mockSignalAndTrend(opt(UP));
-
-        final Optional<Order> pendingOrder = cut.checkMarketEntry(eventListener);
-
-        assertThat(pendingOrder).isEmpty();
     }
 
     private <T> Optional<T> opt(final T price) {

@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.api.MarketDataListener;
@@ -25,13 +24,13 @@ import de.voidnode.trading4j.domain.orders.PendingOrder;
 /**
  * Adds the {@link Volume} to trade to a {@link BasicPendingOrder} from a trading strategy by requesting it from the
  * money management.
- * 
+ *
  * @author Raik Bieniek
- * @param <C>
- *            The market the improper-market-situation-{@link Indicator} expect as input.
+ * @param <C> The market the improper-market-situation-{@link Indicator} expect as input.
  */
 class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
 
+    private static final OrderManagement NO_OP_ORDER_MANAGEMENT = new NoOpOrderManagement();
     private static final Failed NO_VOLUME = new Failed(
             "Could not place the pending order at the broker because the money management did not provide money.");
 
@@ -44,18 +43,14 @@ class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicP
 
     /**
      * Initializes an instance with all its dependencies.
-     * 
-     * @param broker
-     *            The {@link Broker} that should be used to trade concrete orders.
-     * @param volumeLender
-     *            Used to request {@link Volume}s for trades.
-     * @param forexSymbol
-     *            The symbol that is traded.
-     * @param allowedStepSize
-     *            The allowed step size for volumes.
+     *
+     * @param broker          The {@link Broker} that should be used to trade concrete orders.
+     * @param volumeLender    Used to request {@link Volume}s for trades.
+     * @param forexSymbol     The symbol that is traded.
+     * @param allowedStepSize The allowed step size for volumes.
      */
     StrategyMoneyManagement(final Broker<PendingOrder> broker, final VolumeLender volumeLender,
-            final ForexSymbol forexSymbol, final Volume allowedStepSize) {
+                            final ForexSymbol forexSymbol, final Volume allowedStepSize) {
         this.broker = broker;
         this.volumeLender = volumeLender;
         this.forexSymbol = forexSymbol;
@@ -63,8 +58,8 @@ class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicP
     }
 
     @Override
-    public Either<Failed, OrderManagement> sendOrder(final BasicPendingOrder order,
-            final OrderEventListener eventListener) {
+    public OrderManagement sendOrder(final BasicPendingOrder order,
+                                     final OrderEventListener eventListener) {
         final Price lastPrice = lastMarketData.orElseThrow(() -> new IllegalStateException(
                 "An order was send before the current value of the traded symbol was passed to this instance."));
         final Price difference = new Price(
@@ -74,21 +69,14 @@ class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicP
 
         if (volumeManagement.isPresent()) {
             final VolumeReturner returner = new VolumeReturner(volumeManagement.get(), eventListener);
-            final Either<Failed, OrderManagement> result = broker
-                    .sendOrder(new MutablePendingOrder(order).setVolume(volumeManagement.get().getVolume())
-                            .toImmutablePendingOrder(), returner)
-                    // register the original order management at the volume returner
-                    .mapRight(origMgmnt -> {
-                        returner.setOrderManagement(origMgmnt);
-                        return returner;
-                    });
-            if (result.hasLeft()) {
-                // return volume when sending order has failed.
-                volumeManagement.get().releaseVolume();
-            }
-            return result;
+            final OrderManagement origMgmnt = broker.sendOrder(new MutablePendingOrder(order)
+                    .setVolume(volumeManagement.get().getVolume()).toImmutablePendingOrder(), returner);
+            // register the original order management at the volume returner
+            returner.setOrderManagement(origMgmnt);
+            return returner;
         } else {
-            return Either.withLeft(NO_VOLUME);
+            eventListener.orderRejected(NO_VOLUME);
+            return NO_OP_ORDER_MANAGEMENT;
         }
     }
 
@@ -96,10 +84,9 @@ class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicP
     public void newData(final C marketData) {
         this.lastMarketData = Optional.of(marketData.getClose());
     }
-    
+
     /**
      * Returns {@link Volume} to the money management when the order is closed.
-     *
      */
     private static final class VolumeReturner implements OrderManagement, OrderEventListener {
 
@@ -114,6 +101,12 @@ class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicP
 
         public void setOrderManagement(final OrderManagement origOrderManagement) {
             this.origOrderManagement = origOrderManagement;
+        }
+
+        @Override
+        public void orderRejected(final Failed failure) {
+            volumeManagement.releaseVolume();
+            origEventListener.orderRejected(failure);
         }
 
         @Override
@@ -138,6 +131,25 @@ class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicP
         @Override
         public Optional<Failed> changeCloseConditionsOfOrder(final CloseConditions conditions) {
             return origOrderManagement.changeCloseConditionsOfOrder(conditions);
+        }
+    }
+
+    /**
+     * An {@link OrderManagement} that does nothing on requests.
+     */
+    private static class NoOpOrderManagement implements OrderManagement {
+
+        private static final Optional<Failed> NOT_SUPPORTED = Optional.of(new Failed("Changing close conditions"
+                + " is not supported because the order has already been canceled."));
+
+        @Override
+        public void closeOrCancelOrder() {
+
+        }
+
+        @Override
+        public Optional<Failed> changeCloseConditionsOfOrder(final CloseConditions conditions) {
+            return NOT_SUPPORTED;
         }
     }
 }

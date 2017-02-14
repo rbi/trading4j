@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
+import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
@@ -88,6 +89,11 @@ public class StrategyExpertAdvisor<C extends CandleStick<?>> implements ExpertAd
             default:
                 throw new IllegalStateException("Unhandled state " + currentState);
         }
+    }
+
+    @Override
+    public void orderRejected(final Failed failure) {
+       currentState = State.TRY_CREATE;
     }
 
     @Override

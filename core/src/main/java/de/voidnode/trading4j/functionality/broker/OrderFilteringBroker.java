@@ -7,7 +7,6 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.MarketDataListener;
 import de.voidnode.trading4j.api.OrderEventListener;
@@ -18,17 +17,18 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 
 /**
  * Prevent orders to an other broker in improper market situations or when they fail certain criteria.
- * 
+ *
  * <p>
  * What improper market situations are or what fail criteria for an order are is decided by {@link OrderFilter}s passed
  * in the constructor.
  * </p>
  *
  * @author Raik Bieniek
- * @param <C>
- *            The market data the {@link OrderFilter}s expect as input.
+ * @param <C> The market data the {@link OrderFilter}s expect as input.
  */
 public class OrderFilteringBroker<C extends MarketData<?>> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
+
+    private static final OrderManagement NO_OP_ORDER_MANAGEMENT = new NoOpOrderManagement();
 
     private final OrderFilter<C>[] orderFilters;
     private final Broker<BasicPendingOrder> broker;
@@ -37,13 +37,11 @@ public class OrderFilteringBroker<C extends MarketData<?>> implements Broker<Bas
 
     /**
      * Initializes an instance with all its dependencies.
-     * 
-     * @param broker
-     *            The broker that should be used to execute orders when trading isn't blocked.
-     * @param orderFilters
-     *            All {@link OrderFilter}s that should block orders when they indicate improper market situations or
-     *            improper orders. These situations are indicated by returning an instance of {@link Failed} which
-     *            should describe the error in an human readable format in their {@link Failed#toString()} method.
+     *
+     * @param broker       The broker that should be used to execute orders when trading isn't blocked.
+     * @param orderFilters All {@link OrderFilter}s that should block orders when they indicate improper market situations or
+     *                     improper orders. These situations are indicated by returning an instance of {@link Failed} which
+     *                     should describe the error in an human readable format in their {@link Failed#toString()} method.
      */
     @SafeVarargs
     public OrderFilteringBroker(final Broker<BasicPendingOrder> broker, final OrderFilter<C>... orderFilters) {
@@ -53,8 +51,8 @@ public class OrderFilteringBroker<C extends MarketData<?>> implements Broker<Bas
     }
 
     @Override
-    public Either<Failed, OrderManagement> sendOrder(final BasicPendingOrder order,
-            final OrderEventListener eventListener) {
+    public OrderManagement sendOrder(final BasicPendingOrder order,
+                                     final OrderEventListener eventListener) {
         if (!receivedData) {
             throw new IllegalStateException(
                     "To decide if an order is blocked, the market data stream needs to be recieved but no market data was received yet.");
@@ -65,7 +63,8 @@ public class OrderFilteringBroker<C extends MarketData<?>> implements Broker<Bas
         final Optional<Failed> directlyBlocked = blocks.isEmpty() ? Optional.empty()
                 : Optional.of(new TradingBlocked(blocks));
         if (directlyBlocked.isPresent()) {
-            return Either.withLeft(directlyBlocked.get());
+            eventListener.orderRejected(directlyBlocked.get());
+            return NO_OP_ORDER_MANAGEMENT;
         }
 
         return broker.sendOrder(order, eventListener);
@@ -84,9 +83,8 @@ public class OrderFilteringBroker<C extends MarketData<?>> implements Broker<Bas
 
         /**
          * Initializes an instance with all its dependencies.
-         * 
-         * @param reasons
-         *            The reasons describing why the current market situation is improper.
+         *
+         * @param reasons The reasons describing why the current market situation is improper.
          */
         TradingBlocked(final List<Failed> reasons) {
             super(concatReasons(reasons));
