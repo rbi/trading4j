@@ -1,6 +1,5 @@
 package de.voidnode.trading4j.testutils.assertions;
 
-import de.voidnode.trading4j.api.Either;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.Ratio;
 import de.voidnode.trading4j.domain.monetary.AccuratePrice;
@@ -55,20 +54,5 @@ public class Assertions extends org.assertj.core.api.Assertions {
      */
     public static RatioAssert assertThat(final Ratio actual) {
         return new RatioAssert(actual);
-    }
-
-    /**
-     * Assertions for {@link Either}s.
-     * 
-     * @param actual
-     *            The {@link Either} on which assertions should be made.
-     * @param <LEFT>
-     *            The type for the {@link Either#getLeft()} value.
-     * @param <RIGHT>
-     *            The type for the {@link Either#getRight()} value.
-     * @return The utility to do assertions
-     */
-    public static <LEFT, RIGHT> EitherAssert<LEFT, RIGHT> assertThat(final Either<LEFT, RIGHT> actual) {
-        return new EitherAssert<>(actual);
     }
 }
