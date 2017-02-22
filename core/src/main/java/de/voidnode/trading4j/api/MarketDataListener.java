@@ -17,5 +17,5 @@ public interface MarketDataListener<M extends MarketData<?>> {
      * @param marketData
      *            The market data.
      */
-    void newData(final M marketData);
+    void newData(M marketData);
 }

@@ -67,7 +67,7 @@ class TestServer {
     }
 
     private boolean isServerReady() {
-        try (final Socket s = new Socket("localhost", 6474)) {
+        try (Socket s = new Socket("localhost", 6474)) {
             return true;
         } catch (final Exception e) {
             return false;

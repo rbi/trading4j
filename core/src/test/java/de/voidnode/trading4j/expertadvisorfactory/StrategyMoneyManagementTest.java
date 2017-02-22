@@ -23,7 +23,6 @@ import de.voidnode.trading4j.domain.orders.PendingOrder;
 import static de.voidnode.trading4j.domain.VolumeUnit.LOT;
 import static de.voidnode.trading4j.domain.orders.ExecutionCondition.STOP;
 import static de.voidnode.trading4j.domain.orders.OrderType.SELL;
-import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
 
 import org.junit.Before;
 import org.junit.Test;

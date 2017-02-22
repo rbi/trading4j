@@ -44,10 +44,9 @@ public interface ExpertAdvisorFactory {
      *            Used to manage the amount of money that is invested in each trade.
      * @param environment
      *            Information about the trading environment.
-     * @return The {@link ExpertAdvisor} if an {@link ExpertAdvisor} is known for this number or an
-     *         <code>empty</code> {@link Optional} if not.
+     * @return The {@link ExpertAdvisor} if an {@link ExpertAdvisor} is known for this number or an <code>empty</code>
+     *         {@link Optional} if not.
      */
-    Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
-            final Broker<PendingOrder> broker, final VolumeLender volumeLender,
-            final TradingEnvironmentInformation environment);
+    Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(int expertAdvisorNumber, Broker<PendingOrder> broker,
+            VolumeLender volumeLender, TradingEnvironmentInformation environment);
 }

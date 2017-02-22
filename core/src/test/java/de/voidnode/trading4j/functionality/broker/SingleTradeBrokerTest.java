@@ -111,6 +111,7 @@ public class SingleTradeBrokerTest {
      * If placing a pending order at the wrapped broker failed, placing orders is not blocked.
      */
     @Test
+    @SuppressWarnings("unchecked")
     public void failedPendingOrdersDoNotBlockTrading() {
         when(broker.sendOrder(any(), any())).thenAnswer(invocation -> {
             final OrderEventListener orderEventListener = (OrderEventListener) invocation.getArguments()[1];

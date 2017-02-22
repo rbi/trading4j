@@ -104,23 +104,4 @@ public class SingleTradeBroker implements Broker<BasicPendingOrder> {
             return orderManagement.changeCloseConditionsOfOrder(conditions);
         }
     }
-
-    /**
-     * An {@link OrderManagement} that does nothing on requests.
-     */
-    private static final class DummyOrderManagement implements OrderManagement {
-
-        private static final Optional<Failed> CHANGE_CLOSE_CONDITIONS_NOT_SUPPORTED = Optional.of(new Failed("Changeing close"
-                + " conditions failed because the order was never passed to a real broker."));
-
-        @Override
-        public void closeOrCancelOrder() {
-
-        }
-
-        @Override
-        public Optional<Failed> changeCloseConditionsOfOrder(final CloseConditions conditions) {
-            return CHANGE_CLOSE_CONDITIONS_NOT_SUPPORTED;
-        }
-    }
 }

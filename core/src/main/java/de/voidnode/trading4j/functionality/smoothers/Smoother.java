@@ -18,5 +18,5 @@ public interface Smoother<T> {
      *            The current data point.
      * @return The smoothed value or an empty {@link Optional} if not enough data was passed yet.
      */
-    Optional<T> smooth(final T dataPoint);
+    Optional<T> smooth(T dataPoint);
 }

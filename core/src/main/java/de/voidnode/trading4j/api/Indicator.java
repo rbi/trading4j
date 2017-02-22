@@ -31,5 +31,5 @@ public interface Indicator<RESULT, INPUT extends MarketData<? extends TimeFrame>
      *         that the {@link Indicator} has not yet collected enough data to provide an indication result. It could
      *         also mean that the {@link Indicator} has no indication result for the current data point.
      */
-    Optional<RESULT> indicate(final INPUT marketPrice);
+    Optional<RESULT> indicate(INPUT marketPrice);
 }

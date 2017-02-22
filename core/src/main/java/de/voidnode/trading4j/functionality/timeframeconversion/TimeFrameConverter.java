@@ -102,8 +102,7 @@ public abstract class TimeFrameConverter<CIN extends DatedCandleStick<ITF>, COUT
      * @param isClose
      *            <code>true</code> when this is the last data point for an aggregated candle stick.
      */
-    protected abstract void aggregateAdditionalFields(final CIN candleStick, final boolean isOpen,
-            final boolean isClose);
+    protected abstract void aggregateAdditionalFields(CIN candleStick, boolean isOpen, boolean isClose);
 
     /**
      * Build the immutable candle stick based on previously aggregated data.
@@ -124,7 +123,7 @@ public abstract class TimeFrameConverter<CIN extends DatedCandleStick<ITF>, COUT
      *            added.
      * @return The aggregated candle stick.
      */
-    protected abstract COUT buildAggregatedStick(final MutableFullMarketData<OTF> aggregated);
+    protected abstract COUT buildAggregatedStick(MutableFullMarketData<OTF> aggregated);
 
     private Optional<COUT> handleLateAggregatedCandles(final Optional<COUT> aggregated) {
         if (nextReturnVal.isPresent()) {

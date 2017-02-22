@@ -69,7 +69,7 @@ class OrderOnEveryTickExpertAdvisor<C extends CandleStick<M1>> implements Expert
     private static class OrderEventNonListener implements OrderEventListener {
 
         @Override
-        public void orderRejected(Failed failure) {
+        public void orderRejected(final Failed failure) {
             // do nothing
         }
 

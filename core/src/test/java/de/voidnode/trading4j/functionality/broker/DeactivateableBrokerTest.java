@@ -5,8 +5,6 @@ import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 
-import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

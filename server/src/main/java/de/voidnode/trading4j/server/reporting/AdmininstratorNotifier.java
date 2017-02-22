@@ -15,7 +15,7 @@ public interface AdmininstratorNotifier {
      * @param cause
      *            The throwable causing the error
      */
-    void unrecoverableError(final String message, final Throwable cause);
+    void unrecoverableError(String message, Throwable cause);
 
     /**
      * Informs the administrator of an unexpected event which could be corrected automatically.
@@ -25,7 +25,7 @@ public interface AdmininstratorNotifier {
      * @param cause
      *            The throwable causing the event.
      */
-    void unexpectedEvent(final String message, final Throwable cause);
+    void unexpectedEvent(String message, Throwable cause);
 
     /**
      * Informs the administrator of an unexpected event which could be corrected automatically.
@@ -33,7 +33,7 @@ public interface AdmininstratorNotifier {
      * @param message
      *            A description of the event.
      */
-    void unexpectedEvent(final String message);
+    void unexpectedEvent(String message);
 
     /**
      * Informs the administrator of a normal event that was expected during normal operation of the server.

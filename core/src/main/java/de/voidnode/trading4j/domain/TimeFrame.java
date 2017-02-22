@@ -31,7 +31,7 @@ public interface TimeFrame {
      *            The second {@link Instant} for the comparison.
      * @return <code>true</code> if they both belong the the same time frame and <code>false</code> if not.
      */
-    boolean areInSameTimeFrame(final Instant instant1, final Instant instant2);
+    boolean areInSameTimeFrame(Instant instant1, Instant instant2);
 
     /**
      * The earliest instant {@link Instant} that is later in time then the {@link Instant} passed as argument and that
@@ -41,7 +41,7 @@ public interface TimeFrame {
      *            An arbitrary {@link Instant}.
      * @return The {@link Instant} for the succeeding frame.
      */
-    Instant instantOfNextFrame(final Instant current);
+    Instant instantOfNextFrame(Instant current);
 
     /**
      * A 1 minute time frame.

@@ -13,5 +13,5 @@ public interface TraderNotifier {
      * @param message
      *            A human readable message describing the event.
      */
-    void unexpectedEvent(final String message);
+    void unexpectedEvent(String message);
 }

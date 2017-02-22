@@ -47,6 +47,6 @@ public interface BasicExpertAdvisorFactory {
      * @return The {@link ExpertAdvisor} if an {@link ExpertAdvisor} is known for this number or an <code>empty</code>
      *         {@link Optional} if not.
      */
-    Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(final int expertAdvisorNumber,
-            final Broker<BasicPendingOrder> broker, final TradingEnvironmentInformation environment);
+    Optional<ExpertAdvisor<FullMarketData<M1>>> newExpertAdvisor(int expertAdvisorNumber,
+            Broker<BasicPendingOrder> broker, TradingEnvironmentInformation environment);
 }
