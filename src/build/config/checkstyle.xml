@@ -232,7 +232,7 @@
       <property name="severity" value="error"/>
     </module>
     <module name="ImportOrder">
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
       <property name="groups" value="java, javax, javafx, de.voidnode.trading4j"/>
       <property name="separated" value="true"/>
     </module>

@@ -3,9 +3,9 @@ package de.voidnode.trading4j.functionality.timeframeconversion;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.ExpertAdvisor;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
-import de.voidnode.trading4j.domain.TimeFrame.M15;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.timeframe.M1;
+import de.voidnode.trading4j.domain.timeframe.M15;
 
 import org.junit.Before;
 import org.junit.Test;

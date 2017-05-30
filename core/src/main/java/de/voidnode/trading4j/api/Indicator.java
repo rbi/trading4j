@@ -2,8 +2,8 @@ package de.voidnode.trading4j.api;
 
 import java.util.Optional;
 
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * A trading indicator that calculates various values (like a trend) for given market price data.

@@ -1,7 +1,7 @@
 package de.voidnode.trading4j.domain.marketdata;
 
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * The {@link Price} of an asset in a given time frame.

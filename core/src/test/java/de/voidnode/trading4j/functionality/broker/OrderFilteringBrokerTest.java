@@ -9,9 +9,9 @@ import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderFilter;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package de.voidnode.trading4j.api;
 
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 /**
  * An algorithm that trades various assets based on market data.

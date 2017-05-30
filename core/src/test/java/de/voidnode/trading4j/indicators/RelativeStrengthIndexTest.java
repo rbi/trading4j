@@ -7,9 +7,9 @@ import static java.util.stream.IntStream.range;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.RatioUnit.PERCENT;
 import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;

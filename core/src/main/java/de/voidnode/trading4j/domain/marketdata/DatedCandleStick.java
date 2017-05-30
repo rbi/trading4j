@@ -4,8 +4,8 @@ import java.time.Instant;
 
 import static java.time.ZoneId.systemDefault;
 
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * A {@link CandleStick} thats date is known.

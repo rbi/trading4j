@@ -16,9 +16,9 @@ import static java.lang.Double.parseDouble;
 import static java.util.stream.Collectors.toCollection;
 
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

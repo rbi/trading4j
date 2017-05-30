@@ -3,8 +3,8 @@ package de.voidnode.trading4j.api;
 import java.util.Optional;
 
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 /**
  * Creates trend {@link Indicator}s.

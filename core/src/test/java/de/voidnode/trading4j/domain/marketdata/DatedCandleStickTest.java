@@ -4,8 +4,8 @@ import java.time.Instant;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Test;
 

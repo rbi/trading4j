@@ -1,8 +1,8 @@
 package de.voidnode.trading4j.functionality.timeframeconversion;
 
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
 import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * Aggregates {@link DatedCandleStick}s or of a smaller {@link TimeFrame} to {@link DatedCandleStick}s of a larger

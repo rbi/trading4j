@@ -1,12 +1,12 @@
 package de.voidnode.trading4j.functionality.timeframeconversion;
 
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * Aggregates {@link FullMarketData}s or of a smaller {@link TimeFrame} to {@link FullMarketData}s of a larger

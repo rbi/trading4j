@@ -1,8 +1,8 @@
 package de.voidnode.trading4j.domain.marketdata;
 
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * Contains the data for a single candle stick chart.

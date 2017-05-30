@@ -1,8 +1,8 @@
 package de.voidnode.trading4j.functionality.timeframeconversion;
 
 import de.voidnode.trading4j.api.ExpertAdvisor;
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * An {@link ExpertAdvisor} wrapper that aggregates {@link DatedCandleStick} of smaller time frames for

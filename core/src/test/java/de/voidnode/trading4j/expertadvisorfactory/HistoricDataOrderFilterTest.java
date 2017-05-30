@@ -6,10 +6,10 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import de.voidnode.trading4j.api.OrderFilter;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
 import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Test;
 

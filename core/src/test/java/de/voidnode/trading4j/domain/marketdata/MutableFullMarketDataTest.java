@@ -2,10 +2,10 @@ package de.voidnode.trading4j.domain.marketdata;
 
 import java.time.Instant;
 
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.VolumeUnit.LOT;
 import static de.voidnode.trading4j.domain.VolumeUnit.MINI_LOT;

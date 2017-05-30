@@ -5,9 +5,9 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,10 +1,10 @@
 package de.voidnode.trading4j.indicators;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.TimeFrame.D1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.monetary.PriceLevels;
+import de.voidnode.trading4j.domain.timeframe.D1;
 
 import org.junit.Test;
 

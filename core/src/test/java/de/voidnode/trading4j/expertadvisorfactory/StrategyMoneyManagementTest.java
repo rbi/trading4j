@@ -11,7 +11,6 @@ import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.api.UsedVolumeManagement;
 import de.voidnode.trading4j.domain.ForexSymbol;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
@@ -19,6 +18,7 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.MutableCloseConditions;
 import de.voidnode.trading4j.domain.orders.MutablePendingOrder;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.VolumeUnit.LOT;
 import static de.voidnode.trading4j.domain.orders.ExecutionCondition.STOP;

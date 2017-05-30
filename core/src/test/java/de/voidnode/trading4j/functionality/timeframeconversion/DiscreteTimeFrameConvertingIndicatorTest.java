@@ -10,9 +10,9 @@ import static java.util.stream.IntStream.range;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.TimeFrame.M30;
-import de.voidnode.trading4j.domain.TimeFrame.M5;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.timeframe.M30;
+import de.voidnode.trading4j.domain.timeframe.M5;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

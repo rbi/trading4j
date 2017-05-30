@@ -3,10 +3,10 @@ package de.voidnode.trading4j.functionality.smoothers;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.testutils.CandleStickStreams.candleStickStream;
 

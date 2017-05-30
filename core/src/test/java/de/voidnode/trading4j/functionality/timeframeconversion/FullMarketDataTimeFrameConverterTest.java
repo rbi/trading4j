@@ -2,12 +2,12 @@ package de.voidnode.trading4j.functionality.timeframeconversion;
 
 import java.time.Instant;
 
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 import static de.voidnode.trading4j.domain.VolumeUnit.LOT;
 import static de.voidnode.trading4j.domain.VolumeUnit.MICRO_LOT;

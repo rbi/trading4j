@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.domain.ForexSymbol;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
 import de.voidnode.trading4j.domain.environment.AccountInformation;
@@ -19,6 +18,7 @@ import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.server.protocol.ClientConnection;
 import de.voidnode.trading4j.server.protocol.CommunicationException;
 import de.voidnode.trading4j.server.protocol.messages.RequestTradingAlgorithmMessage.AlgorithmType;

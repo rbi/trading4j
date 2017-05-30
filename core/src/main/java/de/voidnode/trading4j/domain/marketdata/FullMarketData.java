@@ -4,9 +4,9 @@ import java.time.Instant;
 
 import static java.time.ZoneId.systemDefault;
 
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * Contains all data that can be directly associated with a single {@link CandleStick}.

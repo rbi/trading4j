@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * A wrapper for discontinues {@link Indicator}s that converts the {@link TimeFrame} of the input {@link CandleStick} s.

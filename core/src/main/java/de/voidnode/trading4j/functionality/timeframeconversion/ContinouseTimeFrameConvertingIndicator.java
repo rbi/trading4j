@@ -3,9 +3,9 @@ package de.voidnode.trading4j.functionality.timeframeconversion;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * A wrapper for continues {@link Indicator}s that converts the {@link TimeFrame} of the input {@link CandleStick}s.

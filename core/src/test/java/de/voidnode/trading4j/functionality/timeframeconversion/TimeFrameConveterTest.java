@@ -9,10 +9,10 @@ import java.util.stream.Stream;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.stream.Collectors.toList;
 
-import de.voidnode.trading4j.domain.TimeFrame;
-import de.voidnode.trading4j.domain.TimeFrame.M30;
-import de.voidnode.trading4j.domain.TimeFrame.M5;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.timeframe.M30;
+import de.voidnode.trading4j.domain.timeframe.M5;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 import de.voidnode.trading4j.testutils.CandleStickStreams;
 
 import static de.voidnode.trading4j.testutils.CandleStickStreams.datedCandleStickStream;
@@ -52,7 +52,7 @@ public class TimeFrameConveterTest {
      */
     @Before
     public void setUpClassToTest() {
-        cut = new DatedCandleStickTimeFrameConverter<DatedCandleStick<M5>, TimeFrame.M5, TimeFrame.M30>(m5Tf, m30Tf);
+        cut = new DatedCandleStickTimeFrameConverter<DatedCandleStick<M5>, M5, M30>(m5Tf, m30Tf);
     }
 
     /**

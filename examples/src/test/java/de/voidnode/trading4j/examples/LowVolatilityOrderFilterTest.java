@@ -2,9 +2,9 @@ package de.voidnode.trading4j.examples;
 
 import de.voidnode.trading4j.api.OrderFilter;
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.RatioUnit.PERCENT;
 

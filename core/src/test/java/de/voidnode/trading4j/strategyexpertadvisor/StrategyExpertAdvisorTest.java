@@ -5,11 +5,11 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.Failed;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.VolumeUnit.LOT;
 

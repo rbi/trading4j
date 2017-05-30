@@ -3,12 +3,12 @@ package de.voidnode.trading4j.indicators;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.TimeFrame;
-import de.voidnode.trading4j.domain.TimeFrame.D1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.monetary.PriceLevels;
 import de.voidnode.trading4j.domain.monetary.PriceUnit;
+import de.voidnode.trading4j.domain.timeframe.D1;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * Pivot Points indicate support and resistance levels for market prices.

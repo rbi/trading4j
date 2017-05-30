@@ -8,12 +8,12 @@ import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.ExpertAdvisorFactory;
 import de.voidnode.trading4j.api.MoneyManagement;
 import de.voidnode.trading4j.api.VolumeLender;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.functionality.broker.OrderFilteringBroker;
 import de.voidnode.trading4j.functionality.expertadvisor.MarketDataDistributor;
 

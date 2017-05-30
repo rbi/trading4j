@@ -11,8 +11,6 @@ import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 
-import de.voidnode.trading4j.domain.TimeFrame;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
@@ -20,6 +18,8 @@ import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * Builds streams of {@link CandleStick}s and its subclasses.

@@ -1,8 +1,8 @@
 package de.voidnode.trading4j.domain.marketdata;
 
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Test;
 

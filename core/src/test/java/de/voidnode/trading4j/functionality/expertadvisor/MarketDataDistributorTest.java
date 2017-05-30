@@ -3,8 +3,8 @@ package de.voidnode.trading4j.functionality.expertadvisor;
 import static java.util.Arrays.asList;
 
 import de.voidnode.trading4j.api.ExpertAdvisor;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderFilter;
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * A wrapper for continues {@link OrderFilter}s that converts the {@link TimeFrame} of the input {@link CandleStick}s.

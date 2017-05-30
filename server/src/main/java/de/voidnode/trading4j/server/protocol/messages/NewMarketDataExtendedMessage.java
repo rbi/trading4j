@@ -1,8 +1,8 @@
 package de.voidnode.trading4j.server.protocol.messages;
 
-import de.voidnode.trading4j.domain.TimeFrame;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.timeframe.M1;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * A message containing new market data in form of a {@link FullMarketData} with the {@link M1} {@link TimeFrame}.

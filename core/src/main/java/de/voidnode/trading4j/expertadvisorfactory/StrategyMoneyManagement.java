@@ -12,7 +12,6 @@ import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.api.UsedVolumeManagement;
 import de.voidnode.trading4j.api.VolumeLender;
 import de.voidnode.trading4j.domain.ForexSymbol;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
@@ -20,6 +19,7 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.MutablePendingOrder;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 
 /**
  * Adds the {@link Volume} to trade to a {@link BasicPendingOrder} from a trading strategy by requesting it from the

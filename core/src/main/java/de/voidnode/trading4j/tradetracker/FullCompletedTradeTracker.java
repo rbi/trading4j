@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.domain.ForexSymbol;
-import de.voidnode.trading4j.domain.TimeFrame.M1;
 import de.voidnode.trading4j.domain.marketdata.FullMarketData;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
+import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.trades.CompletedTrade;
 import de.voidnode.trading4j.domain.trades.TradeEvent;
 

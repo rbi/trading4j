@@ -3,8 +3,8 @@ package de.voidnode.trading4j.functionality.smoothers;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.TimeFrame;
 import de.voidnode.trading4j.domain.monetary.Price;
+import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * The average {@link Price} of the most recent {@link Price}s with a higher weight for more recent {@link Price}s.
