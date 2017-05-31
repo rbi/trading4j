@@ -53,6 +53,9 @@ public class DefaultMoneyManagement implements MoneyManagement {
         this.pipetteValueCalculator = new PipetteValueCalculator(exchangeRateStore);
         this.volumeCalculator = new VolumeCalculator();
         this.volumeRounder = new VolumeStepSizeRounder();
+        
+        // Does not matter if it is initially wrong as there is no balance initially available anyway.
+        this.balance = new Money(0, "EUR");
     }
 
     /**
