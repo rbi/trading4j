@@ -12,13 +12,12 @@ import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.api.UsedVolumeManagement;
 import de.voidnode.trading4j.domain.ForexSymbol;
 import de.voidnode.trading4j.domain.Volume;
-import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.MutableCloseConditions;
 import de.voidnode.trading4j.domain.orders.MutablePendingOrder;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.VolumeUnit.LOT;
 import static de.voidnode.trading4j.domain.orders.ExecutionCondition.STOP;
@@ -57,7 +56,7 @@ public class StrategyMoneyManagementTest {
     @Mock
     private MoneyManagement moneyManagement;
 
-    private StrategyMoneyManagement<MarketData<M1>> cut;
+    private StrategyMoneyManagement<BasicMarketData> cut;
 
     private final BasicPendingOrder someOrder = new MutablePendingOrder().setType(SELL).setExecutionCondition(STOP)
             .setEntryPrice(new Price(25))
@@ -90,7 +89,7 @@ public class StrategyMoneyManagementTest {
         when(broker.sendOrder(any(), any())).thenReturn(someOrderManagement);
 
         cut = new StrategyMoneyManagement<>(broker, moneyManagement, SOME_FOREX_SYMBOL, SOME_STEP_SIZE);
-        cut.newData(new MarketData<>(SOME_PRICE));
+        cut.newData(new BasicMarketData(SOME_PRICE));
     }
 
     /**

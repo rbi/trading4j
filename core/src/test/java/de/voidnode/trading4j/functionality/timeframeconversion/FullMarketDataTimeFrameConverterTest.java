@@ -3,9 +3,9 @@ package de.voidnode.trading4j.functionality.timeframeconversion;
 import java.time.Instant;
 
 import de.voidnode.trading4j.domain.Volume;
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
-import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 

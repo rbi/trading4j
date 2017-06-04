@@ -1,9 +1,12 @@
-package de.voidnode.trading4j.domain.marketdata;
+package de.voidnode.trading4j.domain.marketdata.impl;
 
 import java.time.Instant;
 
 import static java.time.ZoneId.systemDefault;
 
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
+import de.voidnode.trading4j.domain.marketdata.WithTime;
+import de.voidnode.trading4j.domain.marketdata.WithTimeFrame;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
@@ -14,7 +17,7 @@ import de.voidnode.trading4j.domain.timeframe.TimeFrame;
  * @param <T>
  *            The time frame that candle stick this candle stick aggregates.
  */
-public class DatedCandleStick<T extends TimeFrame> extends CandleStick<T> {
+public class DatedCandleStick<T extends TimeFrame> extends CandleStick implements WithTime, WithTimeFrame<T> {
 
     private final Instant time;
 
@@ -28,13 +31,13 @@ public class DatedCandleStick<T extends TimeFrame> extends CandleStick<T> {
      * @param time
      *            see {@link #getTime()}
      * @param open
-     *            see {@link CandleStick#getOpen()}
+     *            see {@link WithOhlc#getOpen()}
      * @param high
-     *            see {@link CandleStick#getHigh()}
+     *            see {@link WithOhlc#getHigh()}
      * @param low
-     *            see {@link CandleStick#getLow()}
+     *            see {@link WithOhlc#getLow()}
      * @param close
-     *            see {@link CandleStick#getClose()}
+     *            see {@link WithOhlc#getClose()}
      */
     public DatedCandleStick(final Instant time, final Price open, final Price high, final Price low, final Price close) {
         super(open, high, low, close);
@@ -51,13 +54,13 @@ public class DatedCandleStick<T extends TimeFrame> extends CandleStick<T> {
      * @param time
      *            see {@link #getTime()}
      * @param open
-     *            see {@link CandleStick#getOpen()}
+     *            see {@link WithOhlc#getOpen()}
      * @param high
-     *            see {@link CandleStick#getHigh()}
+     *            see {@link WithOhlc#getHigh()}
      * @param low
-     *            see {@link CandleStick#getLow()}
+     *            see {@link WithOhlc#getLow()}
      * @param close
-     *            see {@link CandleStick#getClose()}
+     *            see {@link WithOhlc#getClose()}
      */
     public DatedCandleStick(final Instant time, final double open, final double high, final double low,
             final double close) {
@@ -65,11 +68,7 @@ public class DatedCandleStick<T extends TimeFrame> extends CandleStick<T> {
         this.time = time;
     }
 
-    /**
-     * The time this candle stick stands for.
-     * 
-     * @return the time.
-     */
+    @Override
     public Instant getTime() {
         return time;
     }

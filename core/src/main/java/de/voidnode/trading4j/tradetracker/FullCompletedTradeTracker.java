@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.domain.ForexSymbol;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithSpread;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
-import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.trades.CompletedTrade;
 import de.voidnode.trading4j.domain.trades.TradeEvent;
 
@@ -19,7 +19,7 @@ import de.voidnode.trading4j.domain.trades.TradeEvent;
  * @param <C>
  *            The type of candle sticks that is passed as input.
  */
-public class FullCompletedTradeTracker<C extends FullMarketData<M1>>
+public class FullCompletedTradeTracker<C extends MarketData & WithSpread>
         extends TradeTracker<C, PendingOrder, CompletedTrade> {
 
     private final ForexSymbol symbol;

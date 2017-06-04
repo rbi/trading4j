@@ -12,11 +12,10 @@ import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.MarketDataListener;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
-import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.trades.BasicCompletedTrade;
 import de.voidnode.trading4j.domain.trades.TradeEvent;
 
@@ -37,14 +36,14 @@ import static de.voidnode.trading4j.domain.trades.TradeEventType.TRADE_CLOSED;
  * @param <CT>
  *            The kind of {@link BasicCompletedTrade} that should be produced.
  */
-public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPendingOrder, CT extends BasicCompletedTrade>
+public abstract class TradeTracker<C extends MarketData, PO extends BasicPendingOrder, CT extends BasicCompletedTrade>
         implements Broker<PO>, MarketDataListener<C> {
 
     private final Broker<PO> broker;
     private final Supplier<Instant> currentTime;
 
     private TradeEventListener<CT> listener;
-    private C lastCandleStick;
+    private C lastMarketData;
 
     /**
      * Initializes an instance with all its dependencies.
@@ -60,8 +59,8 @@ public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPe
     }
 
     @Override
-    public void newData(final C candleStick) {
-        this.lastCandleStick = candleStick;
+    public void newData(final C marketData) {
+        this.lastMarketData = marketData;
     }
 
     /**
@@ -154,10 +153,10 @@ public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPe
             orderManagement.closeOrCancelOrder();
             if (wasOpened()) {
                 events.add(new TradeEvent(TRADE_CLOSED, currentTime.get(), "expert advisor closed active trade",
-                        lastCandleStick.getClose()));
+                        lastMarketData.getClose()));
             } else {
                 events.add(new TradeEvent(PENDING_ORDER_CANCELD, currentTime.get(),
-                        "expert advisor canceled pending order", lastCandleStick.getClose()));
+                        "expert advisor canceled pending order", lastMarketData.getClose()));
             }
             completeTrade();
         }
@@ -185,7 +184,7 @@ public abstract class TradeTracker<C extends CandleStick<M1>, PO extends BasicPe
         }
 
         private void completeTrade() {
-            listener.tradeCompleted(createCompletedTrade(order, lastCandleStick, events));
+            listener.tradeCompleted(createCompletedTrade(order, lastMarketData, events));
         }
     }
 }

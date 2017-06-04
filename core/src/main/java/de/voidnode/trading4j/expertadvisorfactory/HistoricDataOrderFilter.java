@@ -5,7 +5,8 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderFilter;
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithTime;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 
 /**
@@ -20,7 +21,7 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
  * @param <C>
  *            The type of market data that is received.
  */
-class HistoricDataOrderFilter<C extends DatedCandleStick<?>> implements OrderFilter<C> {
+class HistoricDataOrderFilter<C extends MarketData & WithTime> implements OrderFilter<C> {
 
     private static final Optional<Failed> BLOCKED = Optional.of(new Failed("Trading is blocked because historic data is still received"));
     private Instant nonHistoricTime;

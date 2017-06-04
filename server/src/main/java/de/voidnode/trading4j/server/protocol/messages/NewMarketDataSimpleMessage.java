@@ -1,6 +1,6 @@
 package de.voidnode.trading4j.server.protocol.messages;
 
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
 import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 

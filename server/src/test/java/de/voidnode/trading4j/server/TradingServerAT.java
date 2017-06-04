@@ -6,7 +6,6 @@ import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.Volume;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.monetary.PriceUnit;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
@@ -114,8 +113,7 @@ public class TradingServerAT {
     private static final int UNKNOWN_INDICATOR_NUMBER = 120;
 
     /**
-     * The number for the {@link ExpertAdvisor} that sends a {@link PendingOrder} on every incoming {@link CandleStick}
-     * .
+     * The number for the {@link ExpertAdvisor} that sends a {@link PendingOrder} on every incoming MarketData.
      */
     private static final int ORDER_EVERY_ON_CANDLE_EA_NUMBER = 229;
 

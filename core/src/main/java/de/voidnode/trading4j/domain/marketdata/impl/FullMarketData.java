@@ -1,21 +1,25 @@
-package de.voidnode.trading4j.domain.marketdata;
+package de.voidnode.trading4j.domain.marketdata.impl;
 
 import java.time.Instant;
 
 import static java.time.ZoneId.systemDefault;
 
 import de.voidnode.trading4j.domain.Volume;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithSpread;
+import de.voidnode.trading4j.domain.marketdata.WithTickCount;
+import de.voidnode.trading4j.domain.marketdata.WithVolume;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
- * Contains all data that can be directly associated with a single {@link CandleStick}.
+ * Contains all data that can be directly associated with a single {@link MarketData}.
  *
  * @author Raik Bieniek
  * @param <T>
  *            The time frame that candle stick this candle stick aggregates.
  */
-public class FullMarketData<T extends TimeFrame> extends DatedCandleStick<T> {
+public class FullMarketData<T extends TimeFrame> extends DatedCandleStick<T> implements WithVolume, WithSpread, WithTickCount {
 
     private final Price spread;
     private final Volume volume;
@@ -50,36 +54,17 @@ public class FullMarketData<T extends TimeFrame> extends DatedCandleStick<T> {
         this.tickCount = tickCount;
     }
 
-    /**
-     * The difference between the ask {@link Price}, the {@link Price} for that the asset can be bought, and the bid
-     * {@link Price}, the {@link Price} for that the asset can be sold.
-     * 
-     * <p>
-     * Prices of {@link #getOpen()}, {@link #getHigh()}, {@link #getLow()} and {@link #getClose()} are the bid
-     * {@link Price}. The spread has to be added to them to get the ask {@link Price}. If there is any markup fee it is
-     * contained in this spread.
-     * </p>
-     * 
-     * @return The spread.
-     */
+    @Override
     public Price getSpread() {
         return spread;
     }
 
-    /**
-     * The volume of the asset that was traded in the {@link TimeFrame} of this {@link FullMarketData}.
-     * 
-     * @return The volume
-     */
+    @Override
     public Volume getVolume() {
         return volume;
     }
 
-    /**
-     * The amount of individual trades that where executed in the {@link TimeFrame} of this {@link FullMarketData}.
-     * 
-     * @return The trade amount.
-     */
+    @Override
     public long getTickCount() {
         return tickCount;
     }

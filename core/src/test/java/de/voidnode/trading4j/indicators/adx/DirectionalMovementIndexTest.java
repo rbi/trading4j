@@ -6,8 +6,7 @@ import static java.util.Optional.empty;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.timeframe.M1;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
 
 import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
 
@@ -33,17 +32,17 @@ public class DirectionalMovementIndexTest {
 
     private static final Optional<Ratio> SOME_RATIO = optRatio(10);
 
-    private static final CandleStick<M1> SOME_CANDLE = new CandleStick<>(10, 10, 10, 10);
+    private static final CandleStick SOME_CANDLE = new CandleStick(10, 10, 10, 10);
 
     private static final Offset<Double> ALLOWED_OFFSET = Offset.offset(0.00001);
 
     @Mock
-    private Indicator<Ratio, CandleStick<M1>> averagePlusDi;
+    private Indicator<Ratio, CandleStick> averagePlusDi;
 
     @Mock
-    private Indicator<Ratio, CandleStick<M1>> averageMinusDi;
+    private Indicator<Ratio, CandleStick> averageMinusDi;
 
-    private DirectionalMovementIndex<CandleStick<M1>> cut;
+    private DirectionalMovementIndex<CandleStick> cut;
 
     /**
      * Instantiates the class under test.

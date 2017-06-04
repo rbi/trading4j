@@ -5,8 +5,8 @@ import java.util.Optional;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.Ratio;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,27 +27,26 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DirectionalIndexTest {
 
-    private static final MarketData<M1> SOME_MARKET_PRICE = new MarketData<>(new Price(1.0));
-    private static final MarketData<M1> OTHER_MARKET_PRICE = new MarketData<>(new Price(2.0));
+    private static final MarketData SOME_MARKET_PRICE = new BasicMarketData(new Price(1.0));
+    private static final MarketData OTHER_MARKET_PRICE = new BasicMarketData(new Price(2.0));
 
     @Mock
-    private Indicator<Price, MarketData<M1>> dm;
+    private Indicator<Price, MarketData> dm;
 
     @Mock
-    private Indicator<Price, MarketData<M1>> trueRange;
+    private Indicator<Price, MarketData> trueRange;
 
-    private Indicator<Ratio, MarketData<M1>> cut;
+    private Indicator<Ratio, MarketData> cut;
 
     /**
      * Sets up the class under test and its dependencies.
      */
     @Before
-    @SuppressWarnings("unchecked")
     public void setupCutAndMocks() {
         cut = new DirectionalIndex<>(dm, trueRange);
 
-        when(dm.indicate(any(MarketData.class))).thenReturn(Optional.empty());
-        when(trueRange.indicate(any(MarketData.class))).thenReturn(Optional.empty());
+        when(dm.indicate(any(BasicMarketData.class))).thenReturn(Optional.empty());
+        when(trueRange.indicate(any(BasicMarketData.class))).thenReturn(Optional.empty());
     }
 
     /**

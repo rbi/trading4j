@@ -4,7 +4,8 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 /**
@@ -14,7 +15,7 @@ import de.voidnode.trading4j.domain.monetary.Price;
  * @param <C>
  *            The concrete type of data that is used as input.
  */
-class DirectionalMovement<C extends CandleStick<?>> implements Indicator<Price, C> {
+class DirectionalMovement<C extends MarketData & WithOhlc> implements Indicator<Price, C> {
 
     private static final Optional<Price> ZERO = Optional.of(new Price(0));
 

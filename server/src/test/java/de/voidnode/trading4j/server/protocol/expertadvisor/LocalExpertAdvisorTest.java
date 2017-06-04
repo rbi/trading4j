@@ -9,7 +9,7 @@ import de.voidnode.trading4j.api.AccountBalanceManager;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.domain.ForexSymbol;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
 import de.voidnode.trading4j.domain.monetary.Money;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.PendingOrder;

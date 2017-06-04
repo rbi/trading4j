@@ -13,7 +13,7 @@ import de.voidnode.trading4j.domain.monetary.Price;
  * @param <MP>
  *            The concrete type of {@link MarketData} that is passed as input.
  */
-public class SmoothedPriceIndicator<MP extends MarketData<?>> implements Indicator<Price, MP> {
+public class SmoothedPriceIndicator<MP extends MarketData> implements Indicator<Price, MP> {
 
     private final Smoother<Price> priceSmoother;
 

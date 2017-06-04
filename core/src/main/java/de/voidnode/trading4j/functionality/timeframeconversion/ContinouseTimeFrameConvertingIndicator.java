@@ -3,12 +3,11 @@ package de.voidnode.trading4j.functionality.timeframeconversion;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
- * A wrapper for continues {@link Indicator}s that converts the {@link TimeFrame} of the input {@link CandleStick}s.
+ * A wrapper for continues {@link Indicator}s that converts the {@link TimeFrame} of the input {@link DatedCandleStick}s.
  * 
  * <p>
  * Until more {@link DatedCandleStick}s are collected to complete a {@link DatedCandleStick} of the output
@@ -19,13 +18,13 @@ import de.voidnode.trading4j.domain.timeframe.TimeFrame;
  * @param <IT>
  *            The type of the indication result produced by the original {@link Indicator}.
  * @param <CIN>
- *            The type of {@link CandleStick} that is used as input.
+ *            The type of {@link DatedCandleStick} that is used as input.
  * @param <COUT>
- *            The type of {@link CandleStick} that the original indicator expects.
+ *            The type of {@link DatedCandleStick} that the original indicator expects.
  * @param <ITF>
- *            The {@link TimeFrame} of the {@link CandleStick} that are used as input
+ *            The {@link TimeFrame} of the {@link DatedCandleStick} that are used as input
  * @param <OTF>
- *            The {@link TimeFrame} of the {@link CandleStick} inputs that the original {@link Indicator} has.
+ *            The {@link TimeFrame} of the {@link DatedCandleStick} inputs that the original {@link Indicator} has.
  */
 public class ContinouseTimeFrameConvertingIndicator<IT, CIN extends DatedCandleStick<ITF>, COUT extends DatedCandleStick<OTF>, ITF extends TimeFrame, OTF extends TimeFrame>
         implements Indicator<IT, CIN> {

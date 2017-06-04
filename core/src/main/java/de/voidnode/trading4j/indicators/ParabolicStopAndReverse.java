@@ -7,7 +7,8 @@ import static java.lang.Math.abs;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 import static de.voidnode.trading4j.domain.MarketDirection.DOWN;
@@ -21,7 +22,7 @@ import static de.voidnode.trading4j.domain.MarketDirection.UP;
  * @param <C>
  *            The concrete type of market data that is used as input.
  */
-public class ParabolicStopAndReverse<C extends CandleStick<?>> implements Indicator<Price, C> {
+public class ParabolicStopAndReverse<C extends MarketData & WithOhlc> implements Indicator<Price, C> {
 
     private static final int SETUP_PERIODS = 60;
 

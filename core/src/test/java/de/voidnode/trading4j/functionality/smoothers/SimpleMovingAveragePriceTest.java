@@ -8,7 +8,7 @@ import static java.util.Arrays.stream;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.toList;
 
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 import org.junit.Test;

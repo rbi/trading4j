@@ -1,37 +1,36 @@
-package de.voidnode.trading4j.domain.marketdata;
+package de.voidnode.trading4j.domain.marketdata.impl;
 
 import de.voidnode.trading4j.domain.monetary.Price;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Checks if {@link MarketData} works as expected.
+ * Checks if {@link BasicMarketData} works as expected.
  * 
  * @author Raik Bieniek
  */
-public class MarketDataTest {
+public class BasicMarketDataTest {
 
     /**
      * A {@link CandleStick} is only equal to other {@link CandleStick}s that {@link Price} values each are equal.
      */
     @Test
     public void shouldEqualMarketPricesWithSameCloseValue() {
-        assertThat(new MarketData<>(1.0)).isEqualTo(new MarketData<>(new Price(1.0)));
-        assertThat(new MarketData<>(2.0)).isEqualTo(new ExemplaryMarketPriceSubClass(2.0, 42));
-        assertThat(new MarketData<>(1.12345)).isEqualTo(new MarketData<>(1.123449));
+        assertThat(new BasicMarketData(1.0)).isEqualTo(new BasicMarketData(new Price(1.0)));
+        assertThat(new BasicMarketData(2.0)).isEqualTo(new ExemplaryMarketPriceSubClass(2.0, 42));
+        assertThat(new BasicMarketData(1.12345)).isEqualTo(new BasicMarketData(1.123449));
 
-        assertThat(new MarketData<>(5.12345)).isNotEqualTo(new MarketData<>(5.12343));
-        assertThat(new MarketData<>(1.0)).isNotEqualTo("not a candle stick");
-        assertThat(new MarketData<>(1.0)).isNotEqualTo(null);
+        assertThat(new BasicMarketData(5.12345)).isNotEqualTo(new BasicMarketData(5.12343));
+        assertThat(new BasicMarketData(1.0)).isNotEqualTo("not a candle stick");
+        assertThat(new BasicMarketData(1.0)).isNotEqualTo(null);
     }
 
     /**
-     * An exemplary sub-class of a {@link MarketData}.
+     * An exemplary sub-class of a {@link BasicMarketData}.
      */
-    private static class ExemplaryMarketPriceSubClass extends MarketData<M1> {
+    private static class ExemplaryMarketPriceSubClass extends BasicMarketData {
         private final int dummyValue;
 
         /**

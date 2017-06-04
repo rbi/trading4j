@@ -8,8 +8,8 @@ import static java.util.stream.IntStream.range;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.Ratio;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.RatioUnit.PERCENT;
 import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
@@ -39,17 +39,17 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class RelativeStrengthIndexTest {
 
-    private static final MarketData<M1> CANDLE = new MarketData<M1>(1.0);
+    private static final MarketData CANDLE = new BasicMarketData(1.0);
 
     private static final Offset<Double> OFFSET = offset(0.00000001);
 
     @Mock
-    private Indicator<Price, MarketData<M1>> upMa;
+    private Indicator<Price, MarketData> upMa;
 
     @Mock
-    private Indicator<Price, MarketData<M1>> downMa;
+    private Indicator<Price, MarketData> downMa;
 
-    private Indicator<Ratio, MarketData<M1>> cut;
+    private Indicator<Ratio, MarketData> cut;
 
     /**
      * Sets up the class under test and the default behavior for the mocks.
@@ -148,7 +148,7 @@ public class RelativeStrengthIndexTest {
         return Optional.of(price);
     }
 
-    private MarketData<M1> marketPrice(final int pipettes) {
-        return new MarketData<>(new Price(pipettes));
+    private BasicMarketData marketPrice(final int pipettes) {
+        return new BasicMarketData(new Price(pipettes));
     }
 }

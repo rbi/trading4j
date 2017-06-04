@@ -12,7 +12,7 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
  * @param <C>
  *            The concrete {@link MarketData} type that is needed for checking market conditions.
  */
-public interface OrderFilter<C extends MarketData<?>> {
+public interface OrderFilter<C extends MarketData> {
 
     /**
      * Updates the {@link OrderFilter} with the latest MarketData.

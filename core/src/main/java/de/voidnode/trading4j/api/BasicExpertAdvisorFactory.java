@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.timeframe.M1;
 

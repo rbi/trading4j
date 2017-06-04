@@ -5,7 +5,7 @@ import java.util.Optional;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
-import de.voidnode.trading4j.domain.timeframe.M1;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 
 import static de.voidnode.trading4j.domain.MarketDirection.DOWN;
 import static de.voidnode.trading4j.domain.MarketDirection.UP;
@@ -28,13 +28,13 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class TrendInverterTest {
 
-    private static final MarketData<M1> SOME_PRICE = new MarketData<>(1.0);
+    private static final MarketData SOME_PRICE = new BasicMarketData(1.0);
 
     @Mock
-    private Indicator<MarketDirection, MarketData<M1>> original;
+    private Indicator<MarketDirection, MarketData> original;
 
     @InjectMocks
-    private TrendInverter<MarketData<M1>> cut;
+    private TrendInverter<MarketData> cut;
 
     /**
      * When the original {@link Indicator}r does not indicate a {@link MarketDirection}, the cut indicates no {@link MarketDirection} too.

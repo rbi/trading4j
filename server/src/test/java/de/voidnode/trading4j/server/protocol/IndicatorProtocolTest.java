@@ -5,7 +5,7 @@ import java.util.Optional;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.api.TrendIndicatorFactory;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
 import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.server.protocol.messages.Message;
 import de.voidnode.trading4j.server.protocol.messages.MessageBasedClientConnection;

@@ -1,10 +1,9 @@
 package de.voidnode.trading4j.indicators;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.monetary.PriceLevels;
-import de.voidnode.trading4j.domain.timeframe.D1;
 
 import org.junit.Test;
 
@@ -17,14 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PivotPointsIndicatorTest {
 
-    private final Indicator<PriceLevels, CandleStick<D1>> cut = new PivotPointsIndicator<>();
+    private final Indicator<PriceLevels, CandleStick> cut = new PivotPointsIndicator<>();
 
     /**
      * The indicator should calculate pivot points as specified in its JavaDoc for bullish {@link CandleStick}s.
      */
     @Test
     public void shouldCalculatePivotPointsCorrectlyForBullishCandles() {
-        final CandleStick<D1> input = new CandleStick<>(new Price(129183), new Price(130273), new Price(129007),
+        final CandleStick input = new CandleStick(new Price(129183), new Price(130273), new Price(129007),
                 new Price(129735));
         
         final PriceLevels pivotPoints = cut.indicate(input).get();
@@ -42,7 +41,7 @@ public class PivotPointsIndicatorTest {
      */
     @Test
     public void shouldCalculatePivotPointsCorrectlyForBearishCandles() {
-        final CandleStick<D1> input = new CandleStick<>(new Price(25182), new Price(25683), new Price(22381),
+        final CandleStick input = new CandleStick(new Price(25182), new Price(25683), new Price(22381),
                 new Price(23869));
         
         final PriceLevels pivotPoints = cut.indicate(input).get();

@@ -1,16 +1,20 @@
-package de.voidnode.trading4j.domain.marketdata;
+package de.voidnode.trading4j.domain.marketdata.impl;
 
 import java.time.Instant;
 import java.util.Optional;
 
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
+import de.voidnode.trading4j.domain.marketdata.WithSpread;
+import de.voidnode.trading4j.domain.marketdata.WithTickCount;
+import de.voidnode.trading4j.domain.marketdata.WithVolume;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
- * A mutable version of {@link CandleStick}.
+ * A mutable version of {@link FullMarketData}.
  * 
  * @author Raik Bieniek
  *
@@ -83,20 +87,20 @@ public class MutableFullMarketData<T extends TimeFrame> {
     }
 
     /**
-     * @return see {@link CandleStick#getOpen()} if the open price is set and an empty {@link Optional} if not.
-     * @see CandleStick#getOpen()
+     * @return see {@link WithOhlc#getOpen()} if the open price is set and an empty {@link Optional} if not.
+     * @see WithOhlc#getOpen()
      */
     public Optional<Price> getOpen() {
         return Optional.ofNullable(open);
     }
 
     /**
-     * See {@link CandleStick#getOpen()}.
+     * See {@link WithOhlc#getOpen()}.
      * 
      * @param open
-     *            see {@link CandleStick#getOpen()}
+     *            see {@link WithOhlc#getOpen()}
      * @return This builder
-     * @see CandleStick#getOpen()
+     * @see WithOhlc#getOpen()
      */
     public MutableFullMarketData<T> setOpen(final Price open) {
         this.open = open;
@@ -107,7 +111,7 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @param open
      *            see {@link Price#Price(double)} for the meaning of the expected double.
      * @return This builder
-     * @see CandleStick#getOpen()
+     * @see WithOhlc#getOpen()
      */
     public MutableFullMarketData<T> setOpen(final double open) {
         this.open = new Price(open);
@@ -115,20 +119,20 @@ public class MutableFullMarketData<T extends TimeFrame> {
     }
 
     /**
-     * @return see {@link CandleStick#getHigh()} if the high price is set and an empty {@link Optional} if not.
-     * @see CandleStick#getHigh()
+     * @return see {@link WithOhlc#getHigh()} if the high price is set and an empty {@link Optional} if not.
+     * @see WithOhlc#getHigh()
      */
     public Optional<Price> getHigh() {
         return Optional.ofNullable(high);
     }
 
     /**
-     * See {@link CandleStick#getHigh()}.
+     * See {@link WithOhlc#getHigh()}.
      * 
      * @param high
-     *            see {@link CandleStick#getHigh()}
+     *            see {@link WithOhlc#getHigh()}
      * @return This builder
-     * @see CandleStick#getHigh()
+     * @see WithOhlc#getHigh()
      */
     public MutableFullMarketData<T> setHigh(final Price high) {
         this.high = high;
@@ -139,7 +143,7 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @param high
      *            see {@link Price#Price(double)} for the meaning of the expected double.
      * @return This builder
-     * @see CandleStick#getHigh()
+     * @see WithOhlc#getHigh()
      */
     public MutableFullMarketData<T> setHigh(final double high) {
         this.high = new Price(high);
@@ -147,20 +151,20 @@ public class MutableFullMarketData<T extends TimeFrame> {
     }
 
     /**
-     * @return see {@link CandleStick#getLow()} if the low price is set and an empty {@link Optional} if not.
-     * @see CandleStick#getLow()
+     * @return see {@link WithOhlc#getLow()} if the low price is set and an empty {@link Optional} if not.
+     * @see WithOhlc#getLow()
      */
     public Optional<Price> getLow() {
         return Optional.ofNullable(low);
     }
 
     /**
-     * See {@link CandleStick#getLow()}.
+     * See {@link WithOhlc#getLow()}.
      * 
      * @param low
-     *            see {@link CandleStick#getLow()}
+     *            see {@link WithOhlc#getLow()}
      * @return This builder
-     * @see CandleStick#getLow()
+     * @see WithOhlc#getLow()
      */
     public MutableFullMarketData<T> setLow(final Price low) {
         this.low = low;
@@ -171,7 +175,7 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @param low
      *            see {@link Price#Price(double)} for the meaning of the expected double.
      * @return This builder
-     * @see CandleStick#getLow()
+     * @see WithOhlc#getLow()
      */
     public MutableFullMarketData<T> setLow(final double low) {
         this.low = new Price(low);
@@ -179,20 +183,20 @@ public class MutableFullMarketData<T extends TimeFrame> {
     }
 
     /**
-     * @return see {@link CandleStick#getClose()} if the close price is set and an empty {@link Optional} if not.
-     * @see CandleStick#getClose()
+     * @return see {@link WithOhlc#getClose()} if the close price is set and an empty {@link Optional} if not.
+     * @see WithOhlc#getClose()
      */
     public Optional<Price> getClose() {
         return Optional.ofNullable(close);
     }
 
     /**
-     * See {@link CandleStick#getClose()}.
+     * See {@link WithOhlc#getClose()}.
      * 
      * @param close
-     *            see {@link CandleStick#getClose()}
+     *            see {@link WithOhlc#getClose()}
      * @return This builder
-     * @see CandleStick#getClose()
+     * @see WithOhlc#getClose()
      */
     public MutableFullMarketData<T> setClose(final Price close) {
         this.close = close;
@@ -203,7 +207,7 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @param close
      *            see {@link Price#Price(double)} for the meaning of the expected double.
      * @return This builder
-     * @see CandleStick#getClose()
+     * @see WithOhlc#getClose()
      */
     public MutableFullMarketData<T> setClose(final double close) {
         this.close = new Price(close);
@@ -211,20 +215,20 @@ public class MutableFullMarketData<T extends TimeFrame> {
     }
 
     /**
-     * @return see {@link FullMarketData#getSpread()} if the spread is set and an empty {@link Optional} if not.
-     * @see FullMarketData#getSpread()
+     * @return see {@link WithSpread#getSpread()} if the spread is set and an empty {@link Optional} if not.
+     * @see WithSpread#getSpread()
      */
     public Optional<Price> getSpread() {
         return Optional.ofNullable(spread);
     }
 
     /**
-     * See {@link FullMarketData#getSpread()}.
+     * See {@link WithSpread#getSpread()}.
      * 
      * @param spread
-     *            see {@link FullMarketData#getSpread()}
+     *            see {@link WithSpread#getSpread()}
      * @return This builder
-     * @see FullMarketData#getSpread()
+     * @see WithSpread#getSpread()
      */
     public MutableFullMarketData<T> setSpread(final Price spread) {
         this.spread = spread;
@@ -235,7 +239,7 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @param spread
      *            see {@link Price#Price(double)} for the meaning of the expected double.
      * @return This builder
-     * @see FullMarketData#getSpread()
+     * @see WithSpread#getSpread()
      */
     public MutableFullMarketData<T> setSpread(final double spread) {
         this.spread = new Price(spread);
@@ -243,20 +247,20 @@ public class MutableFullMarketData<T extends TimeFrame> {
     }
 
     /**
-     * @return see {@link FullMarketData#getVolume()} if the volume is set and an empty {@link Optional} if not.
-     * @see FullMarketData#getVolume()
+     * @return see {@link WithVolume#getVolume()} if the volume is set and an empty {@link Optional} if not.
+     * @see WithVolume#getVolume()
      */
     public Optional<Volume> getVolume() {
         return Optional.ofNullable(volume);
     }
 
     /**
-     * See {@link FullMarketData#getVolume()}.
+     * See {@link WithVolume#getVolume()}.
      * 
      * @param volume
-     *            see {@link FullMarketData#getVolume()}
+     *            see {@link WithVolume#getVolume()}
      * @return This builder
-     * @see FullMarketData#getVolume()
+     * @see WithVolume#getVolume()
      */
     public MutableFullMarketData<T> setVolume(final Volume volume) {
         this.volume = volume;
@@ -271,7 +275,7 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @param unit
      *            see {@link Volume#Volume(long, VolumeUnit)}
      * @return This builder
-     * @see FullMarketData#getVolume()
+     * @see WithVolume#getVolume()
      */
     public MutableFullMarketData<T> setVolume(final long volume, final VolumeUnit unit) {
         this.volume = new Volume(volume, unit);
@@ -279,20 +283,20 @@ public class MutableFullMarketData<T extends TimeFrame> {
     }
 
     /**
-     * @return see FatCandleStick#getTickCount() if the tick count is set and an empty {@link Optional} if not.
-     * @see FullMarketData#getTickCount()
+     * @return see {@link WithTickCount#getTickCount()} if the tick count is set and an empty {@link Optional} if not.
+     * @see WithTickCount#getTickCount()
      */
     public Optional<Long> getTickCount() {
         return Optional.ofNullable(tickCount);
     }
 
     /**
-     * See {FatCandleStick#getTickCount()}.
+     * See {WithTickCount#getTickCount()}.
      * 
      * @param tickCount
-     *            see {FatCandleStick#getTickCount()}
+     *            see {WithTickCount#getTickCount()}
      * @return This builder
-     * @see FullMarketData#getTickCount()
+     * @see WithTickCount#getTickCount()
      */
     public MutableFullMarketData<T> setTickCount(final long tickCount) {
         this.tickCount = tickCount;
@@ -311,13 +315,13 @@ public class MutableFullMarketData<T extends TimeFrame> {
      * @throws IllegalStateException
      *             When not all required values where set.
      */
-    public CandleStick<T> toImmutableCandleStick() {
+    public CandleStick toImmutableCandleStick() {
         if (open == null || high == null || low == null || close == null) {
             throw new IllegalStateException(
                     "Failed to create a CandleStick as not all required values (open, high, low, close) "
                             + "where passed to this builder.");
         }
-        return new CandleStick<T>(open, high, low, close);
+        return new CandleStick(open, high, low, close);
     }
 
     /**

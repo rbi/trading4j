@@ -3,7 +3,8 @@ package de.voidnode.trading4j.indicators.adx;
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.functionality.smoothers.ExponentialMovingAverageRatio;
 import de.voidnode.trading4j.functionality.smoothers.IndicatorSmoother;
@@ -27,7 +28,7 @@ public class AverageDirectionalMovementIndexFactory {
      *            The type of candle sticks that are used as input.
      * @return The created instance
      */
-    public <C extends CandleStick<?>> Indicator<Ratio, C> createDefaultAdxIndicator() {
+    public <C extends MarketData & WithOhlc> Indicator<Ratio, C> createDefaultAdxIndicator() {
         return createDefaultAdxIndicator(14, 14);
     }
 
@@ -43,7 +44,7 @@ public class AverageDirectionalMovementIndexFactory {
      *            The type of candle sticks that are used as input.
      * @return The created instance
      */
-    public <C extends CandleStick<?>> Indicator<Ratio, C> createDefaultAdxIndicator(final int adxSmoothingPeriod,
+    public <C extends MarketData & WithOhlc> Indicator<Ratio, C> createDefaultAdxIndicator(final int adxSmoothingPeriod,
             final int atrAndAdiSmoothingPeriod) {
         final Indicator<Price, C> plusDm = new DirectionalMovement<>(MarketDirection.UP);
         final Indicator<Ratio, C> plusDi = new DirectionalIndex<>(plusDm, new TrueRange<>());

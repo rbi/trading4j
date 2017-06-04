@@ -6,15 +6,14 @@ import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.ExecutionCondition;
 import de.voidnode.trading4j.domain.orders.MutableCloseConditions;
 import de.voidnode.trading4j.domain.orders.MutablePendingOrder;
 import de.voidnode.trading4j.domain.orders.OrderType;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.monetary.PriceUnit.PIP;
 import static de.voidnode.trading4j.domain.orders.ExecutionCondition.LIMIT;
@@ -27,9 +26,9 @@ import static de.voidnode.trading4j.domain.orders.OrderType.SELL;
  * 
  * @author Raik Bieniek
  * @param <C>
- *            The {@link CandleStick} type to use as input.
+ *            The {@link MarketData} type to use as input.
  */
-class OrderOnEveryTickExpertAdvisor<C extends CandleStick<M1>> implements ExpertAdvisor<C> {
+class OrderOnEveryTickExpertAdvisor<C extends MarketData & WithOhlc> implements ExpertAdvisor<C> {
 
     private final Broker<BasicPendingOrder> broker;
     private final OrderEventListener eventListener = new OrderEventNonListener();

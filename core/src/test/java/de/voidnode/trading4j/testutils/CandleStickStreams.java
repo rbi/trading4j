@@ -13,10 +13,10 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.VolumeUnit;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
-import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
@@ -38,12 +38,10 @@ public final class CandleStickStreams {
      * @param data
      *            An arbitrary amount of double arrays of length 4. The values for a single candle stick are expected in
      *            the following order: <code>high, low, open, close</code>
-     * @param <T>
-     *            The {@link TimeFrame} the generated {@link CandleStick}s should have.
      * @return the stream of constructed candle sticks
      */
-    public static <T extends TimeFrame> Stream<CandleStick<T>> candleStickStream(final double[][] data) {
-        return Arrays.stream(data).map(CandleStickStreams::<T>build);
+    public static Stream<CandleStick> candleStickStream(final double[][] data) {
+        return Arrays.stream(data).map(CandleStickStreams::build);
     }
 
     /**
@@ -142,12 +140,12 @@ public final class CandleStickStreams {
      * @throws IllegalArgumentException
      *             When the array for the values of a candle stick does not have the size 4.
      */
-    private static <T extends TimeFrame> CandleStick<T> build(final double[] input) {
+    private static <T extends TimeFrame> CandleStick build(final double[] input) {
         if (input.length != 4) {
             throw new IllegalArgumentException(
                     "A candle stick needs 4 double vaules but got " + Arrays.toString(input));
         }
-        return new CandleStick<T>(input[0], input[1], input[2], input[3]);
+        return new CandleStick(input[0], input[1], input[2], input[3]);
     }
 
     /**

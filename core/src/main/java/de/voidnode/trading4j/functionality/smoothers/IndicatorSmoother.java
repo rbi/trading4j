@@ -19,7 +19,7 @@ import de.voidnode.trading4j.domain.marketdata.MarketData;
  * @param <MP>
  *            The concrete type of {@link MarketData} that is passed as input.
  */
-public class IndicatorSmoother<V, MP extends MarketData<?>> implements Indicator<V, MP> {
+public class IndicatorSmoother<V, MP extends MarketData> implements Indicator<V, MP> {
 
     private final Indicator<V, MP> indicator;
     private final Smoother<V> smoother;

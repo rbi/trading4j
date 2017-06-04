@@ -9,7 +9,7 @@ import de.voidnode.trading4j.domain.marketdata.MarketData;
  * @param <M>
  *            The required market data type
  */
-public interface MarketDataListener<M extends MarketData<?>> {
+public interface MarketDataListener<M extends MarketData> {
 
     /**
      * New market data for the asset is available.

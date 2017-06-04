@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
 
 /**
@@ -17,9 +16,9 @@ import de.voidnode.trading4j.domain.marketdata.MarketData;
  *
  * @author Raik Bieniek
  * @param <C>
- *            The type of {@link CandleStick} that the {@link MarketDirection} should base on.
+ *            The type of {@link MarketData} that the {@link MarketDirection} should base on.
  */
-class DummyIndicator<C extends CandleStick<?>> implements Indicator<MarketDirection, C> {
+class DummyIndicator<C extends MarketData> implements Indicator<MarketDirection, C> {
 
     private boolean up = false;
 

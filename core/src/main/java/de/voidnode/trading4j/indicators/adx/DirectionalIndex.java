@@ -14,7 +14,7 @@ import de.voidnode.trading4j.domain.monetary.Price;
  * @param <C>
  *            The concrete type of {@link MarketData} that is used as input.
  */
-class DirectionalIndex<C extends MarketData<?>> implements Indicator<Ratio, C> {
+class DirectionalIndex<C extends MarketData> implements Indicator<Ratio, C> {
 
     private static final Ratio ZERO = new Ratio(0);
 

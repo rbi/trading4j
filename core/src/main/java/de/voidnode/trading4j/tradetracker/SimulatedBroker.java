@@ -10,12 +10,14 @@ import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.MarketDataListener;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
+import de.voidnode.trading4j.domain.marketdata.WithSpread;
+import de.voidnode.trading4j.domain.marketdata.WithTime;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.OrderType;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import static de.voidnode.trading4j.domain.orders.OrderType.BUY;
 
@@ -28,7 +30,7 @@ import static de.voidnode.trading4j.domain.orders.OrderType.BUY;
  * @param <C>
  *            The type of market data that is received.
  */
-public class SimulatedBroker<C extends FullMarketData<M1>> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
+public class SimulatedBroker<C extends MarketData & WithSpread & WithTime & WithOhlc> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
 
     private List<Order> orders = new LinkedList<>();
 

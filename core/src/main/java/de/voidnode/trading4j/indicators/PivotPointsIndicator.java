@@ -3,7 +3,8 @@ package de.voidnode.trading4j.indicators;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.monetary.PriceLevels;
 import de.voidnode.trading4j.domain.monetary.PriceUnit;
@@ -14,7 +15,7 @@ import de.voidnode.trading4j.domain.timeframe.TimeFrame;
  * Pivot Points indicate support and resistance levels for market prices.
  * 
  * <p>
- * Pivot points for the current {@link CandleStick} are calculated based on the last {@link CandleStick}. The most
+ * Pivot points for the current {@link MarketData} are calculated based on the last {@link MarketData}. The most
  * common {@link TimeFrame}s for pivot points are {@link D1} or one week.
  * </p>
  * 
@@ -42,9 +43,9 @@ import de.voidnode.trading4j.domain.timeframe.TimeFrame;
  *
  * @author Raik Bieniek
  * @param <C>
- *            The type of {@link CandleStick} that the indicator should be using for the calculations.
+ *            The type of {@link MarketData} that the indicator should be using for the calculations.
  */
-public class PivotPointsIndicator<C extends CandleStick<?>> implements Indicator<PriceLevels, C> {
+public class PivotPointsIndicator<C extends MarketData & WithOhlc> implements Indicator<PriceLevels, C> {
 
     @Override
     public Optional<PriceLevels> indicate(final C candle) {

@@ -7,8 +7,7 @@ import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 
@@ -17,9 +16,9 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
  *
  * @author Raik Bieniek
  * @param <C>
- *            The concrete type of {@link FullMarketData}s that are used as input.
+ *            The concrete type of {@link MarketData}s that are used as input.
  */
-public class StrategyExpertAdvisor<C extends CandleStick<?>> implements ExpertAdvisor<C>, OrderEventListener {
+public class StrategyExpertAdvisor<C extends MarketData> implements ExpertAdvisor<C>, OrderEventListener {
 
     private final TradingStrategy<C> strategy;
     private final PendingOrderCreator creator;

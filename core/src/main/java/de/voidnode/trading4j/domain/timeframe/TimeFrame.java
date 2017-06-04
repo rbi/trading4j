@@ -2,10 +2,12 @@ package de.voidnode.trading4j.domain.timeframe;
 
 import java.time.Instant;
 
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-
 /**
- * The aggregation time frame of a {@link CandleStick}.
+ * A concept for the division of linear time into consecutive chunks.
+ * 
+ * <p>
+ * Often each chunk has the same length. Each point in time must be assignable to exactly one of the chunks.
+ * </p>
  * 
  * @author Raik Bieniek
  */

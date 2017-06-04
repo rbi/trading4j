@@ -6,7 +6,8 @@ import static java.lang.Math.abs;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 
 /**
  * The direction movement index (DMI) can be used to detect trend changes.
@@ -36,7 +37,7 @@ import de.voidnode.trading4j.domain.marketdata.CandleStick;
  * @param <C>
  *            The concrete candle stick type that is used as input.
  */
-class DirectionalMovementIndex<C extends CandleStick<?>> implements Indicator<Ratio, C> {
+class DirectionalMovementIndex<C extends MarketData & WithOhlc> implements Indicator<Ratio, C> {
 
     private final Indicator<Ratio, C> averagePlusDi;
     private final Indicator<Ratio, C> averageMinusDi;

@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Currency;
 
 import de.voidnode.trading4j.domain.ForexSymbol;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
 
 /**
  * Various trading environment information.
@@ -94,10 +94,10 @@ public class TradingEnvironmentInformation {
      * 
      * <p>
      * Initially historic market data is sent so that the expert advisor can initialize its internal state. This time is
-     * the time of the first {@link FullMarketData} that is not historic but the current live data.
+     * the time of the first {@link MarketData} that is not historic but the current live data.
      * </p>
      * 
-     * @return The time of the first non-historic {@link FullMarketData}.
+     * @return The time of the first non-historic {@link MarketData}.
      */
     public Instant getNonHistoricTime() {
         return nonHistoricTime;

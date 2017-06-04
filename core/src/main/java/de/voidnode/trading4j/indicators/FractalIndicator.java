@@ -6,7 +6,8 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 /**
@@ -40,9 +41,9 @@ import de.voidnode.trading4j.domain.monetary.Price;
  *
  * @author Raik Bieniek
  * @param <C>
- *            The type of {@link CandleStick} that the trend should base on.
+ *            The type of {@link MarketData} that the trend should base on.
  */
-public class FractalIndicator<C extends CandleStick<?>> implements Indicator<MarketDirection, C> {
+public class FractalIndicator<C extends MarketData & WithOhlc> implements Indicator<MarketDirection, C> {
 
     private final MarketDirection direction;
     private final List<C> sticks = new LinkedList<>();

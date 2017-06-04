@@ -4,10 +4,10 @@ import static java.util.Arrays.asList;
 
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.api.MarketDataListener;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
 
 /**
- * Distributes received {@link CandleStick} data to all {@link MarketDataListener}s passed in the constructor.
+ * Distributes received {@link MarketData} data to all {@link MarketDataListener}s passed in the constructor.
  * 
  * <p>
  * The {@link MarketDataListener}s will receive the data in the order they where passed in in the constructor.
@@ -16,9 +16,9 @@ import de.voidnode.trading4j.domain.marketdata.CandleStick;
  * @author Raik Bieniek
  *
  * @param <C>
- *            The concrete type of {@link CandleStick}s used.
+ *            The concrete type of {@link MarketData}s used.
  */
-public class MarketDataDistributor<C extends CandleStick<?>> implements ExpertAdvisor<C> {
+public class MarketDataDistributor<C extends MarketData> implements ExpertAdvisor<C> {
 
     private final Iterable<MarketDataListener<C>> advisors;
 

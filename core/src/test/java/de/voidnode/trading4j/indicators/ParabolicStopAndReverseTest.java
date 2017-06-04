@@ -16,7 +16,8 @@ import static java.lang.Double.parseDouble;
 import static java.util.stream.Collectors.toCollection;
 
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.timeframe.M1;
 
@@ -36,7 +37,7 @@ public class ParabolicStopAndReverseTest {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static List<TestData> testData;
 
-    private final ParabolicStopAndReverse<DatedCandleStick<M1>> cut = new ParabolicStopAndReverse<>(new Ratio(0.02),
+    private final ParabolicStopAndReverse<CandleStick> cut = new ParabolicStopAndReverse<>(new Ratio(0.02),
             new Ratio(0.2));
 
     /**

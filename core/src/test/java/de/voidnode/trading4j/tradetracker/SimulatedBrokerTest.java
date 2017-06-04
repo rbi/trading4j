@@ -4,9 +4,9 @@ import java.time.Instant;
 
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
-import de.voidnode.trading4j.domain.marketdata.MutableFullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.MutableFullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.MutableCloseConditions;

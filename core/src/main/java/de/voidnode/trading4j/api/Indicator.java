@@ -3,7 +3,6 @@ package de.voidnode.trading4j.api;
 import java.util.Optional;
 
 import de.voidnode.trading4j.domain.marketdata.MarketData;
-import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * A trading indicator that calculates various values (like a trend) for given market price data.
@@ -14,7 +13,7 @@ import de.voidnode.trading4j.domain.timeframe.TimeFrame;
  * @param <INPUT>
  *            The type of {@link MarketData}s that is needed for the indicator.
  */
-public interface Indicator<RESULT, INPUT extends MarketData<? extends TimeFrame>> {
+public interface Indicator<RESULT, INPUT extends MarketData> {
 
     /**
      * The indication result at the time of a {@link MarketData}.

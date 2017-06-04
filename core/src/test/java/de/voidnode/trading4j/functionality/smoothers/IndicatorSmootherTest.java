@@ -6,8 +6,8 @@ import static java.util.Optional.empty;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,25 +28,24 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class IndicatorSmootherTest {
 
-    private static final MarketData<M1> SOME_MARKET_DATA = new MarketData<>(8.6);
-    private static final MarketData<M1> OTHER_MARKET_DATA = new MarketData<>(42.1337);
+    private static final MarketData SOME_MARKET_DATA = new BasicMarketData(8.6);
+    private static final MarketData OTHER_MARKET_DATA = new BasicMarketData(42.1337);
 
     @Mock
-    private Indicator<Price, MarketData<M1>> indicator;
+    private Indicator<Price, MarketData> indicator;
 
     @Mock
     private Smoother<Price> smoother;
 
     @InjectMocks
-    private IndicatorSmoother<Price, MarketData<M1>> cut;
+    private IndicatorSmoother<Price, MarketData> cut;
 
     /**
      * The cut passes data provided as input to the indicator.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void passesInputDataToIndicator() {
-        when(indicator.indicate(any(MarketData.class))).thenReturn(empty());
+        when(indicator.indicate(any(BasicMarketData.class))).thenReturn(empty());
 
         cut.indicate(SOME_MARKET_DATA);
         verify(indicator).indicate(SOME_MARKET_DATA);
@@ -59,9 +58,8 @@ public class IndicatorSmootherTest {
      * The values of the indicator are passed to the smoother and its results are returned.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void passesNonEmptyIndicatorDataToSmootherAndReturnsResult() {
-        when(indicator.indicate(any(MarketData.class))).thenReturn(optPrice(56)).thenReturn(empty())
+        when(indicator.indicate(any(BasicMarketData.class))).thenReturn(optPrice(56)).thenReturn(empty())
                 .thenReturn(optPrice(92));
         when(smoother.smooth(new Price(56))).thenReturn(optPrice(560));
         when(smoother.smooth(new Price(92))).thenReturn(optPrice(920));

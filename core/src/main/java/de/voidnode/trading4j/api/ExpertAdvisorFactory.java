@@ -3,7 +3,7 @@ package de.voidnode.trading4j.api;
 import java.util.Optional;
 
 import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
 import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.expertadvisorfactory.DefaultExpertAdvisorFactory;

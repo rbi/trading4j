@@ -19,7 +19,6 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.MutablePendingOrder;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 /**
  * Adds the {@link Volume} to trade to a {@link BasicPendingOrder} from a trading strategy by requesting it from the
@@ -28,7 +27,7 @@ import de.voidnode.trading4j.domain.timeframe.M1;
  * @author Raik Bieniek
  * @param <C> The market the improper-market-situation-{@link Indicator} expect as input.
  */
-class StrategyMoneyManagement<C extends MarketData<M1>> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
+class StrategyMoneyManagement<C extends MarketData> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
 
     private static final OrderManagement NO_OP_ORDER_MANAGEMENT = new NoOpOrderManagement();
     private static final Failed NO_VOLUME = new Failed(

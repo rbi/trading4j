@@ -8,8 +8,9 @@ import static java.util.stream.Collectors.toList;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
+import de.voidnode.trading4j.domain.marketdata.WithSpread;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.monetary.PriceUnit;
 import de.voidnode.trading4j.domain.orders.ExecutionCondition;
@@ -21,9 +22,9 @@ import de.voidnode.trading4j.strategyexpertadvisor.TradingStrategy;
  * @author Raik Bieniek
  *
  * @param <C>
- *            The type of {@link CandleStick}s that is used as input.
+ *            The type of {@link MarketData}s that is used as input.
  */
-class NMovingAveragesExpertAdvisor<C extends FullMarketData<?>> implements TradingStrategy<C> {
+class NMovingAveragesExpertAdvisor<C extends MarketData & WithOhlc & WithSpread> implements TradingStrategy<C> {
 
     private static final Optional<Price> NO_TAKE_PROFIT = Optional.of(new Price(0));
     private static final Price ENTRY_PRICE_DISTANCE = new Price(15, PriceUnit.PIPETTE);

@@ -1,4 +1,4 @@
-package de.voidnode.trading4j.domain.marketdata;
+package de.voidnode.trading4j.domain.marketdata.impl;
 
 import java.time.Instant;
 
@@ -35,13 +35,13 @@ public class MutableFullMarketDataTest {
      */
     @Test
     public void shouldBuildCorrectCandleSticksWithPassedValues() {
-        final CandleStick<?> firstCandleStick = new MutableFullMarketData<>().setOpen(1.0).setHigh(2.0).setLow(3.0)
+        final CandleStick firstCandleStick = new MutableFullMarketData<>().setOpen(1.0).setHigh(2.0).setLow(3.0)
                 .setClose(4.0).toImmutableCandleStick();
-        assertThat(firstCandleStick).isEqualTo(new CandleStick<>(1.0, 2.0, 3.0, 4.0));
+        assertThat(firstCandleStick).isEqualTo(new CandleStick(1.0, 2.0, 3.0, 4.0));
 
-        final CandleStick<?> secondCandleStick = new MutableFullMarketData<>().setOpen(new Price(5.0))
+        final CandleStick secondCandleStick = new MutableFullMarketData<>().setOpen(new Price(5.0))
                 .setHigh(new Price(6.0)).setLow(new Price(7.0)).setClose(new Price(8.0)).toImmutableCandleStick();
-        assertThat(secondCandleStick).isEqualTo(new CandleStick<>(5.0, 6.0, 7.0, 8.0));
+        assertThat(secondCandleStick).isEqualTo(new CandleStick(5.0, 6.0, 7.0, 8.0));
     }
 
     /**

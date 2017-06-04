@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import de.voidnode.trading4j.api.Broker;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
-import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.trades.BasicCompletedTrade;
 import de.voidnode.trading4j.domain.trades.TradeEvent;
 
@@ -18,7 +17,7 @@ import de.voidnode.trading4j.domain.trades.TradeEvent;
  * @param <C>
  *            The concrete type of data passed as input.
  */
-public class BasicCompletedTradeTracker<C extends CandleStick<M1>>
+public class BasicCompletedTradeTracker<C extends MarketData>
         extends TradeTracker<C, BasicPendingOrder, BasicCompletedTrade> {
 
     /**

@@ -1,17 +1,14 @@
-package de.voidnode.trading4j.domain.marketdata;
+package de.voidnode.trading4j.domain.marketdata.impl;
 
-import de.voidnode.trading4j.domain.MarketDirection;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
-import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
  * Contains the data for a single candle stick chart.
  *
  * @author Raik Bieniek
- * @param <T>
- *            The time frame that candle stick this candle stick aggregates.
  */
-public class CandleStick<T extends TimeFrame> extends MarketData<T> {
+public class CandleStick extends BasicMarketData implements WithOhlc {
 
     private final Price open;
     private final Price high;
@@ -56,74 +53,21 @@ public class CandleStick<T extends TimeFrame> extends MarketData<T> {
         this.low = low;
     }
 
-    /**
-     * The value at the beginning of the time period this candle stick aggregates.
-     * 
-     * @return the opening value
-     */
+    @Override
     public Price getOpen() {
         return open;
     }
 
-    /**
-     * The highest value in the time period this candle stick aggregates.
-     * 
-     * @return the highest value
-     */
+    @Override
     public Price getHigh() {
         return high;
     }
 
-    /**
-     * The lowest value in the time period this candle stick aggregates.
-     * 
-     * @return the lowest value
-     */
+    @Override
     public Price getLow() {
         return low;
     }
-
-    /**
-     * The absolute difference between the {@link #getHigh()} and the {@link #getLow()} price.
-     * 
-     * @return the volatility of this {@link CandleStick}
-     */
-    public Price getVolatility() {
-        return high.minus(low);
-    }
-
-    /**
-     * The strongest market {@link Price} in the {@link TimeFrame} of this candle considering a given market direction.
-     * 
-     * <p>
-     * If the {@link MarketDirection} is up this is the {@link #getHigh()} {@link Price}. If it is down this is the
-     * {@link #getLow()} {@link Price}.
-     * </p>
-     * 
-     * @param trend
-     *            The {@link MarketDirection} to consider.
-     * @return The strongest {@link Price}.
-     */
-    public Price getStrongest(final MarketDirection trend) {
-        return trend == MarketDirection.UP ? high : low;
-    }
-
-    /**
-     * The strongest market {@link Price} in the {@link TimeFrame} of this candle considering a given market direction.
-     * 
-     * <p>
-     * If the {@link MarketDirection} is up this is the {@link #getLow()} {@link Price}. If it is down this is the
-     * {@link #getHigh()} {@link Price}.
-     * </p>
-     * 
-     * @param trend
-     *            The {@link MarketDirection} to consider.
-     * @return The weakest {@link Price}.
-     */
-    public Price getWeakest(final MarketDirection trend) {
-        return trend == MarketDirection.UP ? low : high;
-    }
-
+    
     /**
      * A {@link CandleStick} is only equal to other {@link CandleStick}s thats {@link Price} values (open, high, low and
      * close) are each equal.
@@ -147,7 +91,7 @@ public class CandleStick<T extends TimeFrame> extends MarketData<T> {
         if (!(obj instanceof CandleStick)) {
             return false;
         }
-        final CandleStick<?> other = (CandleStick<?>) obj;
+        final CandleStick other = (CandleStick) obj;
         if (high == null) {
             if (other.high != null) {
                 return false;

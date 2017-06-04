@@ -4,13 +4,12 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderFilter;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 
 /**
- * A wrapper for continues {@link OrderFilter}s that converts the {@link TimeFrame} of the input {@link CandleStick}s.
+ * A wrapper for continues {@link OrderFilter}s that converts the {@link TimeFrame} of the input {@link DatedCandleStick}s.
  * 
  * <p>
  * The wrapped {@link OrderFilter} will
@@ -18,13 +17,13 @@ import de.voidnode.trading4j.domain.timeframe.TimeFrame;
  *
  * @author Raik Bieniek
  * @param <CIN>
- *            The type of {@link CandleStick} that is used as input.
+ *            The type of {@link DatedCandleStick} that is used as input.
  * @param <COUT>
- *            The type of {@link CandleStick} that is expected by the original {@link OrderFilter}.
+ *            The type of {@link DatedCandleStick} that is expected by the original {@link OrderFilter}.
  * @param <ITF>
- *            The {@link TimeFrame} of the {@link CandleStick} that are used as input
+ *            The {@link TimeFrame} of the {@link DatedCandleStick} that are used as input
  * @param <OTF>
- *            The {@link TimeFrame} of the {@link CandleStick} that is converted to.
+ *            The {@link TimeFrame} of the {@link DatedCandleStick} that is converted to.
  */
 public class TimeFrameConvertingTradeGuard<CIN extends DatedCandleStick<ITF>, COUT extends DatedCandleStick<OTF>, ITF extends TimeFrame, OTF extends TimeFrame>
         implements OrderFilter<CIN> {

@@ -7,8 +7,7 @@ import java.util.stream.Stream;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.MarketDirection;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
-import de.voidnode.trading4j.domain.timeframe.M1;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
 
 import static de.voidnode.trading4j.testutils.CandleStickStreams.candleStickStream;
 
@@ -33,8 +32,8 @@ public class FractalIndicatorTest {
     private static final Optional<MarketDirection> DOWN = Optional.of(MarketDirection.DOWN);
     private static final Optional<MarketDirection> UNKNOWN = Optional.empty();
 
-    private final Indicator<MarketDirection, CandleStick<M1>> upFractals = new FractalIndicator<>(MarketDirection.UP);
-    private final Indicator<MarketDirection, CandleStick<M1>> downFractals = new FractalIndicator<>(MarketDirection.DOWN);
+    private final Indicator<MarketDirection, CandleStick> upFractals = new FractalIndicator<>(MarketDirection.UP);
+    private final Indicator<MarketDirection, CandleStick> downFractals = new FractalIndicator<>(MarketDirection.DOWN);
 
     ///////////////////
     /// Up Fractals ///
@@ -56,7 +55,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void upFractalPositiveCase1() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { 1.095, 1.11, 1.09, 1.096 }, // 0
                 { 1.096, 1.12, 1.08, 1.115 }, // 1
@@ -87,7 +86,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void upFractalPositiveCase2() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { 1.095, 1.11, 1.09, 1.096 }, // 0
                 { 1.096, 1.12, 1.08, 1.115 }, // 1
@@ -121,7 +120,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void upFractalPositiveCase3() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { 1.095, 1.12, 1.09, 1.096 }, // 0
                 { 1.096, 1.11, 1.08, 1.115 }, // 1
@@ -149,7 +148,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void upFractalNegativeCase1() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { 1.095, 1.13, 1.09, 1.096 }, // 0
                 { 1.096, 1.12, 1.08, 1.115 }, // 1
@@ -183,7 +182,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void downFractalsPositiveCase1() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { 1.094, 1.10, 1.08, 1.096 }, // 0
                 { 1.096, 1.11, 1.07, 1.081 }, // 1
@@ -214,7 +213,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void downFractalsPositiveCase2() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { 1.094, 1.10, 1.08, 1.096 }, // 0
                 { 1.096, 1.11, 1.07, 1.081 }, // 1
@@ -250,7 +249,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void downFractalsPositiveCase3() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { SOME_PRICE, SOME_PRICE, 1.07, SOME_PRICE }, // 0
                 { SOME_PRICE, SOME_PRICE, 1.08, SOME_PRICE }, // 1
@@ -278,7 +277,7 @@ public class FractalIndicatorTest {
      */
     @Test
     public void downFractalsNegativeCase1() {
-        final Stream<CandleStick<M1>> candleData = candleStickStream(new double[][] {
+        final Stream<CandleStick> candleData = candleStickStream(new double[][] {
                 // open, high, low, close
                 { 1.094, 1.10, 1.08, 1.096 }, // 0
                 { 1.096, 1.11, 1.07, 1.081 }, // 1

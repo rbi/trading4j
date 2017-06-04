@@ -6,7 +6,7 @@ import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.api.OrderFilter;
 import de.voidnode.trading4j.domain.Ratio;
 import de.voidnode.trading4j.domain.RatioUnit;
-import de.voidnode.trading4j.domain.marketdata.FullMarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.timeframe.M1;

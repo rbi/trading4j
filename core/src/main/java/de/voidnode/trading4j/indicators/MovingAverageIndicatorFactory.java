@@ -24,7 +24,7 @@ public class MovingAverageIndicatorFactory {
      *            The concrete {@link MarketData} type that is used as data input.
      * @return The created indicator.
      */
-    public <MP extends MarketData<?>> Indicator<Price, MP> createSimpleMovingAverage(final int aggregationCount) {
+    public <MP extends MarketData> Indicator<Price, MP> createSimpleMovingAverage(final int aggregationCount) {
         return new SmoothedPriceIndicator<>(new SimpleMovingAveragePrice(aggregationCount));
     }
 
@@ -37,7 +37,7 @@ public class MovingAverageIndicatorFactory {
      *            The concrete {@link MarketData} type that is used as data input.
      * @return The created indicator.
      */
-    public <MP extends MarketData<?>> Indicator<Price, MP> createExponentialMovingAverage(final int aggregationCount) {
+    public <MP extends MarketData> Indicator<Price, MP> createExponentialMovingAverage(final int aggregationCount) {
         return new SmoothedPriceIndicator<>(new ExponentialMovingAveragePrice(aggregationCount));
     }
 
@@ -50,7 +50,7 @@ public class MovingAverageIndicatorFactory {
      *            The concrete {@link MarketData} type that is used as data input.
      * @return The created indicator.
      */
-    public <MP extends MarketData<?>> Indicator<Price, MP> createSmoothedMovingAverage(final int smoothingPeriod) {
+    public <MP extends MarketData> Indicator<Price, MP> createSmoothedMovingAverage(final int smoothingPeriod) {
         return new SmoothedPriceIndicator<>(new SmoothedMovingAveragePrice(smoothingPeriod));
     }
 }

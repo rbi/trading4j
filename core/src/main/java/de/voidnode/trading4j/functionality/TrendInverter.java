@@ -16,7 +16,7 @@ import static de.voidnode.trading4j.domain.MarketDirection.UP;
  * @param <MP>
  *            The type of {@link MarketData} the original {@link Indicator} uses.
  */
-public class TrendInverter<MP extends MarketData<?>>
+public class TrendInverter<MP extends MarketData>
         implements Indicator<MarketDirection, MP> {
 
     private final Indicator<MarketDirection, MP> original;

@@ -4,10 +4,9 @@ import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
 import de.voidnode.trading4j.domain.Ratio;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
-import de.voidnode.trading4j.domain.timeframe.TimeFrame;
 import de.voidnode.trading4j.functionality.smoothers.ExponentialMovingAveragePrice;
 
 /**
@@ -54,15 +53,13 @@ import de.voidnode.trading4j.functionality.smoothers.ExponentialMovingAveragePri
  * @author Raik Bieniek
  * @param <MP>
  *            The type of {@link MarketData} that the indicator should be using for the calculations.
- * @param <TF>
- *            The time frame of the passed {@link CandleStick} which will also be the output time frame.
  */
-public class RelativeStrengthIndex<MP extends MarketData<?>, TF extends TimeFrame> implements Indicator<Ratio, MP> {
+public class RelativeStrengthIndex<MP extends MarketData> implements Indicator<Ratio, MP> {
 
-    private final Indicator<Price, MarketData<TF>> upMa;
-    private final Indicator<Price, MarketData<TF>> downMa;
+    private final Indicator<Price, MarketData> upMa;
+    private final Indicator<Price, MarketData> downMa;
 
-    private final MarketData<TF> noChange = new MarketData<>(new Price(0));
+    private final MarketData noChange = new BasicMarketData(new Price(0));
     private Price lastPrice;
 
     /**
@@ -89,8 +86,8 @@ public class RelativeStrengthIndex<MP extends MarketData<?>, TF extends TimeFram
      * @param downMa
      *            The moving average that should be used for candles with downward changes.
      */
-    public RelativeStrengthIndex(final Indicator<Price, MarketData<TF>> upMa,
-            final Indicator<Price, MarketData<TF>> downMa) {
+    public RelativeStrengthIndex(final Indicator<Price, MarketData> upMa,
+            final Indicator<Price, MarketData> downMa) {
         this.upMa = upMa;
         this.downMa = downMa;
     }
@@ -110,13 +107,13 @@ public class RelativeStrengthIndex<MP extends MarketData<?>, TF extends TimeFram
         }
 
         if (lastPrice.isLessThan(currentPrice)) {
-            return rsi(new MarketData<>(currentPrice.minus(lastPrice)), noChange);
+            return rsi(new BasicMarketData(currentPrice.minus(lastPrice)), noChange);
         } else {
-            return rsi(noChange, new MarketData<>(lastPrice.minus(currentPrice)));
+            return rsi(noChange, new BasicMarketData(lastPrice.minus(currentPrice)));
         }
     }
 
-    private Optional<Ratio> rsi(final MarketData<TF> upChange, final MarketData<TF> downChange) {
+    private Optional<Ratio> rsi(final MarketData upChange, final MarketData downChange) {
         final Optional<Price> upMa = this.upMa.indicate(upChange);
         final Optional<Price> downMa = this.downMa.indicate(downChange);
 

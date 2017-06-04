@@ -3,9 +3,8 @@ package de.voidnode.trading4j.indicators.adx;
 import java.util.Optional;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.CandleStick;
 import de.voidnode.trading4j.domain.monetary.Price;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Test;
 
@@ -18,14 +17,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TrueRangeTest {
 
-    private final Indicator<Price, CandleStick<M1>> cut = new TrueRange<>();
+    private final Indicator<Price, CandleStick> cut = new TrueRange<>();
 
     /**
      * The true range for the first input data can not be calculated an is therefore empty.
      */
     @Test
     public void emptyForFirstData() {
-        assertThat(cut.indicate(new CandleStick<>(1.0, 1.0, 1.0, 1.0))).isEmpty();
+        assertThat(cut.indicate(new CandleStick(1.0, 1.0, 1.0, 1.0))).isEmpty();
     }
 
     /**
@@ -34,9 +33,9 @@ public class TrueRangeTest {
      */
     @Test
     public void volatilityIsUsedWhenItsHigherThanHighToCloseAndCloseToLow() {
-        cut.indicate(new CandleStick<>(new Price(10), new Price(10), new Price(10), new Price(10)));
+        cut.indicate(new CandleStick(new Price(10), new Price(10), new Price(10), new Price(10)));
         final Optional<Price> tr = cut
-                .indicate(new CandleStick<>(new Price(10), new Price(50), new Price(5), new Price(10)));
+                .indicate(new CandleStick(new Price(10), new Price(50), new Price(5), new Price(10)));
 
         assertThat(tr).contains(new Price(45));
     }
@@ -47,9 +46,9 @@ public class TrueRangeTest {
      */
     @Test
     public void highToCloseIsUsedWhenItsHigherThatCloseToLowAndVolatility() {
-        cut.indicate(new CandleStick<>(new Price(10), new Price(10), new Price(10), new Price(10)));
+        cut.indicate(new CandleStick(new Price(10), new Price(10), new Price(10), new Price(10)));
         final Optional<Price> tr = cut
-                .indicate(new CandleStick<>(new Price(15), new Price(20), new Price(15), new Price(10)));
+                .indicate(new CandleStick(new Price(15), new Price(20), new Price(15), new Price(10)));
 
         assertThat(tr).contains(new Price(10));
     }
@@ -60,9 +59,9 @@ public class TrueRangeTest {
      */
     @Test
     public void closeToLowIsUsedWhenItsHigherThenHighToCloseAndVolatility() {
-        cut.indicate(new CandleStick<>(new Price(20), new Price(20), new Price(20), new Price(20)));
+        cut.indicate(new CandleStick(new Price(20), new Price(20), new Price(20), new Price(20)));
         final Optional<Price> tr = cut
-                .indicate(new CandleStick<>(new Price(10), new Price(15), new Price(10), new Price(10)));
+                .indicate(new CandleStick(new Price(10), new Price(15), new Price(10), new Price(10)));
 
         assertThat(tr).contains(new Price(10));
     }
@@ -72,9 +71,9 @@ public class TrueRangeTest {
      */
     @Test
     public void zeroWhenVolatilityIsZeroAndThereIsNoGap() {
-        cut.indicate(new CandleStick<>(new Price(50), new Price(80), new Price(10), new Price(20)));
+        cut.indicate(new CandleStick(new Price(50), new Price(80), new Price(10), new Price(20)));
         final Optional<Price> tr = cut
-                .indicate(new CandleStick<>(new Price(20), new Price(20), new Price(20), new Price(20)));
+                .indicate(new CandleStick(new Price(20), new Price(20), new Price(20), new Price(20)));
         assertThat(tr).contains(new Price(0));
     }
 }

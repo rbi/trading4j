@@ -5,7 +5,8 @@ import java.util.Optional;
 import static java.lang.Math.max;
 
 import de.voidnode.trading4j.api.Indicator;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.WithOhlc;
 import de.voidnode.trading4j.domain.monetary.Price;
 
 /**
@@ -15,7 +16,7 @@ import de.voidnode.trading4j.domain.monetary.Price;
  * @param <C>
  *            The concrete type of data that is used as input.
  */
-class TrueRange<C extends CandleStick<?>> implements Indicator<Price, C> {
+class TrueRange<C extends MarketData & WithOhlc> implements Indicator<Price, C> {
 
     private Price lastClose;
 

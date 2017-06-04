@@ -10,8 +10,8 @@ import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderFilter;
 import de.voidnode.trading4j.api.OrderManagement;
 import de.voidnode.trading4j.domain.marketdata.MarketData;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
-import de.voidnode.trading4j.domain.timeframe.M1;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,12 +38,12 @@ public class OrderFilteringBrokerTest {
     private Broker<BasicPendingOrder> broker;
 
     @Mock
-    private OrderFilter<MarketData<M1>> indicator1;
+    private OrderFilter<MarketData> indicator1;
 
     @Mock
-    private OrderFilter<MarketData<M1>> indicator2;
+    private OrderFilter<MarketData> indicator2;
 
-    private OrderFilteringBroker<MarketData<M1>> cut;
+    private OrderFilteringBroker<MarketData> cut;
 
     @Mock
     private BasicPendingOrder someOrder;
@@ -57,8 +57,8 @@ public class OrderFilteringBrokerTest {
     @Mock
     private Failed someFailed;
 
-    private final MarketData<M1> someMarketPrice = new MarketData<>(10);
-    private final MarketData<M1> someOtherMarketPrice = new MarketData<>(20);
+    private final MarketData someMarketPrice = new BasicMarketData(10);
+    private final MarketData someOtherMarketPrice = new BasicMarketData(20);
 
     /**
      * Initializes the class under test.
@@ -73,7 +73,7 @@ public class OrderFilteringBrokerTest {
     }
 
     /**
-     * A trade is allowed after first {@link MarketData} was received when no {@link OrderFilter} blocks trading.
+     * A trade is allowed after first {@link BasicMarketData} was received when no {@link OrderFilter} blocks trading.
      */
     @Test
     public void allowsTradingAfterMarketDataWasReceivedWhenNoTradeGuardBlocksTrades() {
@@ -118,7 +118,7 @@ public class OrderFilteringBrokerTest {
     }
 
     /**
-     * When the cut receives a {@link BasicPendingOrder} before any {@link MarketData} was passed to it, an exception is
+     * When the cut receives a {@link BasicPendingOrder} before any {@link BasicMarketData} was passed to it, an exception is
      * thrown.
      */
     @Test(expected = IllegalStateException.class)

@@ -10,13 +10,12 @@ import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.Failed;
 import de.voidnode.trading4j.api.OrderEventListener;
 import de.voidnode.trading4j.api.OrderManagement;
-import de.voidnode.trading4j.domain.marketdata.CandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.BasicMarketData;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.MutableCloseConditions;
 import de.voidnode.trading4j.domain.orders.MutablePendingOrder;
-import de.voidnode.trading4j.domain.timeframe.M1;
 import de.voidnode.trading4j.domain.trades.BasicCompletedTrade;
 import de.voidnode.trading4j.domain.trades.TradeEvent;
 
@@ -74,7 +73,7 @@ public class BasicCompletedTradeTrackerTest {
     @Mock
     private Supplier<Instant> currentTime;
 
-    private BasicCompletedTradeTracker<CandleStick<M1>> cut;
+    private BasicCompletedTradeTracker<BasicMarketData> cut;
 
     // misc
 
@@ -165,7 +164,7 @@ public class BasicCompletedTradeTrackerTest {
 
         orderEventListenerCaptor.getValue().orderOpened(BROKER_TIME, new Price(60));
         // on manually closed trades, the cut takes the last close price.
-        cut.newData(new CandleStick<>(somePrice, somePrice, somePrice, new Price(70)));
+        cut.newData(new BasicMarketData(new Price(70)));
         orderManagement.closeOrCancelOrder();
 
         verify(backtestEventLlistener).tradeCompleted(basicCompleteTradeMatcher(new BasicCompletedTrade(SELL, LIMIT,
@@ -184,7 +183,7 @@ public class BasicCompletedTradeTrackerTest {
         someOrder.setType(SELL);
         final BasicPendingOrder order = someOrder.toImmutableBasicPendingOrder();
 
-        cut.newData(new CandleStick<>(new Price(200), new Price(300), new Price(400), new Price(500)));
+        cut.newData(new BasicMarketData(new Price(500)));
         final OrderManagement orderManagement = cut.sendOrder(order, someOrderEventListener);
         orderManagement.closeOrCancelOrder();
 

@@ -26,7 +26,7 @@ import de.voidnode.trading4j.domain.orders.BasicPendingOrder;
  * @author Raik Bieniek
  * @param <C> The market data the {@link OrderFilter}s expect as input.
  */
-public class OrderFilteringBroker<C extends MarketData<?>> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
+public class OrderFilteringBroker<C extends MarketData> implements Broker<BasicPendingOrder>, MarketDataListener<C> {
 
     private static final OrderManagement NO_OP_ORDER_MANAGEMENT = new NoOpOrderManagement();
 

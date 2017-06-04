@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.stream.Collectors.toList;
 
-import de.voidnode.trading4j.domain.marketdata.DatedCandleStick;
+import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
 import de.voidnode.trading4j.domain.timeframe.M30;
 import de.voidnode.trading4j.domain.timeframe.M5;
 import de.voidnode.trading4j.domain.timeframe.TimeFrame;

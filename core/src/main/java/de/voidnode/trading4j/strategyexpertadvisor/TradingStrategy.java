@@ -20,7 +20,7 @@ import de.voidnode.trading4j.domain.orders.ExecutionCondition;
  * @param <C>
  *            The concrete type of {@link MarketData}s that are used as input.
  */
-public interface TradingStrategy<C extends MarketData<?>> {
+public interface TradingStrategy<C extends MarketData> { 
 
     /**
      * Updates the values for potential {@link BasicPendingOrder}s based on new market data.
