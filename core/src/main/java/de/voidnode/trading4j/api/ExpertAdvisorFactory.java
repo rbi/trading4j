@@ -6,13 +6,13 @@ import de.voidnode.trading4j.domain.environment.TradingEnvironmentInformation;
 import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
 import de.voidnode.trading4j.domain.timeframe.M1;
-import de.voidnode.trading4j.expertadvisorfactory.DefaultExpertAdvisorFactory;
 
 /**
  * Creates {@link ExpertAdvisor}s identified by numbers.
  * 
  * <p>
- * If you need to implement this interface consider using {@link DefaultExpertAdvisorFactory} and implement the simpler
+ * If you need to implement this interface consider using
+ * {@link de.voidnode.trading4j.expertadvisorfactory.DefaultExpertAdvisorFactory} and implement the simpler
  * {@link BasicExpertAdvisorFactory} instead.
  * </p>
  * 
