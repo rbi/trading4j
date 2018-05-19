@@ -1,14 +1,20 @@
-package de.voidnode.trading4j.server.protocol;
+package de.voidnode.trading4j.server.protocol.exceptions;
 
 /**
- * Indicates that the communication protocol between the client and server has been violated and the connection had
- * therefore to be closed.
+ * Indicates an error in the communication to the client.
  * 
  * @author Raik Bieniek
  */
-public class ProtocolException extends CommunicationException {
+public abstract class CommunicationException extends Exception {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Initializes this exception.
+     */
+    public CommunicationException() {
+
+    }
 
     /**
      * Initializes this exception with a human readable message describing the problem.
@@ -16,8 +22,18 @@ public class ProtocolException extends CommunicationException {
      * @param message
      *            A human readable message describing the problem.
      */
-    public ProtocolException(final String message) {
+    public CommunicationException(final String message) {
         super(message);
+    }
+
+    /**
+     * Initializes this exception.
+     * 
+     * @param cause
+     *            The causing exception
+     */
+    public CommunicationException(final Exception cause) {
+        super(cause);
     }
 
     /**
@@ -28,7 +44,7 @@ public class ProtocolException extends CommunicationException {
      * @param cause
      *            The cause for this exception.
      */
-    public ProtocolException(final String message, final Exception cause) {
+    public CommunicationException(final String message, final Exception cause) {
         super(message, cause);
     }
 }

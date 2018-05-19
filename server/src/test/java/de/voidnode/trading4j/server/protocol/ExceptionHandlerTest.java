@@ -1,6 +1,10 @@
 package de.voidnode.trading4j.server.protocol;
 
-import de.voidnode.trading4j.server.protocol.messages.MessageReadException;
+import de.voidnode.trading4j.server.protocol.exceptions.AbnormalCloseException;
+import de.voidnode.trading4j.server.protocol.exceptions.CommunicationException;
+import de.voidnode.trading4j.server.protocol.exceptions.MessageReadException;
+import de.voidnode.trading4j.server.protocol.exceptions.NormalCloseException;
+import de.voidnode.trading4j.server.protocol.exceptions.ProtocolException;
 import de.voidnode.trading4j.server.reporting.AdmininstratorNotifier;
 import de.voidnode.trading4j.server.reporting.DeveloperNotifier;
 

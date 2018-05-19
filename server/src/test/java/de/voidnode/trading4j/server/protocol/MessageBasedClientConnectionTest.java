@@ -1,4 +1,4 @@
-package de.voidnode.trading4j.server.protocol.messages;
+package de.voidnode.trading4j.server.protocol;
 
 import java.time.Instant;
 import java.util.Currency;
@@ -13,8 +13,7 @@ import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.MutableCloseConditions;
 import de.voidnode.trading4j.domain.orders.MutablePendingOrder;
-import de.voidnode.trading4j.server.protocol.ClientConnection;
-import de.voidnode.trading4j.server.protocol.CommunicationException;
+import de.voidnode.trading4j.server.protocol.exceptions.CommunicationException;
 
 import static de.voidnode.trading4j.domain.VolumeUnit.BASE;
 import static de.voidnode.trading4j.domain.VolumeUnit.MICRO_LOT;
@@ -24,6 +23,24 @@ import static de.voidnode.trading4j.domain.orders.OrderType.BUY;
 import static de.voidnode.trading4j.domain.orders.OrderType.SELL;
 import static de.voidnode.trading4j.testutils.assertions.Assertions.assertThat;
 
+import de.voidnode.trading4j.server.protocol.exceptions.MessageReadException;
+import de.voidnode.trading4j.server.protocol.messages.AccountCurrencyExchangeRateChangedMessage;
+import de.voidnode.trading4j.server.protocol.messages.BalanceChangedMessage;
+import de.voidnode.trading4j.server.protocol.messages.ChangeCloseConditionsMessage;
+import de.voidnode.trading4j.server.protocol.messages.CloseOrCancelPendingOrderMessage;
+import de.voidnode.trading4j.server.protocol.messages.EventHandlingFinishedMessage;
+import de.voidnode.trading4j.server.protocol.messages.Message;
+import de.voidnode.trading4j.server.protocol.messages.MessageType;
+import de.voidnode.trading4j.server.protocol.messages.NewMarketDataExtendedMessage;
+import de.voidnode.trading4j.server.protocol.messages.NewMarketDataSimpleMessage;
+import de.voidnode.trading4j.server.protocol.messages.PendingOrderConditionalyClosedMessage;
+import de.voidnode.trading4j.server.protocol.messages.PendingOrderConditionalyExecutedMessage;
+import de.voidnode.trading4j.server.protocol.messages.PlacePendingOrderMessage;
+import de.voidnode.trading4j.server.protocol.messages.RequestTradingAlgorithmMessage;
+import de.voidnode.trading4j.server.protocol.messages.ResponseChangeCloseConditionsMessage;
+import de.voidnode.trading4j.server.protocol.messages.ResponsePlacePendingOrderMessage;
+import de.voidnode.trading4j.server.protocol.messages.TradingEnvironmentInformationMessage;
+import de.voidnode.trading4j.server.protocol.messages.TrendForMarketDataMessage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;

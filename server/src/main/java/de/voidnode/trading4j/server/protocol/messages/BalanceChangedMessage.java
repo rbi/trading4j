@@ -19,7 +19,7 @@ public class BalanceChangedMessage implements Message {
      * @param newBalance
      *            see {@link #getNewBalance()}
      */
-    BalanceChangedMessage(final long newBalance) {
+    public BalanceChangedMessage(final long newBalance) {
         this.newBalance = newBalance;
     }
 

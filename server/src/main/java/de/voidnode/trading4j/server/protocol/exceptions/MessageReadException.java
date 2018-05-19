@@ -1,10 +1,8 @@
-package de.voidnode.trading4j.server.protocol.messages;
-
-import de.voidnode.trading4j.server.protocol.ClientConnection;
-import de.voidnode.trading4j.server.protocol.CommunicationException;
+package de.voidnode.trading4j.server.protocol.exceptions;
 
 /**
- * Signalizes that a message could not be read from a {@link ClientConnection} as expected.
+ * Signalizes that a message could not be read from a {@link de.voidnode.trading4j.server.protocol.ClientConnection} as
+ * expected.
  * 
  * <p>
  * This could mean that the client did not send enough data or did send it in the wrong order.

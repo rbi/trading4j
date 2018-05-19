@@ -11,7 +11,7 @@ import de.voidnode.trading4j.domain.marketdata.impl.FullMarketData;
 import de.voidnode.trading4j.domain.monetary.Money;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
 import de.voidnode.trading4j.domain.timeframe.M1;
-import de.voidnode.trading4j.server.protocol.ProtocolException;
+import de.voidnode.trading4j.server.protocol.exceptions.ProtocolException;
 import de.voidnode.trading4j.server.protocol.messages.AccountCurrencyExchangeRateChangedMessage;
 import de.voidnode.trading4j.server.protocol.messages.BalanceChangedMessage;
 import de.voidnode.trading4j.server.protocol.messages.Message;

@@ -1,7 +1,7 @@
 package de.voidnode.trading4j.server.protocol;
 
+import de.voidnode.trading4j.server.protocol.exceptions.CommunicationException;
 import de.voidnode.trading4j.server.protocol.expertadvisor.ExpertAdvisorProtocol;
-import de.voidnode.trading4j.server.protocol.messages.MessageBasedClientConnection;
 import de.voidnode.trading4j.server.protocol.messages.RequestTradingAlgorithmMessage;
 import de.voidnode.trading4j.server.protocol.messages.RequestTradingAlgorithmMessage.AlgorithmType;
 

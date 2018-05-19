@@ -23,7 +23,7 @@ public class NewMarketDataExtendedMessage implements Message {
      * @param candleStick
      *            The candle stick that was received.
      */
-    NewMarketDataExtendedMessage(final FullMarketData<M1> candleStick) {
+    public NewMarketDataExtendedMessage(final FullMarketData<M1> candleStick) {
         this.candleStick = candleStick;
     }
 

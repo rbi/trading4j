@@ -1,6 +1,6 @@
 package de.voidnode.trading4j.server.protocol.expertadvisor;
 
-import de.voidnode.trading4j.server.protocol.CommunicationException;
+import de.voidnode.trading4j.server.protocol.exceptions.CommunicationException;
 
 /**
  * A wrapper for {@link CommunicationException}s that are thrown when sending data to loop it through to the message

@@ -1,4 +1,4 @@
-package de.voidnode.trading4j.server.protocol;
+package de.voidnode.trading4j.server.protocol.exceptions;
 
 import java.io.IOException;
 
