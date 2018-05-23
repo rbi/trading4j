@@ -1,7 +1,7 @@
 java_binary(
   name = "examples",
   srcs = glob([
-    "src/main/java/**/*.java",
+    "*.java",
   ]),
   main_class = "de.voidnode.trading4j.examples.ExpertAdvisorServer",
   deps = [
@@ -14,5 +14,8 @@ java_binary(
     "//core/src/main/java/de/voidnode/trading4j/moneymanagement/standard",
     "//core/src/main/java/de/voidnode/trading4j/strategyexpertadvisor",
     "//server/src/main/java/de/voidnode/trading4j/server",
+  ],
+  visibility = [
+    "//examples/src/test/java/de/voidnode/trading4j/examples:__pkg__",
   ]
 )

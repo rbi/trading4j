@@ -1,5 +1,5 @@
 java_library (
-  name = "indicators",
+  name = "adx",
   srcs = glob(["*.java"]),
   deps = [
     "//core/src/main/java/de/voidnode/trading4j/api",
