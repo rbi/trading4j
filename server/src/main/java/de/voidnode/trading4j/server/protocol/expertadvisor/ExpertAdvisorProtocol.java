@@ -3,11 +3,11 @@ package de.voidnode.trading4j.server.protocol.expertadvisor;
 import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.moneymanagement.SharedMoneyManagement.ReleasableMoneyManagement;
-import de.voidnode.trading4j.server.protocol.CommunicationException;
-import de.voidnode.trading4j.server.protocol.ProtocolException;
+import de.voidnode.trading4j.server.protocol.MessageBasedClientConnection;
 import de.voidnode.trading4j.server.protocol.ProtocolFactory;
+import de.voidnode.trading4j.server.protocol.exceptions.CommunicationException;
+import de.voidnode.trading4j.server.protocol.exceptions.ProtocolException;
 import de.voidnode.trading4j.server.protocol.messages.EventHandlingFinishedMessage;
-import de.voidnode.trading4j.server.protocol.messages.MessageBasedClientConnection;
 import de.voidnode.trading4j.server.protocol.messages.TradingEnvironmentInformationMessage;
 
 /**

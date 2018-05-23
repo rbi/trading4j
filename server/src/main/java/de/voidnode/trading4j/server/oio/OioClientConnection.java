@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import de.voidnode.trading4j.server.protocol.AbnormalCloseException;
 import de.voidnode.trading4j.server.protocol.ClientConnection;
-import de.voidnode.trading4j.server.protocol.NormalCloseException;
+import de.voidnode.trading4j.server.protocol.exceptions.AbnormalCloseException;
+import de.voidnode.trading4j.server.protocol.exceptions.NormalCloseException;
 
 /**
  * A TCP client that can be used to send and receive data from a connected client.

@@ -1,21 +1,18 @@
 package de.voidnode.trading4j.tradetracker;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-
-import static java.time.ZoneOffset.UTC;
-import static java.util.Arrays.asList;
-
 import de.voidnode.trading4j.domain.ForexSymbol;
 import de.voidnode.trading4j.domain.Volume;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.trades.CompletedTrade;
 import de.voidnode.trading4j.domain.trades.TradeEvent;
+import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 import static de.voidnode.trading4j.domain.VolumeUnit.MINI_LOT;
 import static de.voidnode.trading4j.domain.orders.ExecutionCondition.LIMIT;
@@ -24,9 +21,8 @@ import static de.voidnode.trading4j.domain.trades.TradeEventType.CLOSE_CONDITION
 import static de.voidnode.trading4j.domain.trades.TradeEventType.PENDING_ORDER_OPENED;
 import static de.voidnode.trading4j.domain.trades.TradeEventType.PENDING_ORDER_PLACED;
 import static de.voidnode.trading4j.domain.trades.TradeEventType.TRADE_CLOSED;
-
-import org.junit.Test;
-
+import static java.time.ZoneOffset.UTC;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -68,8 +64,17 @@ public class CompletedTradeMarkDownFormaterIT {
         assertThat(is).isEqualTo(should);
     }
 
-    private String readFile(final String file) throws URISyntaxException, IOException {
-        final URI resource = CompletedTradeMarkDownFormaterIT.class.getResource(file).toURI();
-        return new String(Files.readAllBytes(Paths.get(resource)));
+    private String readFile(final String file) throws IOException {
+        URL testDataLocation = CompletedTradeMarkDownFormaterIT.class.getResource(file);
+
+        StringBuilder builder = new StringBuilder();
+        try(BufferedReader in = new BufferedReader(new InputStreamReader(testDataLocation.openStream()))) {
+            String line;
+            while((line = in.readLine()) != null) {
+                builder.append(line);
+                builder.append("\n");
+            }
+        }
+        return builder.toString();
     }
 }

@@ -1,5 +1,8 @@
 package de.voidnode.trading4j.server.protocol;
 
+import de.voidnode.trading4j.server.protocol.exceptions.AbnormalCloseException;
+import de.voidnode.trading4j.server.protocol.exceptions.NormalCloseException;
+
 /**
  * A connection to a trading client.
  * 

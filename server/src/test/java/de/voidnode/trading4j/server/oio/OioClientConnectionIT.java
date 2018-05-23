@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import de.voidnode.trading4j.server.protocol.NormalCloseException;
+import de.voidnode.trading4j.server.protocol.exceptions.NormalCloseException;
 
 import org.assertj.core.data.Offset;
 import org.junit.After;

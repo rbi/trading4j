@@ -21,7 +21,7 @@ public class TradingEnvironmentInformationMessage implements Message {
      * @param information
      *            The information that where received.
      */
-    TradingEnvironmentInformationMessage(final TradingEnvironmentInformation information) {
+    public TradingEnvironmentInformationMessage(final TradingEnvironmentInformation information) {
         this.information = information;
     }
 

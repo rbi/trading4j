@@ -15,7 +15,6 @@ import de.voidnode.trading4j.server.protocol.expertadvisor.ExpertAdvisorProtocol
 import de.voidnode.trading4j.server.protocol.expertadvisor.LocalExpertAdvisor;
 import de.voidnode.trading4j.server.protocol.expertadvisor.PendingOrderMapper;
 import de.voidnode.trading4j.server.protocol.expertadvisor.RemoteBroker;
-import de.voidnode.trading4j.server.protocol.messages.MessageBasedClientConnection;
 import de.voidnode.trading4j.server.reporting.CombinedNotifier;
 
 /**

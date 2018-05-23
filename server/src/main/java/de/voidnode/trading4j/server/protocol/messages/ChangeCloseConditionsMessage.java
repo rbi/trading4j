@@ -1,11 +1,10 @@
 package de.voidnode.trading4j.server.protocol.messages;
 
-import de.voidnode.trading4j.api.Broker;
 import de.voidnode.trading4j.domain.orders.CloseConditions;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
 
 /**
- * Request the remote {@link Broker} to change the {@link CloseConditions} of an opened pending order.
+ * Request the remote {@link de.voidnode.trading4j.api.Broker broker} to change the {@link CloseConditions} of an opened pending order.
  * 
  * @author Raik Bieniek;
  */

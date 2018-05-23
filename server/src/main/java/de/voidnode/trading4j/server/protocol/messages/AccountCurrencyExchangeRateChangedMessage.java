@@ -21,7 +21,7 @@ public class AccountCurrencyExchangeRateChangedMessage implements Message {
      * @param newRate
      *            see {@link #getNewRate()}
      */
-    AccountCurrencyExchangeRateChangedMessage(final Price newRate) {
+    public AccountCurrencyExchangeRateChangedMessage(final Price newRate) {
         this.newRate = newRate;
     }
 

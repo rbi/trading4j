@@ -2,15 +2,13 @@ package de.voidnode.trading4j.server.protocol.messages;
 
 import java.util.Optional;
 
-import de.voidnode.trading4j.api.ExpertAdvisor;
-import de.voidnode.trading4j.api.Indicator;
-
 /**
  * A message requesting the trading algorithm that should be used for the rest of the connection.
  * 
  * <p>
- * This is usually the first message of a connection. Trading algorithm can be {@link ExpertAdvisor}s or
- * {@link Indicator}s.
+ * This is usually the first message of a connection. Trading algorithm can be
+ * {@link de.voidnode.trading4j.api.ExpertAdvisor expert advisor}s or
+ * {@link de.voidnode.trading4j.api.Indicator indicator}s.
  * </p>
  * 
  * @author Raik Bieniek

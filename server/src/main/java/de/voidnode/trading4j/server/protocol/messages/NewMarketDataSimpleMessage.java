@@ -23,7 +23,7 @@ public class NewMarketDataSimpleMessage implements Message {
      * @param candleStick
      *            The candle stick that was received.
      */
-    NewMarketDataSimpleMessage(final DatedCandleStick<M1> candleStick) {
+    public NewMarketDataSimpleMessage(final DatedCandleStick<M1> candleStick) {
         this.candleStick = candleStick;
     }
 

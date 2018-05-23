@@ -7,8 +7,9 @@ import de.voidnode.trading4j.api.TrendIndicatorFactory;
 import de.voidnode.trading4j.domain.MarketDirection;
 import de.voidnode.trading4j.domain.marketdata.impl.DatedCandleStick;
 import de.voidnode.trading4j.domain.timeframe.M1;
+import de.voidnode.trading4j.server.protocol.exceptions.CommunicationException;
+import de.voidnode.trading4j.server.protocol.exceptions.ProtocolException;
 import de.voidnode.trading4j.server.protocol.messages.Message;
-import de.voidnode.trading4j.server.protocol.messages.MessageBasedClientConnection;
 import de.voidnode.trading4j.server.protocol.messages.NewMarketDataSimpleMessage;
 import de.voidnode.trading4j.server.protocol.messages.TrendForMarketDataMessage;
 

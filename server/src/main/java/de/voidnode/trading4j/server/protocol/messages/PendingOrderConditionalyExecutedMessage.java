@@ -2,13 +2,13 @@ package de.voidnode.trading4j.server.protocol.messages;
 
 import java.time.Instant;
 
-import de.voidnode.trading4j.api.ExpertAdvisor;
 import de.voidnode.trading4j.domain.monetary.Price;
 import de.voidnode.trading4j.domain.orders.PendingOrder;
 
 /**
- * Notifies that a {@link PendingOrder} that was previously opened by the {@link ExpertAdvisor} has been executed
- * because its execution conditions have been met.
+ * Notifies that a {@link PendingOrder} that was previously opened by the
+ * {@link de.voidnode.trading4j.api.ExpertAdvisor expert advisor} has been executed because its execution conditions
+ * have been met.
  * 
  * @author Raik Bieniek
  */
