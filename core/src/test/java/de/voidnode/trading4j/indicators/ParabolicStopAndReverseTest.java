@@ -1,6 +1,11 @@
 package de.voidnode.trading4j.indicators;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +16,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.lang.Double.parseDouble;
 import static java.util.stream.Collectors.toCollection;
@@ -48,26 +54,26 @@ public class ParabolicStopAndReverseTest {
      */
     @BeforeClass
     public static void setUpTestData() throws IOException {
-        final Path testDataFile = Paths
-                .get(ParabolicStopAndReverseTest.class.getResource("/Parabolic-SAR-Testdata.csv").getPath());
+        URL testDataLocation = ParabolicStopAndReverseTest.class.getResource("/Parabolic-SAR-Testdata.csv");
+        try (Stream<String> stream = new BufferedReader(new InputStreamReader(testDataLocation.openStream())).lines()) {
+            testData = stream
+                    // skip the header
+                    .skip(1)
+                    // convert all other lines to test data.
+                    .map(line -> {
+                        final String[] parts = line.split(",");
+                        // read the day and the time
+                        final Instant time = LocalDate.parse(parts[0], DAY_FORMATTER)
+                                .atTime(LocalTime.parse(parts[1], TIME_FORMATTER)).atOffset(ZoneOffset.UTC)
+                                .toInstant();
+                        // read the rest of the test data
+                        return new TestData(
+                                new DatedCandleStick<>(time, parseDouble(parts[2]), parseDouble(parts[3]),
+                                        parseDouble(parts[4]), parseDouble(parts[5])),
+                                new Price(parseDouble(parts[6])), new Price(parseDouble(parts[7])));
 
-        testData = Files.lines(testDataFile)
-                // skip the header
-                .skip(1)
-                // convert all other lines to test data.
-                .map(line -> {
-                    final String[] parts = line.split(",");
-                    // read the day and the time
-                    final Instant time = LocalDate.parse(parts[0], DAY_FORMATTER)
-                            .atTime(LocalTime.parse(parts[1], TIME_FORMATTER)).atOffset(ZoneOffset.UTC)
-                            .toInstant();
-                    // read the rest of the test data
-                    return new TestData(
-                            new DatedCandleStick<>(time, parseDouble(parts[2]), parseDouble(parts[3]),
-                                    parseDouble(parts[4]), parseDouble(parts[5])),
-                            new Price(parseDouble(parts[6])), new Price(parseDouble(parts[7])));
-
-                }).collect(toCollection(() -> new ArrayList<>()));
+                    }).collect(toCollection(() -> new ArrayList<>()));
+        }
     }
 
     /**

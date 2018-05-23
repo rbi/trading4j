@@ -72,7 +72,7 @@ public class MailSenderIT {
         final Instant actual = new MailDateFormat().parse(mailDate).toInstant();
 
         final Instant minimal = minimalRaw.atOffset(UTC).withNano(0).minusNanos(1).toInstant();
-        final Instant maximal = minimalRaw.atOffset(UTC).withNano(1).plusSeconds(1).toInstant();
+        final Instant maximal = maximalRaw.atOffset(UTC).withNano(1).plusSeconds(1).toInstant();
         assertThat(actual.isAfter(minimal))
                 .overridingErrorMessage("The date of the mail should be after %s but was %s.", minimal, actual)
                 .isTrue();
