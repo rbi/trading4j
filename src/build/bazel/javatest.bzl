@@ -5,7 +5,7 @@ def gen_java_test_rules(name, srcs, **kwargs):
     if not test_file.endswith(".java"):
       fail("Only Java source files may be used.", test_file)
     test_name = test_file[:-5]
-    test_class = _path_to_java_class(PACKAGE_NAME + "/" + test_name)
+    test_class = _path_to_java_class(native.package_name() + "/" + test_name)
     native.java_test(name = test_name,
                    test_class = test_class,
                    srcs = [test_file],
