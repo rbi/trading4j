@@ -2,7 +2,7 @@ package de.voidnode.trading4j.domain;
 
 /**
  * The relationship between two numbers of the same kind. [
- * <a href="http://en.wikipedia.org/w/index.php?title=Ratio&oldid=653446692" >Wikipedia</a>]
+ * <a href="http://en.wikipedia.org/w/index.php?title=Ratio&amp;oldid=653446692" >Wikipedia</a>]
  * 
  * @author Raik Bieniek
  */

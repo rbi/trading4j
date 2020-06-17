@@ -14,7 +14,7 @@ import de.voidnode.trading4j.domain.monetary.Price;
  * </p>
  * 
  * <pre>
- * class MyIndicator&lt;M extends MarketData & WithSpread & WithVolume&gt; implements Indicator&lt;MarketDirection, M&gt; {
+ * class MyIndicator&lt;M extends MarketData &amp; WithSpread &amp; WithVolume&gt; implements Indicator&lt;MarketDirection, M&gt; {
  *     Optional&lt;MarketDirection&gt; indicate(M md) {
  *         return doSomeThing(md.getClose(), md.getSpread(), md.getVolume());
  *     }
